@@ -7,8 +7,8 @@ const publicIp = require('public-ip')
 // Styling
 import './App.less'
 import ThemeProvider from './providers/ThemeProvider'
-import 'antd/es/modal/style';
-import 'antd/es/slider/style';
+import 'antd/es/modal/style'
+import 'antd/es/slider/style'
 // React Router
 import { Redirect, Route, Router, Switch } from 'react-router-dom'
 import { createBrowserHistory } from 'history'
@@ -27,6 +27,7 @@ import LoginPage from './pages/WebApp/LoginPage'
 import NotPermissionPage from './pages/WebApp/NotPermissionPage'
 import NotFoundPage from './pages/WebApp/NotFoundPage'
 import TestPage from './pages/WebApp/TestPage'
+import UserManagerPage from './pages/WebApp/UserManagerPage'
 
 const history = createBrowserHistory()
 
@@ -100,6 +101,8 @@ const App = () => {
           <Switch>
             <Route exact path={PAGES.LOGIN.PATH} component={LoginPage} /> {/*Đăng nhập*/}
             <Route exact path={PAGES.HOME.PATH} component={HomePage} />
+
+            <Route exact path={PAGES.USER_MANAGER.PATH} component={UserManagerPage} />
 
             <Route exact path={PAGES.TEST.PATH} component={TestPage} />
             <Route exact path={PAGES.NOT_PERMISSION.PATH} component={NotPermissionPage} /> {/*Không có quyền truy cập*/}

@@ -9,6 +9,7 @@ export const MainSideBarWrapper = styled.aside`
   flex-direction: column;
   align-items: start;
   overflow-y: auto;
+  overflow-x: hidden;
   padding-bottom: 64px;
   padding-top: 64px;
   background: rgba(255, 255, 255, 0.8);

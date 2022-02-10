@@ -17,24 +17,10 @@ export const PAGES = {
     PATH: '/not-permission',
   },
 
-
-  BUSINESS_PROFILE_MANAGER: {
-    NAME: 'business-profile-manager',
-    PATH: '/business-profile-manager',
-  },
-  BUSINESS_USER_MANAGER: {
+  USER_MANAGER: {
     NAME: 'business-user-manager',
     PATH: '/business-user-manager',
   },
-  BUSINESS_DEPARTMENT_MANAGER: {
-    NAME: 'business-department-manager',
-    PATH: '/business-department-manager',
-  },
-  BUSINESS_APPROVE_MANAGER: {
-    NAME: 'business-approve-manager',
-    PATH: '/business-approve-manager',
-  },
-
 
 }
 

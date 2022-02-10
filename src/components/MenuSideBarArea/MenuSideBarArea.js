@@ -22,35 +22,14 @@ const MenuSideBarArea = props => {
       <GroupMenuTitle textAlign={commonStore.isCollapse ? 'center' : 'left'}>
         {commonStore.isCollapse
           ? <FontAwesomeIcon size={'lg'} color={'#6634E0'} icon={faBuilding} />
-          : 'Quản lý doanh nghiệp'}
+          : 'Administrator'}
       </GroupMenuTitle>
       <MenuSidebarItem
-        onClick={() => handleClickMenu(PAGES.BUSINESS_PROFILE_MANAGER.PATH)}
-        className={pageName === PAGES.BUSINESS_PROFILE_MANAGER.NAME ? 'active' : ''}
-        color={appTheme.solidColor}>
-        <FontAwesomeIcon icon={faUserTie} />
-        <MenuSideBarTitle isCollapse={commonStore.isCollapse}>Hồ sơ doanh nghiệp</MenuSideBarTitle>
-      </MenuSidebarItem>
-      <MenuSidebarItem
-        onClick={() => handleClickMenu(PAGES.BUSINESS_USER_MANAGER.PATH)}
-        className={pageName === PAGES.BUSINESS_USER_MANAGER.NAME ? 'active' : ''}
+        onClick={() => handleClickMenu(PAGES.USER_MANAGER.PATH)}
+        className={pageName === PAGES.USER_MANAGER.NAME ? 'active' : ''}
         color={appTheme.solidColor}>
         <UsergroupAddOutlined />
-        <MenuSideBarTitle isCollapse={commonStore.isCollapse}>User doanh nghiệp</MenuSideBarTitle>
-      </MenuSidebarItem>
-      <MenuSidebarItem
-        onClick={() => handleClickMenu(PAGES.BUSINESS_DEPARTMENT_MANAGER.PATH)}
-        className={pageName === PAGES.BUSINESS_DEPARTMENT_MANAGER.NAME ? 'active' : ''}
-        color={appTheme.solidColor}>
-        <BankOutlined />
-        <MenuSideBarTitle isCollapse={commonStore.isCollapse}>Phòng ban DN</MenuSideBarTitle>
-      </MenuSidebarItem>
-      <MenuSidebarItem
-        onClick={() => handleClickMenu(PAGES.BUSINESS_APPROVE_MANAGER.PATH)}
-        className={pageName === PAGES.BUSINESS_APPROVE_MANAGER.NAME ? 'active' : ''}
-        color={appTheme.solidColor}>
-        <FontAwesomeIcon icon={faStamp} />
-        <MenuSideBarTitle isCollapse={commonStore.isCollapse}>Duyệt thông tin DN</MenuSideBarTitle>
+        <MenuSideBarTitle isCollapse={commonStore.isCollapse}>Quản lý User</MenuSideBarTitle>
       </MenuSidebarItem>
     </MenuSidebarAreaWrapper>
   )
