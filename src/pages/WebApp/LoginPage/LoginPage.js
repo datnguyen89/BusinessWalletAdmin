@@ -17,8 +17,9 @@ const LoginPage = props => {
   const [formLogin] = Form.useForm()
 
   const onFinish = (collectionForm) => {
-    console.log(collectionForm)
-    history.push('/')
+    // console.log(collectionForm)
+    // history.push('/')
+    authenticationStore.userLogin(collectionForm)
   }
 
   return (

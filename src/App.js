@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react'
 import { deviceDetect } from 'react-device-detect'
+// Encrypt
+import * as forge from 'node-forge'
 // Axios
 import axios from 'axios'
 // ip
@@ -20,7 +22,7 @@ import authenticationStore from './stores/authenticationStore.js'
 //moment
 import moment from 'moment'
 import 'moment/locale/vi'
-import { PAGES } from './utils/constant'
+import { PAGES, PUBLIC_KEY } from './utils/constant'
 // Pages
 import HomePage from './pages/WebApp/HomePage'
 import LoginPage from './pages/WebApp/LoginPage'
@@ -64,8 +66,11 @@ const rootStores = {
 // axios.defaults.timeout = 20000
 axios.interceptors.request.use(
   config => {
-    //config.headers
-    //config.params
+    let strData = JSON.stringify({ ...config.data })
+    const rsa = forge.pki.publicKeyFromPem(PUBLIC_KEY)
+    let encryptedData = window.btoa(rsa.encrypt(strData))
+    config.data = { data: encryptedData }
+    console.log(config.data)
     return config
   },
   error => {
