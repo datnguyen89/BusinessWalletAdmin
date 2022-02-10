@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { inject, observer } from 'mobx-react'
 import { UserManagerPageWrapper } from './UserManagerPageStyled'
@@ -6,6 +6,8 @@ import DefaultLayout from '../../../layouts/DefaultLayout'
 import { Helmet } from 'react-helmet/es/Helmet'
 import { ColorTitle } from '../../../components/CommonStyled/CommonStyled'
 import { Form } from 'antd'
+
+const forge = require('node-forge')
 
 const UserManagerPage = props => {
   const { authenticationStore } = props

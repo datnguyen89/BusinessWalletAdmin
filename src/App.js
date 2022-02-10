@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { deviceDetect } from 'react-device-detect'
 // Encrypt
-import * as forge from 'node-forge'
+const forge = require('node-forge');
 // Axios
 import axios from 'axios'
 // ip
@@ -71,6 +71,8 @@ axios.interceptors.request.use(
     let encryptedData = window.btoa(rsa.encrypt(strData))
     config.data = { data: encryptedData }
     console.log(config.data)
+    let decryptData = rsa.decrypt(encryptedData)
+    console.log(decryptData)
     return config
   },
   error => {
