@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { deviceDetect } from 'react-device-detect'
 // Encrypt
-const forge = require('node-forge')
+import cypherUtil from './utils/cypherUtil'
 // Axios
 import axios from 'axios'
 // ip
@@ -30,6 +30,7 @@ import NotPermissionPage from './pages/WebApp/NotPermissionPage'
 import NotFoundPage from './pages/WebApp/NotFoundPage'
 import TestPage from './pages/WebApp/TestPage'
 import UserManagerPage from './pages/WebApp/UserManagerPage'
+
 
 const history = createBrowserHistory()
 
@@ -67,14 +68,11 @@ const rootStores = {
 axios.interceptors.request.use(
   config => {
     let strData = JSON.stringify({ ...config.data })
-    const rsa = forge.pki.publicKeyFromPem(PUBLIC_KEY)
-    let encryptedData = window.btoa(rsa.encrypt(forge.util.encodeUtf8(strData)))
+    let encryptedData = cypherUtil.rsaEncrypt(strData)
     config.data = { data: encryptedData }
     console.log(config.data)
-    const privateKey = forge.pki.privateKeyFromPem(PRIVATE_KEY)
-    const decrypted = forge.util.decodeUtf8(privateKey.decrypt(window.atob(encryptedData)))
+    const decrypted = cypherUtil.rsaDecrypt(encryptedData, PRIVATE_KEY)
     console.log(decrypted)
-
     return config
   },
   error => {
