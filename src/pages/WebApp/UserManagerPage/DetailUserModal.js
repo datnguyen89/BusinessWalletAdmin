@@ -71,10 +71,10 @@ const DetailUserModal = props => {
         </Form.Item>
         <Form.Item wrapperCol={{ span: 24 }}>
           <Row justify={'center'} gutter={32}>
-            <Col span={8}>
+            <Col xxl={8} xl={8} lg={8} md={8} sm={8} xs={12}>
               <Button onClick={handleCancel} block>Hủy</Button>
             </Col>
-            <Col span={8}>
+            <Col xxl={8} xl={8} lg={8} md={8} sm={8} xs={12}>
               <Button block type={'primary'} htmlType={'submit'}>Lưu thông tin</Button>
             </Col>
           </Row>

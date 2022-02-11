@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { Button, Col, Form, Input, Modal, Row, Tree, TreeSelect } from 'antd'
-
-const { SHOW_CHILD } = TreeSelect
+import { DEVICE } from '../../../utils/constant'
+import { inject, observer } from 'mobx-react'
 
 const ConfigUserRoleModal = props => {
-  const { userId, visible, onClose } = props
-
+  const { userId, visible, onClose, commonStore } = props
+  const { device } = commonStore
   const [formConfigUserRole] = Form.useForm()
 
   const onFinish = (formCollection) => {
@@ -113,12 +113,12 @@ const ConfigUserRoleModal = props => {
             treeNodeFilterProp={'title'}
           />
         </Form.Item>
-        <Form.Item label={' '}>
+        <Form.Item label={(device === DEVICE.MOBILE) ? null : ' '}>
           <Row justify={'start'} gutter={32}>
-            <Col span={10}>
+            <Col xxl={10} xl={10} lg={10} md={10} sm={10} xs={12}>
               <Button onClick={handleCancel} block>Hủy</Button>
             </Col>
-            <Col span={10}>
+            <Col xxl={10} xl={10} lg={10} md={10} sm={10} xs={12}>
               <Button block type={'primary'} htmlType={'submit'}>Lưu thông tin</Button>
             </Col>
           </Row>
@@ -134,4 +134,4 @@ ConfigUserRoleModal.propTypes = {
   onClose: PropTypes.func.isRequired,
 }
 
-export default ConfigUserRoleModal
+export default inject('commonStore')(observer(ConfigUserRoleModal))

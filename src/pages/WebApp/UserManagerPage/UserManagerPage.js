@@ -298,6 +298,7 @@ const UserManagerPage = props => {
         <Divider />
         <RowFlexEndDiv margin={'0 0 24px 0'}>
           <Button
+            block={device === DEVICE.MOBILE}
             onClick={() => handleShowDetailUserModal(0)}
             type={'primary'}>
             <UserAddOutlined /> Thêm mới

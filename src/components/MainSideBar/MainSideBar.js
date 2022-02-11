@@ -10,7 +10,7 @@ const MainSideBar = props => {
 
   return (
     <MainSideBarWrapper
-      display={device === DEVICE.MOBILE ? 'none' : 'flex'}
+      display={device === DEVICE.DESKTOP ? 'flex' : 'none'}
       width={isCollapse ? SIDEBAR_WIDTH_COLLAPSE : SIDEBAR_WIDTH_EXPAND}>
       <MenuSideBarArea />
     </MainSideBarWrapper>

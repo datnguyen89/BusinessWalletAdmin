@@ -1,9 +1,12 @@
 import React, { useEffect } from 'react'
+import { inject, observer } from 'mobx-react'
 import PropTypes from 'prop-types'
 import { Button, Col, Form, Input, Modal, Row, Select } from 'antd'
+import { DEVICE } from '../../../utils/constant'
 
 const ConfigUserGroupModal = props => {
-  const { userId, visible, onClose } = props
+  const { userId, visible, onClose, commonStore } = props
+  const { device } = commonStore
 
   const [formConfigUserGroup] = Form.useForm()
 
@@ -53,12 +56,12 @@ const ConfigUserGroupModal = props => {
           </Select>
         </Form.Item>
 
-        <Form.Item label={' '}>
+        <Form.Item label={(device === DEVICE.MOBILE) ? null : ' '}>
           <Row justify={'start'} gutter={32}>
-            <Col span={10}>
+            <Col xxl={10} xl={10} lg={10} md={10} sm={10} xs={12}>
               <Button onClick={handleCancel} block>Hủy</Button>
             </Col>
-            <Col span={10}>
+            <Col xxl={10} xl={10} lg={10} md={10} sm={10} xs={12}>
               <Button block type={'primary'} htmlType={'submit'}>Lưu thông tin</Button>
             </Col>
           </Row>
@@ -74,4 +77,4 @@ ConfigUserGroupModal.propTypes = {
   onClose: PropTypes.func.isRequired,
 }
 
-export default ConfigUserGroupModal
+export default inject('commonStore')(observer(ConfigUserGroupModal))
