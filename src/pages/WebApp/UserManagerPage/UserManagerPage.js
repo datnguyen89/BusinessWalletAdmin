@@ -9,10 +9,12 @@ import {
   RowFlexEndDiv,
   RowSpaceBetweenDiv,
 } from '../../../components/CommonStyled/CommonStyled'
-import { Button, Col, DatePicker, Divider, Form, Input, Pagination, Row, Select, Table } from 'antd'
-import { SearchOutlined, SettingOutlined, UserAddOutlined } from '@ant-design/icons'
+import { Button, Col, DatePicker, Divider, Form, Input, Pagination, Row, Select, Space, Table, Tooltip } from 'antd'
+import { EditOutlined, FileProtectOutlined, SearchOutlined, TeamOutlined, UserAddOutlined } from '@ant-design/icons'
 import { DEVICE } from '../../../utils/constant'
 import DetailUserModal from './DetailUserModal'
+import ConfigUserGroupModal from './ConfigUserGroupModal'
+import ConfigUserRoleModal from './ConfigUserRoleModal'
 
 const { RangePicker } = DatePicker
 
@@ -116,8 +118,12 @@ const UserManagerPage = props => {
   const { device } = commonStore
   const [formApproveBusinessUser] = Form.useForm()
 
-  const [selectedUserId, setSelectedUserId] = useState(0)
+  const [editInfoUserId, setEditInfoUserId] = useState(0)
+  const [configGroupUserId, setConfigGroupUserId] = useState(0)
+  const [configRoleUserId, setConfigRoleUserId] = useState(0)
   const [visibleDetailModal, setVisibleDetailModal] = useState(false)
+  const [visibleGroupModal, setVisibleGroupModal] = useState(false)
+  const [visibleRoleModal, setVisibleRoleModal] = useState(false)
 
   const columns = [
     {
@@ -158,19 +164,55 @@ const UserManagerPage = props => {
       align: 'center',
       title: 'Thao tác',
       render: (item, row, index) => (
-        <SettingOutlined
-          style={{ cursor: 'pointer' }}
-          onClick={() => handleShowDetailUserModal(item.id)} />),
+        <Space size={16}>
+          <Tooltip title={'Sửa thông tin'} mouseEnterDelay={0.3}>
+            <EditOutlined
+              style={{ cursor: 'pointer', fontSize: 16 }}
+              onClick={() => handleShowDetailUserModal(item.id)} />
+          </Tooltip>
+          <Tooltip title={'Phân nhóm'} mouseEnterDelay={0.3}>
+            <TeamOutlined
+              style={{ cursor: 'pointer', fontSize: 16 }}
+              onClick={() => handleShowGroupModal(item.id)} />
+          </Tooltip>
+          <Tooltip title={'Phân quyền'} mouseEnterDelay={0.3}>
+            <FileProtectOutlined
+              style={{ cursor: 'pointer', fontSize: 16 }}
+              onClick={() => handleShowRoleModal(item.id)} />
+          </Tooltip>
+        </Space>
+      ),
     },
   ]
 
   const handleShowDetailUserModal = (userId) => {
-    setSelectedUserId(userId)
+    setEditInfoUserId(userId)
     setVisibleDetailModal(true)
+  }
+  const handleShowGroupModal = (userId) => {
+    setConfigGroupUserId(userId)
+    setVisibleGroupModal(true)
+  }
+  const handleShowRoleModal = (userId) => {
+    setConfigRoleUserId(userId)
+    setVisibleRoleModal(true)
   }
 
   const handleChangePagination = (pageIndex, pageSize) => {
     console.log(pageIndex, pageSize)
+  }
+
+  const handleCloseDetailUserModal = () => {
+    setVisibleDetailModal(false)
+    setEditInfoUserId(0)
+  }
+  const handleCloseConfigUserGroupModal = () => {
+    setVisibleGroupModal(false)
+    setConfigGroupUserId(0)
+  }
+  const handleCloseConfigUserRoleModal = () => {
+    setVisibleRoleModal(false)
+    setConfigRoleUserId(0)
   }
 
   return (
@@ -187,35 +229,35 @@ const UserManagerPage = props => {
           form={formApproveBusinessUser}
           colon={false}>
           <Row gutter={[32, 8]} justify={'space-between'}>
-            <Col xxl={8} xl={8} lg={12} md={24} sm={24} xs={24}>
+            <Col xxl={6} xl={6} lg={12} md={24} sm={24} xs={24}>
               <Form.Item
                 label={'Họ và tên'}
                 name={'hoVaTen'}>
                 <Input maxLength={100} showCount={true} placeholder={'Nhập nội dung'} />
               </Form.Item>
             </Col>
-            <Col xxl={8} xl={8} lg={12} md={24} sm={24} xs={24}>
+            <Col xxl={6} xl={6} lg={12} md={24} sm={24} xs={24}>
               <Form.Item
                 label={'Số điện thoại'}
                 name={'soDienThoai'}>
                 <Input maxLength={20} showCount={true} placeholder={'Nhập nội dung'} />
               </Form.Item>
             </Col>
-            <Col xxl={8} xl={8} lg={12} md={24} sm={24} xs={24}>
+            <Col xxl={6} xl={6} lg={12} md={24} sm={24} xs={24}>
               <Form.Item
                 label={'Email'}
                 name={'email'}>
                 <Input maxLength={20} showCount={true} placeholder={'Nhập nội dung'} />
               </Form.Item>
             </Col>
-            <Col xxl={8} xl={8} lg={12} md={24} sm={24} xs={24}>
+            <Col xxl={6} xl={6} lg={12} md={24} sm={24} xs={24}>
               <Form.Item
                 label={'Username'}
                 name={'Username'}>
                 <Input maxLength={20} showCount={true} placeholder={'Nhập nội dung'} />
               </Form.Item>
             </Col>
-            <Col xxl={8} xl={8} lg={12} md={24} sm={24} xs={24}>
+            <Col xxl={6} xl={6} lg={12} md={24} sm={24} xs={24}>
               <Form.Item
                 label={'Trạng thái'}
                 name={'hoTenKh'}>
@@ -225,14 +267,14 @@ const UserManagerPage = props => {
                 </Select>
               </Form.Item>
             </Col>
-            <Col xxl={8} xl={8} lg={12} md={24} sm={24} xs={24}>
+            <Col xxl={6} xl={6} lg={12} md={24} sm={24} xs={24}>
               <Form.Item
                 label={'Người tạo'}
                 name={'nguoiTao'}>
                 <Input maxLength={100} showCount={true} placeholder={'Nhập nội dung'} />
               </Form.Item>
             </Col>
-            <Col xxl={8} xl={8} lg={12} md={24} sm={24} xs={24}>
+            <Col xxl={6} xl={6} lg={12} md={24} sm={24} xs={24}>
               <Form.Item label={'Ngày tạo'} name={'rangerFilterDate'}>
                 <RangePicker
                   style={{ width: '100%' }}
@@ -240,9 +282,10 @@ const UserManagerPage = props => {
                 />
               </Form.Item>
             </Col>
-            <Col xxl={24} xl={24} lg={24} md={24} sm={24} xs={24}>
+            <Col xxl={6} xl={6} lg={12} md={24} sm={24} xs={24}>
               <RowFlexEndDiv>
                 <Button
+                  style={{minWidth: 120}}
                   block={device === DEVICE.MOBILE}
                   type={'default'}>
                   <SearchOutlined />
@@ -273,8 +316,18 @@ const UserManagerPage = props => {
           </PaginationLabel>
           <Pagination defaultCurrent={1} total={500} onChange={handleChangePagination} />
         </RowSpaceBetweenDiv>
-        <DetailUserModal userId={selectedUserId} visible={visibleDetailModal}
-                         onClose={() => setVisibleDetailModal(false)} />
+        <DetailUserModal
+          userId={editInfoUserId}
+          visible={visibleDetailModal}
+          onClose={handleCloseDetailUserModal} />
+        <ConfigUserGroupModal
+          userId={configGroupUserId}
+          visible={visibleGroupModal}
+          onClose={handleCloseConfigUserGroupModal} />
+        <ConfigUserRoleModal
+          userId={configRoleUserId}
+          visible={visibleRoleModal}
+          onClose={handleCloseConfigUserRoleModal} />
       </UserManagerPageWrapper>
     </DefaultLayout>
   )
