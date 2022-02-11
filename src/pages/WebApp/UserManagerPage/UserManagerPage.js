@@ -221,7 +221,7 @@ const UserManagerPage = props => {
         <title>Quản lý User</title>
       </Helmet>
       <UserManagerPageWrapper>
-        <ColorTitle margin={'0 0 16px 0'}>Quản lý User</ColorTitle>
+        <ColorTitle margin={'0 0 16px 0'}>Quản lý người dùng</ColorTitle>
         <Form
           labelAlign={'left'}
           labelCol={{ span: 6 }}

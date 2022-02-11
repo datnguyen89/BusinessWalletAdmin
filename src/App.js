@@ -30,6 +30,7 @@ import NotPermissionPage from './pages/WebApp/NotPermissionPage'
 import NotFoundPage from './pages/WebApp/NotFoundPage'
 import TestPage from './pages/WebApp/TestPage'
 import UserManagerPage from './pages/WebApp/UserManagerPage'
+import GroupManagerPage from './pages/WebApp/GroupManagerPage'
 
 
 const history = createBrowserHistory()
@@ -110,6 +111,7 @@ const App = () => {
             <Route exact path={PAGES.HOME.PATH} component={HomePage} />
 
             <Route exact path={PAGES.USER_MANAGER.PATH} component={UserManagerPage} />
+            <Route exact path={PAGES.GROUP_MANAGER.PATH} component={GroupManagerPage} />
 
             <Route exact path={PAGES.TEST.PATH} component={TestPage} />
             <Route exact path={PAGES.NOT_PERMISSION.PATH} component={NotPermissionPage} /> {/*Không có quyền truy cập*/}

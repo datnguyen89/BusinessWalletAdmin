@@ -6,7 +6,7 @@ import { GroupMenuTitle, MenuSidebarItem, MenuSideBarTitle } from '../CommonStyl
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBuilding, faStamp, faUserTie } from '@fortawesome/free-solid-svg-icons'
 import { PAGES } from '../../utils/constant'
-import { BankOutlined, UsergroupAddOutlined } from '@ant-design/icons'
+import { BankOutlined, PartitionOutlined, UsergroupAddOutlined } from '@ant-design/icons'
 import { useHistory } from 'react-router-dom'
 
 const MenuSideBarArea = props => {
@@ -29,7 +29,14 @@ const MenuSideBarArea = props => {
         className={pageName === PAGES.USER_MANAGER.NAME ? 'active' : ''}
         color={appTheme.solidColor}>
         <UsergroupAddOutlined />
-        <MenuSideBarTitle isCollapse={commonStore.isCollapse}>Quản lý User</MenuSideBarTitle>
+        <MenuSideBarTitle isCollapse={commonStore.isCollapse}>Quản lý người dùng</MenuSideBarTitle>
+      </MenuSidebarItem>
+      <MenuSidebarItem
+        onClick={() => handleClickMenu(PAGES.GROUP_MANAGER.PATH)}
+        className={pageName === PAGES.GROUP_MANAGER.NAME ? 'active' : ''}
+        color={appTheme.solidColor}>
+        <PartitionOutlined />
+        <MenuSideBarTitle isCollapse={commonStore.isCollapse}>Quản lý nhóm</MenuSideBarTitle>
       </MenuSidebarItem>
     </MenuSidebarAreaWrapper>
   )

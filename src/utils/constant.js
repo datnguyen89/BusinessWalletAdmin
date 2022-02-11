@@ -17,10 +17,14 @@ export const PAGES = {
   },
 
   USER_MANAGER: {
-    NAME: 'business-user-manager',
-    PATH: '/business-user-manager',
+    NAME: 'user-manager',
+    PATH: '/user-manager',
   },
-
+  GROUP_MANAGER: {
+    NAME: 'group-manager',
+    PATH: '/group-manager',
+  },
+  
 }
 
 export const SIDEBAR_WIDTH_EXPAND = 240

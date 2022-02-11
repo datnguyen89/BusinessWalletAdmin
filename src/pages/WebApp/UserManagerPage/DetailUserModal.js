@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { Button, Col, Form, Input, Modal, Row } from 'antd'
+import { Button, Col, Form, Input, Modal, Row, Select } from 'antd'
 
 const DetailUserModal = props => {
   const { userId, visible, onClose } = props
@@ -38,6 +38,13 @@ const DetailUserModal = props => {
         form={formInsertUser}
         onFinish={onFinish}
         colon={false}>
+        <Form.Item label={'Hệ thống'} name={'ClientIds'}>
+          <Select mode={'multiple'} placeholder={'Chọn hệ thống'}>
+            <Select.Option value={'1'}>ADMIN</Select.Option>
+            <Select.Option value={'2'}>CMS</Select.Option>
+            <Select.Option value={'3'}>CUSTOMER</Select.Option>
+          </Select>
+        </Form.Item>
         <Form.Item label={'Họ và tên'} name={'FullName'}>
           <Input showCount maxLength={100} placeholder={'Nhập nội dung'} />
         </Form.Item>

@@ -23,18 +23,6 @@ const NotFoundPage = props => {
             subTitle="Trang không tồn tại, vui lòng quay lại trang chủ."
             extra={<Button type="primary" onClick={handlerClickBackHome}>Về trang chủ</Button>}
           />
-          <Result
-            status="404"
-            title="404"
-            subTitle="Trang không tồn tại, vui lòng quay lại trang chủ."
-            extra={<Button type="primary" onClick={handlerClickBackHome}>Về trang chủ</Button>}
-          />
-          <Result
-            status="404"
-            title="404"
-            subTitle="Trang không tồn tại, vui lòng quay lại trang chủ."
-            extra={<Button type="primary" onClick={handlerClickBackHome}>Về trang chủ</Button>}
-          />
         </NotFoundPageWrapper>
       </DefaultLayout>
     );
