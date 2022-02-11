@@ -165,17 +165,17 @@ const UserManagerPage = props => {
       title: 'Thao tác',
       render: (item, row, index) => (
         <Space size={16}>
-          <Tooltip title={'Sửa thông tin'} mouseEnterDelay={0.3}>
+          <Tooltip title={'Sửa thông tin nguòi dùng'} mouseEnterDelay={0.3}>
             <EditOutlined
               style={{ cursor: 'pointer', fontSize: 16 }}
               onClick={() => handleShowDetailUserModal(item.id)} />
           </Tooltip>
-          <Tooltip title={'Phân nhóm'} mouseEnterDelay={0.3}>
+          <Tooltip title={'Phân nhóm nguòi dùng'} mouseEnterDelay={0.3}>
             <TeamOutlined
               style={{ cursor: 'pointer', fontSize: 16 }}
               onClick={() => handleShowGroupModal(item.id)} />
           </Tooltip>
-          <Tooltip title={'Phân quyền'} mouseEnterDelay={0.3}>
+          <Tooltip title={'Phân quyền người dùng'} mouseEnterDelay={0.3}>
             <FileProtectOutlined
               style={{ cursor: 'pointer', fontSize: 16 }}
               onClick={() => handleShowRoleModal(item.id)} />
@@ -289,7 +289,7 @@ const UserManagerPage = props => {
                   block={device === DEVICE.MOBILE}
                   type={'default'}>
                   <SearchOutlined />
-                  Tra cứu
+                  Tra cứu người dùng
                 </Button>
               </RowFlexEndDiv>
             </Col>
@@ -301,7 +301,7 @@ const UserManagerPage = props => {
             block={device === DEVICE.MOBILE}
             onClick={() => handleShowDetailUserModal(0)}
             type={'primary'}>
-            <UserAddOutlined /> Thêm mới
+            <UserAddOutlined /> Thêm mới người dùng
           </Button>
         </RowFlexEndDiv>
         <Table

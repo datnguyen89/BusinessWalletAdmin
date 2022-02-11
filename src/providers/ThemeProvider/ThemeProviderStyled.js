@@ -353,6 +353,9 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   /** Pagination */
+  .ant-pagination-item-ellipsis {
+    min-width: 24px !important;
+  }
   .ant-pagination-prev, .ant-pagination-next {
     &:focus, &:hover {
       .ant-pagination-item-link {

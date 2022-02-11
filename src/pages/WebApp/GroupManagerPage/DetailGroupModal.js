@@ -2,32 +2,32 @@ import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { Button, Col, Form, Input, Modal, Row, Select } from 'antd'
 
-const DetailUserModal = props => {
-  const { userId, visible, onClose } = props
+const DetailGroupModal = props => {
+  const { groupId, visible, onClose } = props
 
-  const [formConfigUser] = Form.useForm()
+  const [formConfigGroup] = Form.useForm()
 
   const onFinish = (formCollection) => {
     console.log(formCollection)
   }
   const handleCancel = () => {
-    formConfigUser.resetFields()
+    formConfigGroup.resetFields()
     onClose()
   }
 
   useEffect(() => {
-    if (userId > 0) {
-      console.log(userId)
-      //// Get detail User & Fill form
-      // formConfigUser.setFieldsValue({
+    if (groupId > 0) {
+      console.log(groupId)
+      //// Get detail Group & Fill form
+      // formConfigGroup.setFieldsValue({
       //
       // })
     }
-  }, [userId])
+  }, [groupId])
 
   return (
     <Modal
-      title={userId > 0 ? 'Sửa thông tin người dùng' : 'Thêm mới người dùng'}
+      title={groupId > 0 ? 'Sửa thông tin nhóm' : 'Thêm mới nhóm'}
       visible={visible}
       footer={null}
       onCancel={handleCancel}>
@@ -35,7 +35,7 @@ const DetailUserModal = props => {
         labelAlign={'left'}
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
-        form={formConfigUser}
+        form={formConfigGroup}
         onFinish={onFinish}
         colon={false}>
         <Form.Item label={'Hệ thống'} name={'ClientIds'}>
@@ -54,7 +54,7 @@ const DetailUserModal = props => {
         <Form.Item label={'Email'} name={'Email'}>
           <Input showCount maxLength={100} placeholder={'Nhập nội dung'} />
         </Form.Item>
-        <Form.Item label={'UserName'} name={'UserName'}>
+        <Form.Item label={'GroupName'} name={'GroupName'}>
           <Input showCount maxLength={20} placeholder={'Nhập nội dung'} />
         </Form.Item>
         <Form.Item label={'Mật khẩu'} name={'Password'}>
@@ -91,10 +91,10 @@ const DetailUserModal = props => {
   )
 }
 
-DetailUserModal.propTypes = {
-  userId: PropTypes.number.isRequired,
+DetailGroupModal.propTypes = {
+  groupId: PropTypes.number.isRequired,
   visible: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
 }
 
-export default DetailUserModal
+export default DetailGroupModal
