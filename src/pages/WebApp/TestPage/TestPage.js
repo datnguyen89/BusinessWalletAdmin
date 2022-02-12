@@ -63,39 +63,13 @@ const treeData = [
 ]
 
 const TestPageStyled = props => {
-  const { commonStore } = props
+  const { commonStore, testStore } = props
   const { appTheme } = commonStore
 
-  const [formTest] = Form.useForm()
-
-  const [fileToUpload, setFileToUpload] = useState()
-  const [fileToPreview, setFileToPreview] = useState()
-
-  const tProps = {
-    treeData,
-    treeDefaultExpandAll: true,
-    treeCheckable: true,
-    showCheckedStrategy: SHOW_CHILD,
-    placeholder: 'Please select',
-    style: {
-      width: '100%',
-    },
+  const handleClick = () => {
+    const payload = { a: 1 }
+    testStore.testRq(payload)
   }
-  const onFinish = (e) => {
-    console.log(e)
-  }
-
-  useEffect(() => {
-    formTest.setFieldsValue({
-      treeSelect: ['5', '6'],
-    })
-  }, [])
-
-  useEffect(() => {
-    console.log('fileToUpload', fileToUpload)
-    console.log('fileToPreview', fileToPreview)
-  }, [fileToUpload, fileToPreview])
-
 
   return (
     <DefaultLayout>
@@ -103,18 +77,7 @@ const TestPageStyled = props => {
         <title>Test</title>
       </Helmet>
       <TestPageWrapper>
-        {/*<UploadCropModule callbackFileCropped={(e) => setFileToUpload(e)}*/}
-        {/*                  callbackFileSrcPreview={(e) => setFileToPreview(e)} grid={true} rotate={true} />*/}
-        <img src={fileToPreview} alt={''} />
-
-        <Form form={formTest} onFinish={onFinish}>
-          <Form.Item label={'tree'} name={'treeSelect'}>
-            <TreeSelect {...tProps} />
-          </Form.Item>
-          <Form.Item>
-            <Button type={'primary'} htmlType={'submit'}>OK</Button>
-          </Form.Item>
-        </Form>
+        <Button type={'primary'} onClick={handleClick}>OK</Button>
       </TestPageWrapper>
     </DefaultLayout>
 
@@ -123,4 +86,4 @@ const TestPageStyled = props => {
 
 TestPageStyled.propTypes = {}
 
-export default inject('commonStore')(observer(TestPageStyled))
+export default inject('commonStore', 'testStore')(observer(TestPageStyled))

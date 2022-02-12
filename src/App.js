@@ -19,6 +19,7 @@ import { Provider } from 'mobx-react'
 import commonStore from './stores/commonStore.js'
 import authenticationStore from './stores/authenticationStore.js'
 import userManagerStore from './stores/userManagerStore.js'
+import testStore from './stores/testStore.js'
 
 //moment
 import moment from 'moment'
@@ -64,6 +65,7 @@ const rootStores = {
   commonStore,
   authenticationStore,
   userManagerStore,
+  testStore,
 }
 
 // axios.defaults.timeout = 20000
