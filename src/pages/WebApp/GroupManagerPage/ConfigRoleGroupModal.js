@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Button, Col, Form, Input, Modal, Row, Tree, TreeSelect } from 'antd'
 import { DEVICE } from '../../../utils/constant'
@@ -75,6 +75,14 @@ const ConfigRoleGroupModal = props => {
     },
   ]
 
+
+  const [checkedKeys, setCheckedKeys] = useState(['33'])
+
+  const onCheck = (checkedKeysValue) => {
+    console.log('onCheck', checkedKeysValue)
+    setCheckedKeys(checkedKeysValue)
+  }
+
   useEffect(() => {
     console.log(group)
 
@@ -92,30 +100,29 @@ const ConfigRoleGroupModal = props => {
   return (
     <Modal
       title={`Phân quyền nhóm ${group?.tenNhom}`}
+      style={{ top: 50 }}
       visible={visible}
       footer={null}
       onCancel={handleCancel}>
       <Form
         labelAlign={'left'}
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 18 }}
+        labelCol={{ span: 24 }}
+        wrapperCol={{ span: 24 }}
         form={formConfigGroupRole}
         onFinish={onFinish}
         colon={false}>
         <Form.Item label={'Phân quyền'} name={'roles'}>
-          <TreeSelect
-            autoClearSearchValue
+          <Tree
+            selectable={false}
+            defaultExpandAll={true}
+            checkable
+            onCheck={onCheck}
+            checkedKeys={checkedKeys}
             treeData={treeData}
-            showSearch
-            allowClear
-            treeDefaultExpandAll
-            treeCheckable
-            showCheckedStrategy={'SHOW_CHILD'}
-            treeNodeFilterProp={'title'}
           />
         </Form.Item>
-        <Form.Item label={(device === DEVICE.MOBILE) ? null : ' '}>
-          <Row justify={'start'} gutter={32}>
+        <Form.Item label={''}>
+          <Row justify={'center'} gutter={32}>
             <Col xxl={10} xl={10} lg={10} md={10} sm={10} xs={12}>
               <Button onClick={handleCancel} block>Hủy</Button>
             </Col>

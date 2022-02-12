@@ -67,14 +67,14 @@ const ChangePasswordModal = props => {
             name='oldPassword'
             rules={[{ required: true, message: 'Vui lòng nhập mật khẩu hiện tại' }]}
           >
-            <Input.Password size={'large'} className={'auth-input'} placeholder={'Mật khẩu hiện tại'} />
+            <Input.Password className={'auth-input'} placeholder={'Mật khẩu hiện tại'} />
           </Form.Item>
           <Form.Item
             label=''
             name='password'
             rules={[{ required: true, message: 'Vui lòng nhập mật khẩu mới' }]}
           >
-            <Input.Password size={'large'} className={'auth-input'} placeholder={'Mật khẩu mới'} />
+            <Input.Password className={'auth-input'} placeholder={'Mật khẩu mới'} />
           </Form.Item>
           <Form.Item
             label=''
@@ -92,7 +92,7 @@ const ChangePasswordModal = props => {
               }),
             ]}
           >
-            <Input.Password size={'large'} className={'auth-input'} placeholder={'Xác nhận mật khẩu mới'} />
+            <Input.Password className={'auth-input'} placeholder={'Xác nhận mật khẩu mới'} />
           </Form.Item>
           <Form.Item>
             <span>
@@ -101,7 +101,7 @@ const ChangePasswordModal = props => {
           </Form.Item>
           <Row align={'middle'} justify={'center'}>
             <Col span={11}>
-              <Button type='primary' htmlType='submit' size={'large'} block>
+              <Button type='primary' htmlType='submit' block>
                 Tiếp theo
               </Button>
             </Col>

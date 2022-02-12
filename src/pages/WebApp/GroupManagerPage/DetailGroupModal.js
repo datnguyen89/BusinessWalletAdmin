@@ -28,6 +28,7 @@ const DetailGroupModal = props => {
 
   return (
     <Modal
+      style={{ top: 50 }}
       title={group ? `Sửa thông tin nhóm ${group?.tenNhom}` : 'Thêm mới nhóm'}
       visible={visible}
       footer={null}

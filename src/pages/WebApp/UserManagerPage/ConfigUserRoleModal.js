@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Button, Col, Form, Input, Modal, Row, Tree, TreeSelect } from 'antd'
 import { DEVICE } from '../../../utils/constant'
@@ -73,7 +73,124 @@ const ConfigUserRoleModal = props => {
         },
       ],
     },
+    {
+      title: 'Tạo lập',
+      value: '10',
+      key: '10',
+      children: [
+        {
+          title: 'Khởi tạo giao dịch',
+          value: '20',
+          key: '20',
+          children: [
+            {
+              title: 'Trạng thái chờ duyệt',
+              value: '30',
+              key: '30',
+            },
+          ],
+        },
+        {
+          title: 'Quản lý giao dịch tạo lập',
+          value: '40',
+          key: '40',
+          children: [
+            {
+              title: 'Sửa',
+              value: '50',
+              key: '50',
+            },
+            {
+              title: 'Xóa',
+              value: '60',
+              key: '60',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      title: 'Phê duyệt',
+      value: '110',
+      key: '110',
+      children: [
+        {
+          title: 'Quản lý giao dịch',
+          value: '220',
+          key: '220',
+          children: [
+            {
+              title: 'Phê duyệt',
+              value: '330',
+              key: '330',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      title: 'Tạo lập',
+      value: '100',
+      key: '100',
+      children: [
+        {
+          title: 'Khởi tạo giao dịch',
+          value: '200',
+          key: '200',
+          children: [
+            {
+              title: 'Trạng thái chờ duyệt',
+              value: '300',
+              key: '300',
+            },
+          ],
+        },
+        {
+          title: 'Quản lý giao dịch tạo lập',
+          value: '400',
+          key: '400',
+          children: [
+            {
+              title: 'Sửa',
+              value: '500',
+              key: '500',
+            },
+            {
+              title: 'Xóa',
+              value: '600',
+              key: '600',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      title: 'Phê duyệt',
+      value: '1100',
+      key: '1100',
+      children: [
+        {
+          title: 'Quản lý giao dịch',
+          value: '2200',
+          key: '2200',
+          children: [
+            {
+              title: 'Phê duyệt',
+              value: '3300',
+              key: '3300',
+            },
+          ],
+        },
+      ],
+    },
   ]
+
+  const [checkedKeys, setCheckedKeys] = useState(['3300'])
+
+  const onCheck = (checkedKeysValue) => {
+    console.log('onCheck', checkedKeysValue)
+    setCheckedKeys(checkedKeysValue)
+  }
 
   useEffect(() => {
     console.log(user)
@@ -91,30 +208,30 @@ const ConfigUserRoleModal = props => {
   return (
     <Modal
       title={`Phân quyền người dùng ${user?.hoVaTen}`}
+      style={{ top: 50 }}
       visible={visible}
       footer={null}
       onCancel={handleCancel}>
       <Form
         labelAlign={'left'}
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 18 }}
+        labelCol={{ span: 24 }}
+        wrapperCol={{ span: 24 }}
         form={formConfigUserRole}
         onFinish={onFinish}
         colon={false}>
-        <Form.Item label={'Phân quyền'} name={'roles'}>
-          <TreeSelect
-            autoClearSearchValue
+        <Form.Item
+          label={'Phân quyền'}>
+          <Tree
+            selectable={false}
+            defaultExpandAll={true}
+            checkable
+            onCheck={onCheck}
+            checkedKeys={checkedKeys}
             treeData={treeData}
-            showSearch
-            allowClear
-            treeDefaultExpandAll
-            treeCheckable
-            showCheckedStrategy={'SHOW_CHILD'}
-            treeNodeFilterProp={'title'}
           />
         </Form.Item>
-        <Form.Item label={(device === DEVICE.MOBILE) ? null : ' '}>
-          <Row justify={'start'} gutter={32}>
+        <Form.Item label={''}>
+          <Row justify={'center'} gutter={32}>
             <Col xxl={10} xl={10} lg={10} md={10} sm={10} xs={12}>
               <Button onClick={handleCancel} block>Hủy</Button>
             </Col>

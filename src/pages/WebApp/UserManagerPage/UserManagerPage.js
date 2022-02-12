@@ -10,11 +10,19 @@ import {
   RowSpaceBetweenDiv,
 } from '../../../components/CommonStyled/CommonStyled'
 import { Button, Col, DatePicker, Divider, Form, Input, Pagination, Row, Select, Space, Table, Tooltip } from 'antd'
-import { EditOutlined, FileProtectOutlined, SearchOutlined, TeamOutlined, UserAddOutlined } from '@ant-design/icons'
+import {
+  EditOutlined,
+  FileProtectOutlined,
+  SearchOutlined,
+  SettingOutlined,
+  TeamOutlined,
+  UserAddOutlined,
+} from '@ant-design/icons'
 import { DEVICE } from '../../../utils/constant'
 import DetailUserModal from './DetailUserModal'
 import ConfigUserGroupModal from './ConfigUserGroupModal'
 import ConfigUserRoleModal from './ConfigUserRoleModal'
+import SetPasswordUserModal from './SetPasswordUserModal'
 
 const { RangePicker } = DatePicker
 
@@ -119,9 +127,11 @@ const UserManagerPage = props => {
   const [formFilterUser] = Form.useForm()
 
   const [editInfoUser, setEditInfoUser] = useState(null)
+  const [changePasswordUser, setChangePasswordUser] = useState(null)
   const [configGroupUser, setConfigGroupUser] = useState(null)
   const [configRoleUser, setConfigRoleUser] = useState(null)
   const [visibleDetailModal, setVisibleDetailModal] = useState(false)
+  const [visibleSetPasswordModal, setVisibleSetPasswordModal] = useState(false)
   const [visibleGroupModal, setVisibleGroupModal] = useState(false)
   const [visibleRoleModal, setVisibleRoleModal] = useState(false)
 
@@ -170,6 +180,11 @@ const UserManagerPage = props => {
               style={{ cursor: 'pointer', fontSize: 16 }}
               onClick={() => handleShowDetailUserModal(item)} />
           </Tooltip>
+          <Tooltip title={'Đặt lại mật khẩu nguòi dùng'} mouseEnterDelay={0.3}>
+            <SettingOutlined
+              style={{ cursor: 'pointer', fontSize: 16 }}
+              onClick={() => handleShowSetPasswordModal(item)} />
+          </Tooltip>
           <Tooltip title={'Phân nhóm nguòi dùng'} mouseEnterDelay={0.3}>
             <TeamOutlined
               style={{ cursor: 'pointer', fontSize: 16 }}
@@ -189,6 +204,10 @@ const UserManagerPage = props => {
     setEditInfoUser(user)
     setVisibleDetailModal(true)
   }
+  const handleShowSetPasswordModal = (user) => {
+    setChangePasswordUser(user)
+    setVisibleSetPasswordModal(true)
+  }
   const handleShowGroupModal = (user) => {
     setConfigGroupUser(user)
     setVisibleGroupModal(true)
@@ -205,6 +224,10 @@ const UserManagerPage = props => {
   const handleCloseDetailUserModal = () => {
     setVisibleDetailModal(false)
     setEditInfoUser(null)
+  }
+  const handleCloseSetPasswordModal = () => {
+    setVisibleSetPasswordModal(false)
+    setChangePasswordUser(null)
   }
   const handleCloseConfigUserGroupModal = () => {
     setVisibleGroupModal(false)
@@ -238,20 +261,6 @@ const UserManagerPage = props => {
             </Col>
             <Col xxl={6} xl={6} lg={12} md={24} sm={24} xs={24}>
               <Form.Item
-                label={'Số điện thoại'}
-                name={'soDienThoai'}>
-                <Input maxLength={20} showCount={true} placeholder={'Nhập nội dung'} />
-              </Form.Item>
-            </Col>
-            <Col xxl={6} xl={6} lg={12} md={24} sm={24} xs={24}>
-              <Form.Item
-                label={'Email'}
-                name={'email'}>
-                <Input maxLength={20} showCount={true} placeholder={'Nhập nội dung'} />
-              </Form.Item>
-            </Col>
-            <Col xxl={6} xl={6} lg={12} md={24} sm={24} xs={24}>
-              <Form.Item
                 label={'Username'}
                 name={'Username'}>
                 <Input maxLength={20} showCount={true} placeholder={'Nhập nội dung'} />
@@ -268,13 +277,6 @@ const UserManagerPage = props => {
               </Form.Item>
             </Col>
             <Col xxl={6} xl={6} lg={12} md={24} sm={24} xs={24}>
-              <Form.Item
-                label={'Người tạo'}
-                name={'nguoiTao'}>
-                <Input maxLength={100} showCount={true} placeholder={'Nhập nội dung'} />
-              </Form.Item>
-            </Col>
-            <Col xxl={6} xl={6} lg={12} md={24} sm={24} xs={24}>
               <Form.Item label={'Ngày tạo'} name={'rangerFilterDate'}>
                 <RangePicker
                   style={{ width: '100%' }}
@@ -282,10 +284,10 @@ const UserManagerPage = props => {
                 />
               </Form.Item>
             </Col>
-            <Col xxl={6} xl={6} lg={12} md={24} sm={24} xs={24}>
+            <Col xxl={24} xl={24} lg={24} md={24} sm={24} xs={24}>
               <RowFlexEndDiv>
                 <Button
-                  style={{minWidth: 120}}
+                  style={{ minWidth: 120 }}
                   block={device === DEVICE.MOBILE}
                   type={'default'}>
                   <SearchOutlined />
@@ -321,6 +323,10 @@ const UserManagerPage = props => {
           user={editInfoUser}
           visible={visibleDetailModal}
           onClose={handleCloseDetailUserModal} />
+        <SetPasswordUserModal
+          user={changePasswordUser}
+          visible={visibleSetPasswordModal}
+          onClose={handleCloseSetPasswordModal} />
         <ConfigUserGroupModal
           user={configGroupUser}
           visible={visibleGroupModal}

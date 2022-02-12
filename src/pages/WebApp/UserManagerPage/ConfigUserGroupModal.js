@@ -34,6 +34,7 @@ const ConfigUserGroupModal = props => {
   return (
     <Modal
       title={`Phân nhóm người dùng ${user?.hoVaTen}`}
+      style={{ top: 50 }}
       visible={visible}
       footer={null}
       onCancel={handleCancel}>
