@@ -18,6 +18,7 @@ import { createBrowserHistory } from 'history'
 import { Provider } from 'mobx-react'
 import commonStore from './stores/commonStore.js'
 import authenticationStore from './stores/authenticationStore.js'
+import userManagerStore from './stores/userManagerStore.js'
 
 //moment
 import moment from 'moment'
@@ -62,7 +63,7 @@ moment.updateLocale('vi', {
 const rootStores = {
   commonStore,
   authenticationStore,
-
+  userManagerStore,
 }
 
 // axios.defaults.timeout = 20000
@@ -70,10 +71,10 @@ axios.interceptors.request.use(
   config => {
     let strData = JSON.stringify({ ...config.data })
     let encryptedData = cypherUtil.rsaEncrypt(strData)
-    config.data = { data: encryptedData }
+    config.data = { Data: encryptedData }
     console.log(config.data)
-    const decrypted = cypherUtil.rsaDecrypt(encryptedData, PRIVATE_KEY)
-    console.log(decrypted)
+    // const decrypted = cypherUtil.rsaDecrypt(encryptedData, PRIVATE_KEY)
+    // console.log(decrypted)
     return config
   },
   error => {

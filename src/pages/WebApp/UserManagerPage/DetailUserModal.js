@@ -1,14 +1,20 @@
 import React, { useEffect } from 'react'
+import { inject, observer } from 'mobx-react'
 import PropTypes from 'prop-types'
 import { Button, Col, Form, Input, Modal, Row, Select } from 'antd'
 
 const DetailUserModal = props => {
-  const { user, visible, onClose } = props
+  const { user, visible, onClose, userManagerStore } = props
 
   const [formConfigUser] = Form.useForm()
 
   const onFinish = (formCollection) => {
     console.log(formCollection)
+    if (user?.id > 0) {
+
+    } else {
+      userManagerStore.registerUser(formCollection)
+    }
   }
   const handleCancel = () => {
     formConfigUser.resetFields()
@@ -61,6 +67,8 @@ const DetailUserModal = props => {
           <Input showCount maxLength={20} placeholder={'Nhập nội dung'} />
         </Form.Item>
         <Form.Item
+          label={'Xác nhận mật khẩu'}
+          name={'ConfirmPassword'}
           rules={[
             { required: true, message: 'Vui lòng nhập lại mật khẩu mới' },
             ({ getFieldValue }) => ({
@@ -71,9 +79,7 @@ const DetailUserModal = props => {
                 return Promise.reject(new Error('Mật khẩu xác nhận không trùng khớp'))
               },
             }),
-          ]}
-          label={'Xác nhận mật khẩu'}
-          name={'ConfirmPassword'}>
+          ]}>
           <Input showCount maxLength={20} placeholder={'Nhập nội dung'} />
         </Form.Item>
         <Form.Item wrapperCol={{ span: 24 }}>
@@ -97,4 +103,4 @@ DetailUserModal.propTypes = {
   onClose: PropTypes.func.isRequired,
 }
 
-export default DetailUserModal
+export default inject('userManagerStore')(observer(DetailUserModal))
