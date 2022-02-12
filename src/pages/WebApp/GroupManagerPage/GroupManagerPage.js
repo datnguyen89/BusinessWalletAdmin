@@ -15,6 +15,7 @@ import { DEVICE } from '../../../utils/constant'
 import { EditOutlined, FileProtectOutlined, SearchOutlined, TeamOutlined, UserAddOutlined } from '@ant-design/icons'
 import DetailGroupModal from './DetailGroupModal'
 import ConfigGroupUserModal from './ConfigGroupUserModal'
+import ConfigRoleGroupModal from './ConfigRoleGroupModal'
 
 const testData = [
   {
@@ -88,14 +89,13 @@ const GroupManagerPage = props => {
   const { device } = commonStore
   const [formApproveBusinessGroup] = Form.useForm()
 
-  const [editInfoGroupId, setEditInfoGroupId] = useState(0)
+  const [editInfoGroup, setEditInfoGroup] = useState(null)
   const [visibleDetailModal, setVisibleDetailModal] = useState(false)
 
-  const [configUserGroupId, setConfigUserGroupId] = useState(0)
-  const [configUserGroupName, setConfigUserGroupName] = useState('')
+  const [configUserGroup, setConfigUserGroup] = useState(null)
   const [visibleGroupModal, setVisibleGroupModal] = useState(false)
 
-  const [configRoleGroupId, setConfigRoleGroupId] = useState(0)
+  const [configRoleGroup, setConfigRoleGroup] = useState(null)
   const [visibleRoleModal, setVisibleRoleModal] = useState(false)
 
   const columns = [
@@ -133,34 +133,33 @@ const GroupManagerPage = props => {
           <Tooltip title={'Sửa thông tin nhóm'} mouseEnterDelay={0.3}>
             <EditOutlined
               style={{ cursor: 'pointer', fontSize: 16 }}
-              onClick={() => handleShowDetailGroupModal(item.id)} />
+              onClick={() => handleShowDetailGroupModal(item)} />
           </Tooltip>
           <Tooltip title={'Thêm người dùng vào nhóm'} mouseEnterDelay={0.3}>
             <TeamOutlined
               style={{ cursor: 'pointer', fontSize: 16 }}
-              onClick={() => handleShowGroupModal(item.id, item.tenNhom)} />
+              onClick={() => handleShowGroupModal(item)} />
           </Tooltip>
           <Tooltip title={'Phân quyền nhóm'} mouseEnterDelay={0.3}>
             <FileProtectOutlined
               style={{ cursor: 'pointer', fontSize: 16 }}
-              onClick={() => handleShowRoleModal(item.id)} />
+              onClick={() => handleShowRoleModal(item)} />
           </Tooltip>
         </Space>
       ),
     },
   ]
 
-  const handleShowDetailGroupModal = (groupId) => {
-    setEditInfoGroupId(groupId)
+  const handleShowDetailGroupModal = (group) => {
+    setEditInfoGroup(group)
     setVisibleDetailModal(true)
   }
-  const handleShowGroupModal = (groupId,groupName) => {
-    setConfigUserGroupId(groupId)
-    setConfigUserGroupName(groupName)
+  const handleShowGroupModal = (group) => {
+    setConfigUserGroup(group)
     setVisibleGroupModal(true)
   }
-  const handleShowRoleModal = (groupId) => {
-    setConfigRoleGroupId(groupId)
+  const handleShowRoleModal = (group) => {
+    setConfigRoleGroup(group)
     setVisibleRoleModal(true)
   }
 
@@ -170,16 +169,15 @@ const GroupManagerPage = props => {
 
   const handleCloseDetailGroupModal = () => {
     setVisibleDetailModal(false)
-    setEditInfoGroupId(0)
+    setEditInfoGroup(null)
   }
   const handleCloseConfigUserGroupModal = () => {
     setVisibleGroupModal(false)
-    setConfigUserGroupId(0)
-    setConfigUserGroupName('')
+    setConfigUserGroup(null)
   }
-  const handleCloseConfigGroupRoleModal = () => {
+  const handleCloseConfigRoleGroupModal = () => {
     setVisibleRoleModal(false)
-    setConfigRoleGroupId(0)
+    setConfigRoleGroup(null)
   }
 
   return (
@@ -228,7 +226,7 @@ const GroupManagerPage = props => {
         <RowFlexEndDiv margin={'0 0 24px 0'}>
           <Button
             block={device === DEVICE.MOBILE}
-            onClick={() => handleShowDetailGroupModal(0)}
+            onClick={() => handleShowDetailGroupModal(null)}
             type={'primary'}>
             <UserAddOutlined /> Thêm mới nhóm
           </Button>
@@ -248,15 +246,19 @@ const GroupManagerPage = props => {
         </RowSpaceBetweenDiv>
 
         <DetailGroupModal
-          groupId={editInfoGroupId}
+          group={editInfoGroup}
           visible={visibleDetailModal}
           onClose={handleCloseDetailGroupModal} />
 
         <ConfigGroupUserModal
-          groupId={configUserGroupId}
-          groupName={configUserGroupName}
+          group={configUserGroup}
           visible={visibleGroupModal}
           onClose={handleCloseConfigUserGroupModal} />
+
+        <ConfigRoleGroupModal
+          group={configRoleGroup}
+          onClose={handleCloseConfigRoleGroupModal}
+          visible={visibleRoleModal} />
 
       </GroupManagerPageWrapper>
     </DefaultLayout>

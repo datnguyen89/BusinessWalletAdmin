@@ -5,7 +5,7 @@ import { Button, Col, Form, Input, Modal, Row, Select } from 'antd'
 import { DEVICE } from '../../../utils/constant'
 
 const ConfigUserGroupModal = props => {
-  const { userId, visible, onClose, commonStore } = props
+  const { user, visible, onClose, commonStore } = props
   const { device } = commonStore
 
   const [formConfigUserGroup] = Form.useForm()
@@ -19,8 +19,8 @@ const ConfigUserGroupModal = props => {
   }
 
   useEffect(() => {
-    if (userId > 0) {
-      console.log(userId)
+    console.log(user)
+    if (user) {
       //// Get detail User & Fill form
       // formConfigUserGroup.setFieldsValue({
       //
@@ -29,11 +29,11 @@ const ConfigUserGroupModal = props => {
         Group: [1, 2],
       })
     }
-  }, [userId])
+  }, [user])
 
   return (
     <Modal
-      title={'Phân nhóm User'}
+      title={`Phân nhóm người dùng ${user?.hoVaTen}`}
       visible={visible}
       footer={null}
       onCancel={handleCancel}>
@@ -72,7 +72,7 @@ const ConfigUserGroupModal = props => {
 }
 
 ConfigUserGroupModal.propTypes = {
-  userId: PropTypes.number.isRequired,
+  user: PropTypes.object,
   visible: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
 }

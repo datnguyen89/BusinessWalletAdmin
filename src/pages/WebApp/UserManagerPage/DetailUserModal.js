@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Button, Col, Form, Input, Modal, Row, Select } from 'antd'
 
 const DetailUserModal = props => {
-  const { userId, visible, onClose } = props
+  const { user, visible, onClose } = props
 
   const [formConfigUser] = Form.useForm()
 
@@ -16,18 +16,18 @@ const DetailUserModal = props => {
   }
 
   useEffect(() => {
-    if (userId > 0) {
-      console.log(userId)
+    console.log(user)
+    if (user) {
       //// Get detail User & Fill form
       // formConfigUser.setFieldsValue({
       //
       // })
     }
-  }, [userId])
+  }, [user])
 
   return (
     <Modal
-      title={userId > 0 ? 'Sửa thông tin người dùng' : 'Thêm mới người dùng'}
+      title={user?.id > 0 ? `Sửa thông tin người dùng ${user.hoVaTen}` : 'Thêm mới người dùng'}
       visible={visible}
       footer={null}
       onCancel={handleCancel}>
@@ -92,7 +92,7 @@ const DetailUserModal = props => {
 }
 
 DetailUserModal.propTypes = {
-  userId: PropTypes.number.isRequired,
+  user: PropTypes.object,
   visible: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
 }

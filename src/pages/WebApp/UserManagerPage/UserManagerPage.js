@@ -116,11 +116,11 @@ const testData = [
 const UserManagerPage = props => {
   const { commonStore } = props
   const { device } = commonStore
-  const [formApproveBusinessUser] = Form.useForm()
+  const [formFilterUser] = Form.useForm()
 
-  const [editInfoUserId, setEditInfoUserId] = useState(0)
-  const [configGroupUserId, setConfigGroupUserId] = useState(0)
-  const [configRoleUserId, setConfigRoleUserId] = useState(0)
+  const [editInfoUser, setEditInfoUser] = useState(null)
+  const [configGroupUser, setConfigGroupUser] = useState(null)
+  const [configRoleUser, setConfigRoleUser] = useState(null)
   const [visibleDetailModal, setVisibleDetailModal] = useState(false)
   const [visibleGroupModal, setVisibleGroupModal] = useState(false)
   const [visibleRoleModal, setVisibleRoleModal] = useState(false)
@@ -168,33 +168,33 @@ const UserManagerPage = props => {
           <Tooltip title={'Sửa thông tin nguòi dùng'} mouseEnterDelay={0.3}>
             <EditOutlined
               style={{ cursor: 'pointer', fontSize: 16 }}
-              onClick={() => handleShowDetailUserModal(item.id)} />
+              onClick={() => handleShowDetailUserModal(item)} />
           </Tooltip>
           <Tooltip title={'Phân nhóm nguòi dùng'} mouseEnterDelay={0.3}>
             <TeamOutlined
               style={{ cursor: 'pointer', fontSize: 16 }}
-              onClick={() => handleShowGroupModal(item.id)} />
+              onClick={() => handleShowGroupModal(item)} />
           </Tooltip>
           <Tooltip title={'Phân quyền người dùng'} mouseEnterDelay={0.3}>
             <FileProtectOutlined
               style={{ cursor: 'pointer', fontSize: 16 }}
-              onClick={() => handleShowRoleModal(item.id)} />
+              onClick={() => handleShowRoleModal(item)} />
           </Tooltip>
         </Space>
       ),
     },
   ]
 
-  const handleShowDetailUserModal = (userId) => {
-    setEditInfoUserId(userId)
+  const handleShowDetailUserModal = (user) => {
+    setEditInfoUser(user)
     setVisibleDetailModal(true)
   }
-  const handleShowGroupModal = (userId) => {
-    setConfigGroupUserId(userId)
+  const handleShowGroupModal = (user) => {
+    setConfigGroupUser(user)
     setVisibleGroupModal(true)
   }
-  const handleShowRoleModal = (userId) => {
-    setConfigRoleUserId(userId)
+  const handleShowRoleModal = (user) => {
+    setConfigRoleUser(user)
     setVisibleRoleModal(true)
   }
 
@@ -204,15 +204,15 @@ const UserManagerPage = props => {
 
   const handleCloseDetailUserModal = () => {
     setVisibleDetailModal(false)
-    setEditInfoUserId(0)
+    setEditInfoUser(null)
   }
   const handleCloseConfigUserGroupModal = () => {
     setVisibleGroupModal(false)
-    setConfigGroupUserId(0)
+    setConfigGroupUser(null)
   }
   const handleCloseConfigUserRoleModal = () => {
     setVisibleRoleModal(false)
-    setConfigRoleUserId(0)
+    setConfigRoleUser(null)
   }
 
   return (
@@ -226,7 +226,7 @@ const UserManagerPage = props => {
           labelAlign={'left'}
           labelCol={{ span: 6 }}
           wrapperCol={{ span: 18 }}
-          form={formApproveBusinessUser}
+          form={formFilterUser}
           colon={false}>
           <Row gutter={[32, 8]} justify={'space-between'}>
             <Col xxl={6} xl={6} lg={12} md={24} sm={24} xs={24}>
@@ -299,7 +299,7 @@ const UserManagerPage = props => {
         <RowFlexEndDiv margin={'0 0 24px 0'}>
           <Button
             block={device === DEVICE.MOBILE}
-            onClick={() => handleShowDetailUserModal(0)}
+            onClick={() => handleShowDetailUserModal(null)}
             type={'primary'}>
             <UserAddOutlined /> Thêm mới người dùng
           </Button>
@@ -318,15 +318,15 @@ const UserManagerPage = props => {
           <Pagination defaultCurrent={1} total={500} onChange={handleChangePagination} />
         </RowSpaceBetweenDiv>
         <DetailUserModal
-          userId={editInfoUserId}
+          user={editInfoUser}
           visible={visibleDetailModal}
           onClose={handleCloseDetailUserModal} />
         <ConfigUserGroupModal
-          userId={configGroupUserId}
+          user={configGroupUser}
           visible={visibleGroupModal}
           onClose={handleCloseConfigUserGroupModal} />
         <ConfigUserRoleModal
-          userId={configRoleUserId}
+          user={configRoleUser}
           visible={visibleRoleModal}
           onClose={handleCloseConfigUserRoleModal} />
       </UserManagerPageWrapper>

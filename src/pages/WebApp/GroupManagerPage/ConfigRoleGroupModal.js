@@ -4,16 +4,16 @@ import { Button, Col, Form, Input, Modal, Row, Tree, TreeSelect } from 'antd'
 import { DEVICE } from '../../../utils/constant'
 import { inject, observer } from 'mobx-react'
 
-const ConfigUserRoleModal = props => {
-  const { user, visible, onClose, commonStore } = props
+const ConfigRoleGroupModal = props => {
+  const { group, visible, onClose, commonStore } = props
   const { device } = commonStore
-  const [formConfigUserRole] = Form.useForm()
+  const [formConfigGroupRole] = Form.useForm()
 
   const onFinish = (formCollection) => {
     console.log(formCollection)
   }
   const handleCancel = () => {
-    formConfigUserRole.resetFields()
+    formConfigGroupRole.resetFields()
     onClose()
   }
 
@@ -76,21 +76,22 @@ const ConfigUserRoleModal = props => {
   ]
 
   useEffect(() => {
-    console.log(user)
-    if (user) {
-      //// Get detail User & Fill form
-      // formConfigUserRole.setFieldsValue({
+    console.log(group)
+
+    if (group) {
+      //// Get detail Group & Fill form
+      // formConfigGroupRole.setFieldsValue({
       //
       // })
-      formConfigUserRole.setFieldsValue({
+      formConfigGroupRole.setFieldsValue({
         roles: ['5', '6'],
       })
     }
-  }, [user])
+  }, [group])
 
   return (
     <Modal
-      title={`Phân quyền người dùng ${user?.hoVaTen}`}
+      title={`Phân quyền nhóm ${group?.tenNhom}`}
       visible={visible}
       footer={null}
       onCancel={handleCancel}>
@@ -98,7 +99,7 @@ const ConfigUserRoleModal = props => {
         labelAlign={'left'}
         labelCol={{ span: 6 }}
         wrapperCol={{ span: 18 }}
-        form={formConfigUserRole}
+        form={formConfigGroupRole}
         onFinish={onFinish}
         colon={false}>
         <Form.Item label={'Phân quyền'} name={'roles'}>
@@ -128,10 +129,10 @@ const ConfigUserRoleModal = props => {
   )
 }
 
-ConfigUserRoleModal.propTypes = {
-  user: PropTypes.object,
+ConfigRoleGroupModal.propTypes = {
+  group: PropTypes.object,
   visible: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
 }
 
-export default inject('commonStore')(observer(ConfigUserRoleModal))
+export default inject('commonStore')(observer(ConfigRoleGroupModal))

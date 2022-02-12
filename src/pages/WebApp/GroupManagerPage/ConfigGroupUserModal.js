@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react'
 import { inject, observer } from 'mobx-react'
 import PropTypes from 'prop-types'
-import { Button, Col, Divider, Form, Input, Modal, Pagination, Row, Select, Space, Table, Tooltip } from 'antd'
+import { Button, Col, DatePicker, Divider, Form, Input, Modal, Pagination, Row, Select, Table, Tooltip } from 'antd'
 import { DEVICE } from '../../../utils/constant'
-import { ColorText, PaginationLabel, RowSpaceBetweenDiv } from '../../../components/CommonStyled/CommonStyled'
-import { EditOutlined, FileProtectOutlined, TeamOutlined } from '@ant-design/icons'
+import { PaginationLabel, RowFlexEndDiv, RowSpaceBetweenDiv } from '../../../components/CommonStyled/CommonStyled'
+import { DeleteOutlined, SearchOutlined } from '@ant-design/icons'
+
+const { RangePicker } = DatePicker
 
 const testData = [
   {
@@ -99,13 +101,38 @@ const testData = [
     nguoiTao: 'hant',
     trangThai: 'Hoạt động',
   },
+  {
+    id: 9,
+    hoVaTen: 'Nguyễn Văn C',
+    soDienThoai: '0987654123',
+    email: 'user@gmail.com',
+    UserName: 'username1',
+    vaiTro: 'Tạo lập',
+    noiDung: 'Thêm mới',
+    ngayTao: '20/01/2022',
+    nguoiTao: 'hant',
+    trangThai: 'Hoạt động',
+  },
+  {
+    id: 10,
+    hoVaTen: 'Nguyễn Văn D',
+    soDienThoai: '0987654123',
+    email: 'user@gmail.com',
+    UserName: 'username1',
+    vaiTro: 'Tạo lập',
+    noiDung: 'Thêm mới',
+    ngayTao: '20/01/2022',
+    nguoiTao: 'hant',
+    trangThai: 'Hoạt động',
+  },
 ]
 
 
 const ConfigGroupUserModal = props => {
-  const { groupId, groupName, visible, onClose, commonStore } = props
+  const { group, visible, onClose, commonStore } = props
   const { device } = commonStore
 
+  const [formAddUserInGroup] = Form.useForm()
   const [formFilterUserInGroup] = Form.useForm()
 
   const columns = [
@@ -148,7 +175,7 @@ const ConfigGroupUserModal = props => {
       title: 'Thao tác',
       render: (item, row, index) => (
         <Tooltip title={'Xóa khỏi nhóm'} mouseEnterDelay={0.3}>
-          <EditOutlined
+          <DeleteOutlined
             style={{ cursor: 'pointer', fontSize: 16 }} />
         </Tooltip>
       ),
@@ -159,7 +186,7 @@ const ConfigGroupUserModal = props => {
     console.log(formCollection)
   }
   const handleCancel = () => {
-    formFilterUserInGroup.resetFields()
+    formAddUserInGroup.resetFields()
     onClose()
   }
 
@@ -168,23 +195,97 @@ const ConfigGroupUserModal = props => {
   }
 
   useEffect(() => {
-    if (groupId > 0) {
-      console.log(groupId)
-      //// Get list user in group depend groupId
+    console.log(group)
+    if (group) {
+      //// Get list user in group depend group
 
     }
-  }, [groupId])
+  }, [group])
 
   return (
     <Modal
       width={'90%'}
       style={{ top: 50 }}
-      title={`Cập nhật người dùng trong nhóm ${groupName}`}
+      title={`Cập nhật người dùng trong nhóm ${group?.tenNhom}`}
       visible={visible}
       footer={null}
       onCancel={handleCancel}>
-
+      <Form
+        labelAlign={'left'}
+        labelCol={{ span: 6 }}
+        wrapperCol={{ span: 18 }}
+        form={formFilterUserInGroup}
+        colon={false}>
+        <Row gutter={[32, 8]} justify={'space-between'}>
+          <Col xxl={6} xl={6} lg={12} md={24} sm={24} xs={24}>
+            <Form.Item
+              label={'Họ và tên'}
+              name={'hoVaTen'}>
+              <Input maxLength={100} showCount={true} placeholder={'Nhập nội dung'} />
+            </Form.Item>
+          </Col>
+          <Col xxl={6} xl={6} lg={12} md={24} sm={24} xs={24}>
+            <Form.Item
+              label={'Số điện thoại'}
+              name={'soDienThoai'}>
+              <Input maxLength={20} showCount={true} placeholder={'Nhập nội dung'} />
+            </Form.Item>
+          </Col>
+          <Col xxl={6} xl={6} lg={12} md={24} sm={24} xs={24}>
+            <Form.Item
+              label={'Email'}
+              name={'email'}>
+              <Input maxLength={20} showCount={true} placeholder={'Nhập nội dung'} />
+            </Form.Item>
+          </Col>
+          <Col xxl={6} xl={6} lg={12} md={24} sm={24} xs={24}>
+            <Form.Item
+              label={'Username'}
+              name={'Username'}>
+              <Input maxLength={20} showCount={true} placeholder={'Nhập nội dung'} />
+            </Form.Item>
+          </Col>
+          <Col xxl={6} xl={6} lg={12} md={24} sm={24} xs={24}>
+            <Form.Item
+              label={'Trạng thái'}
+              name={'hoTenKh'}>
+              <Select placeholder={'Trạng thái'}>
+                <Select.Option value={'1'}>Hoạt động</Select.Option>
+                <Select.Option value={'2'}>Ngừng hoạt động</Select.Option>
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col xxl={6} xl={6} lg={12} md={24} sm={24} xs={24}>
+            <Form.Item
+              label={'Người tạo'}
+              name={'nguoiTao'}>
+              <Input maxLength={100} showCount={true} placeholder={'Nhập nội dung'} />
+            </Form.Item>
+          </Col>
+          <Col xxl={6} xl={6} lg={12} md={24} sm={24} xs={24}>
+            <Form.Item label={'Ngày tạo'} name={'rangerFilterDate'}>
+              <RangePicker
+                style={{ width: '100%' }}
+                format='DD/MM/YYYY'
+              />
+            </Form.Item>
+          </Col>
+          <Col xxl={6} xl={6} lg={12} md={24} sm={24} xs={24}>
+            <RowFlexEndDiv>
+              <Button
+                style={{ minWidth: 120 }}
+                block={device === DEVICE.MOBILE}
+                type={'default'}>
+                <SearchOutlined />
+                Tra cứu người dùng
+              </Button>
+            </RowFlexEndDiv>
+          </Col>
+        </Row>
+      </Form>
+      <Divider />
       <Table
+        size={'small'}
         bordered={true}
         scroll={{ x: 1400 }}
         dataSource={testData}
@@ -195,9 +296,7 @@ const ConfigGroupUserModal = props => {
         <PaginationLabel>
           Hiển thị từ 1 đến 10 trên tổng số 200 bản ghi
         </PaginationLabel>
-        <>
-          <Pagination defaultCurrent={1} total={500} onChange={handleChangePagination} />
-        </>
+        <Pagination defaultCurrent={1} total={500} onChange={handleChangePagination} />
       </RowSpaceBetweenDiv>
 
       <Divider />
@@ -206,7 +305,7 @@ const ConfigGroupUserModal = props => {
         labelAlign={'left'}
         labelCol={{ xxl: 8, xl: 8, lg: 8, md: 8, sm: 8, xs: 8 }}
         wrapperCol={{ xxl: 8, xl: 8, lg: 8, md: 8, sm: 8, xs: 8 }}
-        form={formFilterUserInGroup}
+        form={formAddUserInGroup}
         onFinish={onFinish}
         colon={false}>
         <Form.Item label={'Thêm người dùng vào nhóm'} name={'Users'}>
@@ -234,8 +333,7 @@ const ConfigGroupUserModal = props => {
 }
 
 ConfigGroupUserModal.propTypes = {
-  groupId: PropTypes.number.isRequired,
-  groupName: PropTypes.string.isRequired,
+  group: PropTypes.object,
   visible: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
 }
