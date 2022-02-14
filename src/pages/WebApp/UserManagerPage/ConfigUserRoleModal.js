@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Button, Col, Form, Input, Modal, Row, Space, Tag, Tree, TreeSelect } from 'antd'
+import { Button, Col, Divider, Form, Input, Modal, Row, Space, Tag, Tree, TreeSelect } from 'antd'
 import { DEVICE } from '../../../utils/constant'
 import { inject, observer } from 'mobx-react'
 
@@ -220,6 +220,7 @@ const ConfigUserRoleModal = props => {
         <Tag onClick={() => setSelectedKeys(['50', '60'])}>Nhóm 2</Tag>
         <Tag onClick={() => setSelectedKeys(['500', '600'])}>Nhóm 3</Tag>
       </Space>
+      <Divider />
       <Form
         labelAlign={'left'}
         labelCol={{ span: 24 }}

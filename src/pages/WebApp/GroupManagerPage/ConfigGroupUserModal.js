@@ -207,6 +207,7 @@ const ConfigGroupUserModal = props => {
             <Form.Item label={'Thêm người dùng vào nhóm'} name={'Users'}>
               <Select
                 mode={'multiple'}
+                placeholder={'Nhập họ tên hoặc username'}
                 showSearch
                 optionFilterProp={'name'}>
                 <Select.Option value={1} name={'Người dùng 1'}>Người dùng 1</Select.Option>

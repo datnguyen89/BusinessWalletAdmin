@@ -278,7 +278,7 @@ const UserManagerPage = props => {
               <Form.Item
                 label={'Trạng thái'}
                 name={'hoTenKh'}>
-                <Select placeholder={'Trạng thái'}>
+                <Select placeholder={'Tất cả'} allowClear mode={'multiple'}>
                   <Select.Option value={'1'}>Hoạt động</Select.Option>
                   <Select.Option value={'2'}>Ngừng hoạt động</Select.Option>
                 </Select>
