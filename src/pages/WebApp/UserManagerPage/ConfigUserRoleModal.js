@@ -216,9 +216,9 @@ const ConfigUserRoleModal = props => {
       footer={null}
       onCancel={handleCancel}>
       <Space>
-        <Tag onClick={() => setSelectedKeys(['5', '6'])}>Nhóm 1</Tag>
-        <Tag onClick={() => setSelectedKeys(['50', '60'])}>Nhóm 2</Tag>
-        <Tag onClick={() => setSelectedKeys(['500', '600'])}>Nhóm 3</Tag>
+        <Button onClick={() => setSelectedKeys(['5', '6'])}>Nhóm 1</Button>
+        <Button onClick={() => setSelectedKeys(['50', '60'])}>Nhóm 2</Button>
+        <Button onClick={() => setSelectedKeys(['500', '600'])}>Nhóm 3</Button>
       </Space>
       <Divider />
       <Form
