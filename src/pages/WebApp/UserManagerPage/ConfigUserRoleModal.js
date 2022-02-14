@@ -185,11 +185,15 @@ const ConfigUserRoleModal = props => {
     },
   ]
 
+  const [selectedKeys, setSelectedKeys] = useState(['500', '600'])
   const [checkedKeys, setCheckedKeys] = useState(['3300'])
 
   const onCheck = (checkedKeysValue) => {
     console.log('onCheck', checkedKeysValue)
     setCheckedKeys(checkedKeysValue)
+  }
+  const onSelect = (selectedKeys) => {
+    console.log(selectedKeys)
   }
 
   useEffect(() => {
@@ -200,7 +204,6 @@ const ConfigUserRoleModal = props => {
       //
       // })
       formConfigUserRole.setFieldsValue({
-        roles: ['5', '6'],
       })
     }
   }, [user])
@@ -222,14 +225,17 @@ const ConfigUserRoleModal = props => {
         <Form.Item
           label={'Phân quyền'}>
           <Tree
-            selectable={false}
+            multiple
+            selectedKeys={selectedKeys}
+            selectable={true}
             defaultExpandAll={true}
             checkable
             onCheck={onCheck}
+            onSelect={onSelect}
             checkedKeys={checkedKeys}
             treeData={treeData}
           />
-        </Form.Item>
+        </Form.Item>        
         <Form.Item label={''}>
           <Row justify={'center'} gutter={32}>
             <Col xxl={10} xl={10} lg={10} md={10} sm={10} xs={12}>

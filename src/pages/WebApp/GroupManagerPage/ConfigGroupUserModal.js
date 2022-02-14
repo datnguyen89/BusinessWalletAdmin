@@ -197,13 +197,13 @@ const ConfigGroupUserModal = props => {
       onCancel={handleCancel}>
       <Form
         labelAlign={'left'}
-        labelCol={{ xxl: 8, xl: 8, lg: 8, md: 8, sm: 24, xs: 24 }}
-        wrapperCol={{ xxl: 16, xl: 16, lg: 16, md: 16, sm: 24, xs: 24 }}
+        labelCol={{ xxl: 8, xl: 8, lg: 8, md: 10, sm: 24, xs: 24 }}
+        wrapperCol={{ xxl: 16, xl: 16, lg: 16, md: 14, sm: 24, xs: 24 }}
         form={formAddUserInGroup}
         onFinish={onFinish}
         colon={false}>
         <Row justify={'space-between'} gutter={32}>
-          <Col xxl={18} xl={16} lg={16} md={24} sm={24} xs={24}>
+          <Col xxl={21} xl={20} lg={20} md={19} sm={24} xs={24}>
             <Form.Item label={'Thêm người dùng vào nhóm'} name={'Users'}>
               <Select
                 mode={'multiple'}
@@ -216,10 +216,7 @@ const ConfigGroupUserModal = props => {
               </Select>
             </Form.Item>
           </Col>
-          <Col xxl={3} xl={4} lg={4} md={12} sm={12} xs={12}>
-            <Button onClick={handleCancel} block>Hủy</Button>
-          </Col>
-          <Col xxl={3} xl={4} lg={4} md={12} sm={12} xs={12}>
+          <Col xxl={3} xl={4} lg={4} md={5} sm={24} xs={24}>
             <Button block type={'primary'} onClick={() => formAddUserInGroup.submit()}>Lưu thông tin</Button>
           </Col>
         </Row>
