@@ -197,23 +197,32 @@ const ConfigGroupUserModal = props => {
       onCancel={handleCancel}>
       <Form
         labelAlign={'left'}
-        labelCol={{ xxl: 8, xl: 8, lg: 8, md: 8, sm: 8, xs: 8 }}
-        wrapperCol={{ xxl: 8, xl: 8, lg: 8, md: 8, sm: 8, xs: 8 }}
+        labelCol={{ xxl: 8, xl: 8, lg: 8, md: 8, sm: 24, xs: 24 }}
+        wrapperCol={{ xxl: 16, xl: 16, lg: 16, md: 16, sm: 24, xs: 24 }}
         form={formAddUserInGroup}
         onFinish={onFinish}
         colon={false}>
-        <Form.Item label={'Thêm người dùng vào nhóm'} name={'Users'}>
-          <Select
-            mode={'multiple'}
-            showSearch
-            optionFilterProp={'name'}>
-            <Select.Option value={1} name={'Người dùng 1'}>Người dùng 1</Select.Option>
-            <Select.Option value={2} name={'Người dùng 2'}>Người dùng 2</Select.Option>
-            <Select.Option value={3} name={'Người dùng 3'}>Người dùng 3</Select.Option>
-            <Select.Option value={4} name={'Người dùng 4'}>Người dùng 4</Select.Option>
-          </Select>
-        </Form.Item>
-
+        <Row justify={'space-between'} gutter={32}>
+          <Col xxl={18} xl={16} lg={16} md={24} sm={24} xs={24}>
+            <Form.Item label={'Thêm người dùng vào nhóm'} name={'Users'}>
+              <Select
+                mode={'multiple'}
+                showSearch
+                optionFilterProp={'name'}>
+                <Select.Option value={1} name={'Người dùng 1'}>Người dùng 1</Select.Option>
+                <Select.Option value={2} name={'Người dùng 2'}>Người dùng 2</Select.Option>
+                <Select.Option value={3} name={'Người dùng 3'}>Người dùng 3</Select.Option>
+                <Select.Option value={4} name={'Người dùng 4'}>Người dùng 4</Select.Option>
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col xxl={3} xl={4} lg={4} md={12} sm={12} xs={12}>
+            <Button onClick={handleCancel} block>Hủy</Button>
+          </Col>
+          <Col xxl={3} xl={4} lg={4} md={12} sm={12} xs={12}>
+            <Button block type={'primary'} onClick={() => formAddUserInGroup.submit()}>Lưu thông tin</Button>
+          </Col>
+        </Row>
       </Form>
       <Divider />
       <Form
@@ -223,6 +232,14 @@ const ConfigGroupUserModal = props => {
         form={formFilterUserInGroup}
         colon={false}>
         <Row gutter={[32, 8]} justify={'space-between'}>
+          <Col xxl={7} xl={7} lg={12} md={24} sm={24} xs={24}>
+            <Form.Item label={'Ngày tạo'} name={'rangerFilterDate'}>
+              <RangePicker
+                style={{ width: '100%' }}
+                format='DD/MM/YYYY'
+              />
+            </Form.Item>
+          </Col>
           <Col xxl={7} xl={7} lg={12} md={24} sm={24} xs={24}>
             <Form.Item
               label={'Họ và tên'}
@@ -234,20 +251,13 @@ const ConfigGroupUserModal = props => {
             <Form.Item
               label={'Trạng thái'}
               name={'hoTenKh'}>
-              <Select placeholder={'Trạng thái'}>
+              <Select placeholder={'Tất cả'} mode={'multiple'} allowClear={true}>
                 <Select.Option value={'1'}>Hoạt động</Select.Option>
                 <Select.Option value={'2'}>Ngừng hoạt động</Select.Option>
               </Select>
             </Form.Item>
           </Col>
-          <Col xxl={7} xl={7} lg={12} md={24} sm={24} xs={24}>
-            <Form.Item label={'Ngày tạo'} name={'rangerFilterDate'}>
-              <RangePicker
-                style={{ width: '100%' }}
-                format='DD/MM/YYYY'
-              />
-            </Form.Item>
-          </Col>
+
           <Col xxl={3} xl={3} lg={12} md={24} sm={24} xs={24}>
             <RowFlexEndDiv>
               <Button
@@ -277,14 +287,7 @@ const ConfigGroupUserModal = props => {
         <Pagination defaultCurrent={1} total={500} onChange={handleChangePagination} />
       </RowSpaceBetweenDiv>
 
-      <Row justify={'center'} gutter={32}>
-        <Col xxl={3} xl={4} lg={6} md={6} sm={8} xs={12}>
-          <Button onClick={handleCancel} block>Hủy</Button>
-        </Col>
-        <Col xxl={3} xl={4} lg={6} md={6} sm={8} xs={12}>
-          <Button block type={'primary'} onClick={() => formAddUserInGroup.submit()}>Lưu thông tin</Button>
-        </Col>
-      </Row>
+
     </Modal>
   )
 }

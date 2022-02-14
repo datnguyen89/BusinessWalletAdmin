@@ -253,6 +253,14 @@ const UserManagerPage = props => {
           colon={false}>
           <Row gutter={[32, 8]} justify={'space-between'}>
             <Col xxl={6} xl={6} lg={12} md={24} sm={24} xs={24}>
+              <Form.Item label={'Ngày tạo'} name={'rangerFilterDate'}>
+                <RangePicker
+                  style={{ width: '100%' }}
+                  format='DD/MM/YYYY'
+                />
+              </Form.Item>
+            </Col>
+            <Col xxl={6} xl={6} lg={12} md={24} sm={24} xs={24}>
               <Form.Item
                 label={'Họ và tên'}
                 name={'hoVaTen'}>
@@ -276,14 +284,7 @@ const UserManagerPage = props => {
                 </Select>
               </Form.Item>
             </Col>
-            <Col xxl={6} xl={6} lg={12} md={24} sm={24} xs={24}>
-              <Form.Item label={'Ngày tạo'} name={'rangerFilterDate'}>
-                <RangePicker
-                  style={{ width: '100%' }}
-                  format='DD/MM/YYYY'
-                />
-              </Form.Item>
-            </Col>
+
             <Col xxl={24} xl={24} lg={24} md={24} sm={24} xs={24}>
               <RowFlexEndDiv>
                 <Button

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { inject, observer } from 'mobx-react'
 import PropTypes from 'prop-types'
 import { Button, Col, Form, Input, Modal, Row, Select } from 'antd'
+import validator from '../../../validator'
 
 const DetailUserModal = props => {
   const { user, visible, onClose, userManagerStore } = props
@@ -55,10 +56,12 @@ const DetailUserModal = props => {
         <Form.Item label={'Họ và tên'} name={'FullName'}>
           <Input showCount maxLength={100} placeholder={'Nhập nội dung'} />
         </Form.Item>
-        <Form.Item label={'Số điện thoại'} name={'PhoneNumber'}>
+        <Form.Item label={'Số điện thoại'} name={'PhoneNumber'}
+                   rules={[{ validator: validator.validatePhoneNumber }]}>
           <Input showCount maxLength={20} placeholder={'Nhập nội dung'} />
         </Form.Item>
-        <Form.Item label={'Email'} name={'Email'}>
+        <Form.Item label={'Email'} name={'Email'}
+                   rules={[{ validator: validator.validateEmail }]}>
           <Input showCount maxLength={100} placeholder={'Nhập nội dung'} />
         </Form.Item>
         <Form.Item label={'UserName'} name={'UserName'}>
