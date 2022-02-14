@@ -516,4 +516,11 @@ export const GlobalStyle = createGlobalStyle`
     display: flex;
     justify-content: center;
   }
+  
+  // Tree
+  .ant-tree-treenode.ant-tree-treenode-disabled.ant-tree-treenode-switcher-open.ant-tree-treenode-checkbox-checked.ant-tree-treenode-selected {
+    .ant-tree-node-content-wrapper.ant-tree-node-content-wrapper-normal {
+      background-color: #bae7ff !important;
+    }
+  }
 `

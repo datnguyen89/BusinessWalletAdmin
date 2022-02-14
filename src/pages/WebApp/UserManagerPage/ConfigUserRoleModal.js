@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Button, Col, Form, Input, Modal, Row, Tree, TreeSelect } from 'antd'
+import { Button, Col, Form, Input, Modal, Row, Space, Tag, Tree, TreeSelect } from 'antd'
 import { DEVICE } from '../../../utils/constant'
 import { inject, observer } from 'mobx-react'
 
@@ -41,6 +41,7 @@ const ConfigUserRoleModal = props => {
           key: '4',
           children: [
             {
+              disabled: true,
               title: 'Sửa',
               value: '5',
               key: '5',
@@ -186,7 +187,7 @@ const ConfigUserRoleModal = props => {
   ]
 
   const [selectedKeys, setSelectedKeys] = useState(['500', '600'])
-  const [checkedKeys, setCheckedKeys] = useState(['3300'])
+  const [checkedKeys, setCheckedKeys] = useState(['3300', '5'])
 
   const onCheck = (checkedKeysValue) => {
     console.log('onCheck', checkedKeysValue)
@@ -203,8 +204,7 @@ const ConfigUserRoleModal = props => {
       // formConfigUserRole.setFieldsValue({
       //
       // })
-      formConfigUserRole.setFieldsValue({
-      })
+      formConfigUserRole.setFieldsValue({})
     }
   }, [user])
 
@@ -215,6 +215,11 @@ const ConfigUserRoleModal = props => {
       visible={visible}
       footer={null}
       onCancel={handleCancel}>
+      <Space>
+        <Tag onClick={() => setSelectedKeys(['5', '6'])}>Nhóm 1</Tag>
+        <Tag onClick={() => setSelectedKeys(['50', '60'])}>Nhóm 2</Tag>
+        <Tag onClick={() => setSelectedKeys(['500', '600'])}>Nhóm 3</Tag>
+      </Space>
       <Form
         labelAlign={'left'}
         labelCol={{ span: 24 }}
@@ -235,7 +240,7 @@ const ConfigUserRoleModal = props => {
             checkedKeys={checkedKeys}
             treeData={treeData}
           />
-        </Form.Item>        
+        </Form.Item>
         <Form.Item label={''}>
           <Row justify={'center'} gutter={32}>
             <Col xxl={10} xl={10} lg={10} md={10} sm={10} xs={12}>
