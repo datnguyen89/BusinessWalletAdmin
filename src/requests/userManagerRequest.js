@@ -19,5 +19,15 @@ export const UserManagerRequest = {
       data: payload,
     })
   },
-
+  getListUsers: (payload) => {
+    return axios({
+      method: 'post',
+      url: `${apiUrl}/GetUsers`,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authenticationStore.accessToken}`,
+      },
+      data: payload,
+    })
+  },
 }

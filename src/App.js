@@ -1,5 +1,8 @@
 import React, { useEffect } from 'react'
 import { deviceDetect } from 'react-device-detect'
+
+//antd
+import { message } from 'antd'
 // Encrypt
 import cypherUtil from './utils/cypherUtil'
 // Axios
@@ -35,6 +38,7 @@ import UserManagerPage from './pages/WebApp/UserManagerPage'
 import GroupManagerPage from './pages/WebApp/GroupManagerPage'
 
 
+
 const history = createBrowserHistory()
 
 const ProtectedRoute = ({ component: Component, ...rest }) => (
@@ -44,7 +48,7 @@ const ProtectedRoute = ({ component: Component, ...rest }) => (
       !localStorage.getItem('jwt') ? (
         <Redirect
           to={{
-            pathname: '/login',
+            pathname: PAGES.LOGIN.PATH,
             state: { from: props.location },
           }}
         />
@@ -72,6 +76,7 @@ const rootStores = {
 axios.interceptors.request.use(
   config => {
     let strData = JSON.stringify({ ...config.data })
+    console.log(config.data)
     let encryptedData = cypherUtil.rsaEncrypt(strData)
     config.data = { Data: encryptedData }
     console.log(config.data)
@@ -86,12 +91,16 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
   response => {
+    console.log(response)
+    if (response.data.Error) {
+      message.error(response.data.Message)
+    }
     return response
   },
   error => {
-    if (error?.response?.status === 401) {
-      // TODO: clear localstorage, user's State, store => redirect to login
-    }
+    // if (error?.response?.status === 401) {
+    //   // TODO: clear localstorage, user's State, store => redirect to login
+    // }
     return Promise.reject(error)
   },
 )
@@ -111,10 +120,10 @@ const App = () => {
         <Router history={history}>
           <Switch>
             <Route exact path={PAGES.LOGIN.PATH} component={LoginPage} /> {/*Đăng nhập*/}
-            <Route exact path={PAGES.HOME.PATH} component={HomePage} />
+            <ProtectedRoute exact path={PAGES.HOME.PATH} component={HomePage} />
 
-            <Route exact path={PAGES.USER_MANAGER.PATH} component={UserManagerPage} />
-            <Route exact path={PAGES.GROUP_MANAGER.PATH} component={GroupManagerPage} />
+            <ProtectedRoute exact path={PAGES.USER_MANAGER.PATH} component={UserManagerPage} />
+            <ProtectedRoute exact path={PAGES.GROUP_MANAGER.PATH} component={GroupManagerPage} />
 
             <Route exact path={PAGES.TEST.PATH} component={TestPage} />
             <Route exact path={PAGES.NOT_PERMISSION.PATH} component={NotPermissionPage} /> {/*Không có quyền truy cập*/}

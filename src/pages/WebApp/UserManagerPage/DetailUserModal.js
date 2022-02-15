@@ -3,6 +3,7 @@ import { inject, observer } from 'mobx-react'
 import PropTypes from 'prop-types'
 import { Button, Col, Form, Input, Modal, Row, Select } from 'antd'
 import validator from '../../../validator'
+import { CLIENTS } from '../../../utils/constant'
 
 const DetailUserModal = props => {
   const { user, visible, onClose, userManagerStore } = props
@@ -15,11 +16,22 @@ const DetailUserModal = props => {
 
     } else {
       userManagerStore.registerUser(formCollection)
+        .then(res => {
+          console.log(res)
+        })
     }
   }
   const handleCancel = () => {
     formConfigUser.resetFields()
     onClose()
+  }
+
+  const renderClientOptions = () => {
+    let val = []
+    for (const [key, value] of Object.entries(CLIENTS)) {
+      val.push(<Select.Option key={key} value={value.ID}>{value.NAME}</Select.Option>)
+    }
+    return val
   }
 
   useEffect(() => {
@@ -48,9 +60,9 @@ const DetailUserModal = props => {
         colon={false}>
         <Form.Item label={'Hệ thống'} name={'ClientIds'}>
           <Select mode={'multiple'} placeholder={'Chọn hệ thống'}>
-            <Select.Option value={'1'}>ADMIN</Select.Option>
-            <Select.Option value={'2'}>CMS</Select.Option>
-            <Select.Option value={'3'}>CUSTOMER</Select.Option>
+            {
+              renderClientOptions()
+            }
           </Select>
         </Form.Item>
         <Form.Item label={'Họ và tên'} name={'FullName'}>
@@ -67,7 +79,30 @@ const DetailUserModal = props => {
         <Form.Item label={'UserName'} name={'UserName'}>
           <Input showCount maxLength={20} placeholder={'Nhập nội dung'} />
         </Form.Item>
-
+        {
+          !user &&
+          <>
+            <Form.Item label={'Mật khẩu'} name={'Password'}>
+              <Input showCount maxLength={20} placeholder={'Nhập nội dung'} />
+            </Form.Item>
+            <Form.Item
+              label={'Xác nhận mật khẩu'}
+              name={'ConfirmPassword'}
+              rules={[
+                { required: true, message: 'Vui lòng nhập lại mật khẩu mới' },
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    if (!value || getFieldValue('Password') === value) {
+                      return Promise.resolve()
+                    }
+                    return Promise.reject(new Error('Mật khẩu xác nhận không trùng khớp'))
+                  },
+                }),
+              ]}>
+              <Input showCount maxLength={20} placeholder={'Nhập nội dung'} />
+            </Form.Item>
+          </>
+        }
         <Form.Item wrapperCol={{ span: 24 }}>
           <Row justify={'center'} gutter={32}>
             <Col xxl={8} xl={8} lg={8} md={8} sm={8} xs={12}>

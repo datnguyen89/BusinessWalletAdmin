@@ -11,11 +11,11 @@ export const AuthenticationRequest = {
   userLogin: (payload) => {
     return axios({
       method: 'post',
-      url: `${apiUrl}/api/login`,
+      url: `${apiUrl}/login`,
       headers: {
         'Content-Type': 'application/json',
       },
-      data: { username: payload.username, password: payload.password },
+      data: { UserName: payload.UserName, Password: payload.Password, ClientId: payload.ClientId },
     })
   },
   userGet: (payload) => {

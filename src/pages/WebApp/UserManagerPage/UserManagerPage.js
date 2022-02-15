@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { inject, observer } from 'mobx-react'
 import { UserManagerPageWrapper } from './UserManagerPageStyled'
 import DefaultLayout from '../../../layouts/DefaultLayout'
@@ -23,6 +23,7 @@ import DetailUserModal from './DetailUserModal'
 import ConfigUserGroupModal from './ConfigUserGroupModal'
 import ConfigUserRoleModal from './ConfigUserRoleModal'
 import SetPasswordUserModal from './SetPasswordUserModal'
+import userManagerStore from '../../../stores/userManagerStore'
 
 const { RangePicker } = DatePicker
 
@@ -122,8 +123,9 @@ const testData = [
 ]
 
 const UserManagerPage = props => {
-  const { commonStore } = props
+  const { commonStore, userManagerStore } = props
   const { device } = commonStore
+  const { filterPayLoad } = userManagerStore
   const [formFilterUser] = Form.useForm()
 
   const [editInfoUser, setEditInfoUser] = useState(null)
@@ -237,6 +239,24 @@ const UserManagerPage = props => {
     setVisibleRoleModal(false)
     setConfigRoleUser(null)
   }
+  const handleFilterUser = (formCollection) => {
+    console.log(formCollection.rangerFilterDate)
+    let payload = {
+      CreatedDateFrom: formCollection.rangerFilterDate ? formCollection.rangerFilterDate[0].format('DD/MM/YYYY') : "",
+      CreatedDateTo: formCollection.rangerFilterDate ? formCollection.rangerFilterDate[1].format('DD/MM/YYYY') : "",
+      FullName: '',
+      UserName: '',
+      ActiveStatus: true,
+      PageIndex: 1,
+      PageSize: 10,
+    }
+    userManagerStore.setFilterPayLoad(payload)
+  }
+
+  useEffect(() => {
+    if (!filterPayLoad) return
+    userManagerStore.getListUsers({ ...filterPayLoad })
+  }, [filterPayLoad])
 
   return (
     <DefaultLayout>
@@ -246,9 +266,10 @@ const UserManagerPage = props => {
       <UserManagerPageWrapper>
         <ColorTitle margin={'0 0 16px 0'}>Quản lý người dùng</ColorTitle>
         <Form
+          onFinish={handleFilterUser}
           labelAlign={'left'}
-          labelCol={{ span: 6 }}
-          wrapperCol={{ span: 18 }}
+          labelCol={{ span: 7 }}
+          wrapperCol={{ span: 17 }}
           form={formFilterUser}
           colon={false}>
           <Row gutter={[32, 8]} justify={'space-between'}>
@@ -263,24 +284,24 @@ const UserManagerPage = props => {
             <Col xxl={6} xl={6} lg={12} md={24} sm={24} xs={24}>
               <Form.Item
                 label={'Họ và tên'}
-                name={'hoVaTen'}>
+                name={'FullName'}>
                 <Input maxLength={100} showCount={true} placeholder={'Nhập nội dung'} />
               </Form.Item>
             </Col>
             <Col xxl={6} xl={6} lg={12} md={24} sm={24} xs={24}>
               <Form.Item
-                label={'Username'}
-                name={'Username'}>
+                label={'Tên đăng nhập'}
+                name={'UserName'}>
                 <Input maxLength={20} showCount={true} placeholder={'Nhập nội dung'} />
               </Form.Item>
             </Col>
             <Col xxl={6} xl={6} lg={12} md={24} sm={24} xs={24}>
               <Form.Item
                 label={'Trạng thái'}
-                name={'hoTenKh'}>
-                <Select placeholder={'Tất cả'} allowClear mode={'multiple'}>
-                  <Select.Option value={'1'}>Hoạt động</Select.Option>
-                  <Select.Option value={'2'}>Ngừng hoạt động</Select.Option>
+                name={'ActiveStatus'}>
+                <Select placeholder={'Tất cả'} allowClear>
+                  <Select.Option value={true}>Hoạt động</Select.Option>
+                  <Select.Option value={false}>Ngừng hoạt động</Select.Option>
                 </Select>
               </Form.Item>
             </Col>
@@ -290,6 +311,7 @@ const UserManagerPage = props => {
                 <Button
                   style={{ minWidth: 120 }}
                   block={device === DEVICE.MOBILE}
+                  htmlType={'submit'}
                   type={'default'}>
                   <SearchOutlined />
                   Tra cứu người dùng
@@ -343,4 +365,4 @@ const UserManagerPage = props => {
 
 UserManagerPage.propTypes = {}
 
-export default inject('authenticationStore', 'commonStore')(observer(UserManagerPage))
+export default inject('authenticationStore', 'commonStore', 'userManagerStore')(observer(UserManagerPage))

@@ -9,14 +9,22 @@ class AuthenticationStore {
     return new Promise((resolve, reject) => {
       AuthenticationRequest.userLogin(payload)
         .then(response => {
-          const tokenData = response.data.data.token
-          localStorage.setItem('jwt', tokenData)
-          this.accessToken = tokenData
+          if (!response.data.Error) {
+            const tokenData = response.data.Data.Token
+            localStorage.setItem('jwt', tokenData)
+            this.accessToken = tokenData
+          }
           resolve(response.data)
         })
         .catch(error => reject(error))
     })
-  } 
+  }
+  @action userLogout = () => {
+    return new Promise((resolve, reject) => {
+      localStorage.removeItem('jwt')
+      resolve()
+    })
+  }
 
 }
 
