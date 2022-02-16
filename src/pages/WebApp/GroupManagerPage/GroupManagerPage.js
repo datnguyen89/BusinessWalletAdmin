@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { inject, observer } from 'mobx-react'
 import { GroupManagerPageWrapper } from './GroupManagerPageStyled'
@@ -85,8 +85,9 @@ const testData = [
 ]
 
 const GroupManagerPage = props => {
-  const { commonStore } = props
+  const { commonStore, appSettingStore } = props
   const { device } = commonStore
+  const { clientTypes } = appSettingStore
   const [formApproveBusinessGroup] = Form.useForm()
 
   const [editInfoGroup, setEditInfoGroup] = useState(null)
@@ -180,6 +181,10 @@ const GroupManagerPage = props => {
     setConfigRoleGroup(null)
   }
 
+  useEffect(() => {
+    appSettingStore.getClientType()
+  }, [])
+
   return (
     <DefaultLayout>
       <Helmet>
@@ -206,8 +211,11 @@ const GroupManagerPage = props => {
                 label={'Loại hệ thống'}
                 name={'loaiHeThong'}>
                 <Select placeholder={'Chọn loại hệ thống'}>
-                  <Select.Option value={'1'}>Loại hệ thống 1</Select.Option>
-                  <Select.Option value={'2'}>Loại hệ thống 2</Select.Option>
+                  {
+                    clientTypes && clientTypes.map(item =>
+                      <Select.Option key={item} value={item}>{item}</Select.Option>,
+                    )
+                  }
                 </Select>
               </Form.Item>
             </Col>
@@ -267,4 +275,4 @@ const GroupManagerPage = props => {
 
 GroupManagerPage.propTypes = {}
 
-export default inject('commonStore')(observer(GroupManagerPage))
+export default inject('commonStore', 'appSettingStore')(observer(GroupManagerPage))

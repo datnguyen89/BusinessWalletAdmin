@@ -28,10 +28,7 @@ const LoginPage = props => {
   }
 
   useEffect(() => {
-    let initForm = {
-      ClientId: CLIENTS.ADMIN_CMS.ID,
-    }
-    formLogin.setFieldsValue({ ...initForm })
+    formLogin.setFieldsValue({ ClientId: CLIENTS.ADMIN_CMS.ID })
   }, [])
 
   return (

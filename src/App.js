@@ -23,6 +23,7 @@ import commonStore from './stores/commonStore.js'
 import authenticationStore from './stores/authenticationStore.js'
 import userManagerStore from './stores/userManagerStore.js'
 import testStore from './stores/testStore.js'
+import appSettingStore from './stores/appSettingStore.js'
 
 //moment
 import moment from 'moment'
@@ -36,7 +37,6 @@ import NotFoundPage from './pages/WebApp/NotFoundPage'
 import TestPage from './pages/WebApp/TestPage'
 import UserManagerPage from './pages/WebApp/UserManagerPage'
 import GroupManagerPage from './pages/WebApp/GroupManagerPage'
-
 
 
 const history = createBrowserHistory()
@@ -70,6 +70,7 @@ const rootStores = {
   authenticationStore,
   userManagerStore,
   testStore,
+  appSettingStore,
 }
 
 // axios.defaults.timeout = 20000

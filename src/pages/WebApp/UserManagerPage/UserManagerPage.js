@@ -24,108 +24,17 @@ import ConfigUserGroupModal from './ConfigUserGroupModal'
 import ConfigUserRoleModal from './ConfigUserRoleModal'
 import SetPasswordUserModal from './SetPasswordUserModal'
 import userManagerStore from '../../../stores/userManagerStore'
+import moment from 'moment'
 
 const { RangePicker } = DatePicker
-
-const testData = [
-  {
-    id: 1,
-    hoVaTen: 'Nguyễn Văn A',
-    soDienThoai: '0987654123',
-    email: 'user@gmail.com',
-    UserName: 'username1',
-    ngayTao: '20/01/2022',
-    nguoiTao: 'hant',
-    trangThai: 'Hoạt động',
-  },
-  {
-    id: 2,
-    hoVaTen: 'Nguyễn Văn B',
-    soDienThoai: '0987654123',
-    email: 'user@gmail.com',
-    UserName: 'username1',
-    vaiTro: 'Tạo lập',
-    noiDung: 'Thêm mới',
-    ngayTao: '20/01/2022',
-    nguoiTao: 'hant',
-    trangThai: 'Hoạt động',
-  },
-  {
-    id: 3,
-    hoVaTen: 'Nguyễn Văn C',
-    soDienThoai: '0987654123',
-    email: 'user@gmail.com',
-    UserName: 'username1',
-    vaiTro: 'Tạo lập',
-    noiDung: 'Thêm mới',
-    ngayTao: '20/01/2022',
-    nguoiTao: 'hant',
-    trangThai: 'Hoạt động',
-  },
-  {
-    id: 4,
-    hoVaTen: 'Nguyễn Văn D',
-    soDienThoai: '0987654123',
-    email: 'user@gmail.com',
-    UserName: 'username1',
-    vaiTro: 'Tạo lập',
-    noiDung: 'Thêm mới',
-    ngayTao: '20/01/2022',
-    nguoiTao: 'hant',
-    trangThai: 'Hoạt động',
-  },
-  {
-    id: 5,
-    hoVaTen: 'Nguyễn Văn A',
-    soDienThoai: '0987654123',
-    email: 'user@gmail.com',
-    UserName: 'username1',
-    ngayTao: '20/01/2022',
-    nguoiTao: 'hant',
-    trangThai: 'Hoạt động',
-  },
-  {
-    id: 6,
-    hoVaTen: 'Nguyễn Văn B',
-    soDienThoai: '0987654123',
-    email: 'user@gmail.com',
-    UserName: 'username1',
-    vaiTro: 'Tạo lập',
-    noiDung: 'Thêm mới',
-    ngayTao: '20/01/2022',
-    nguoiTao: 'hant',
-    trangThai: 'Hoạt động',
-  },
-  {
-    id: 7,
-    hoVaTen: 'Nguyễn Văn C',
-    soDienThoai: '0987654123',
-    email: 'user@gmail.com',
-    UserName: 'username1',
-    vaiTro: 'Tạo lập',
-    noiDung: 'Thêm mới',
-    ngayTao: '20/01/2022',
-    nguoiTao: 'hant',
-    trangThai: 'Hoạt động',
-  },
-  {
-    id: 8,
-    hoVaTen: 'Nguyễn Văn D',
-    soDienThoai: '0987654123',
-    email: 'user@gmail.com',
-    UserName: 'username1',
-    vaiTro: 'Tạo lập',
-    noiDung: 'Thêm mới',
-    ngayTao: '20/01/2022',
-    nguoiTao: 'hant',
-    trangThai: 'Hoạt động',
-  },
-]
 
 const UserManagerPage = props => {
   const { commonStore, userManagerStore } = props
   const { device } = commonStore
-  const { filterPayLoad } = userManagerStore
+  const {
+    listUsers,
+    filterObj,
+  } = userManagerStore
   const [formFilterUser] = Form.useForm()
 
   const [editInfoUser, setEditInfoUser] = useState(null)
@@ -146,15 +55,15 @@ const UserManagerPage = props => {
     },
     {
       title: 'Họ và tên',
-      render: (item, row, index) => item.hoVaTen,
+      render: (item, row, index) => item.Name,
     },
     {
       title: 'Số điện thoại',
-      render: (item, row, index) => item.soDienThoai,
+      render: (item, row, index) => item.PhoneNumber,
     },
     {
       title: 'Email',
-      render: (item, row, index) => item.email,
+      render: (item, row, index) => item.Email,
     },
     {
       title: 'Username',
@@ -162,15 +71,15 @@ const UserManagerPage = props => {
     },
     {
       title: 'Trạng thái',
-      render: (item, row, index) => item.trangThai,
+      render: (item, row, index) => item.ActiveStatus,
     },
     {
       title: 'Người tạo',
-      render: (item, row, index) => item.nguoiTao,
+      render: (item, row, index) => item.CreatedBy,
     },
     {
       title: 'Ngày tạo',
-      render: (item, row, index) => item.ngayTao,
+      render: (item, row, index) => moment(item.CreatedDate).format('DD/MM/YYYY HH:mm'),
     },
     {
       align: 'center',
@@ -239,24 +148,27 @@ const UserManagerPage = props => {
     setVisibleRoleModal(false)
     setConfigRoleUser(null)
   }
-  const handleFilterUser = (formCollection) => {
-    console.log(formCollection.rangerFilterDate)
+  const handleFilterUser = (e) => {
     let payload = {
-      CreatedDateFrom: formCollection.rangerFilterDate ? formCollection.rangerFilterDate[0].format('DD/MM/YYYY') : "",
-      CreatedDateTo: formCollection.rangerFilterDate ? formCollection.rangerFilterDate[1].format('DD/MM/YYYY') : "",
-      FullName: '',
-      UserName: '',
-      ActiveStatus: true,
+      CreatedDateFrom: e.rangerFilterDate ? e.rangerFilterDate[0].valueOf() : 0,
+      CreatedDateTo: e.rangerFilterDate ? e.rangerFilterDate[1].valueOf() : 0,
+      FullName: e.FullName ? e.FullName : '',
+      UserName: e.UserName ? e.UserName : '',
+      ActiveStatuses: e.ActiveStatuses ? e.ActiveStatuses : [],
       PageIndex: 1,
       PageSize: 10,
     }
-    userManagerStore.setFilterPayLoad(payload)
+    userManagerStore.setFilterObj(payload)
   }
 
   useEffect(() => {
-    if (!filterPayLoad) return
-    userManagerStore.getListUsers({ ...filterPayLoad })
-  }, [filterPayLoad])
+    console.log(moment().valueOf())
+    commonStore.setAppLoading(true)
+    userManagerStore.getListUsers(filterObj)
+      .finally(() => commonStore.setAppLoading(false))
+  }, [
+    filterObj,
+  ])
 
   return (
     <DefaultLayout>
@@ -298,10 +210,10 @@ const UserManagerPage = props => {
             <Col xxl={6} xl={6} lg={12} md={24} sm={24} xs={24}>
               <Form.Item
                 label={'Trạng thái'}
-                name={'ActiveStatus'}>
-                <Select placeholder={'Tất cả'} allowClear>
-                  <Select.Option value={true}>Hoạt động</Select.Option>
-                  <Select.Option value={false}>Ngừng hoạt động</Select.Option>
+                name={'ActiveStatuses'}>
+                <Select placeholder={'Tất cả'} allowClear mode={'multiple'}>
+                  <Select.Option value={1}>Hoạt động</Select.Option>
+                  <Select.Option value={0}>Ngừng hoạt động</Select.Option>
                 </Select>
               </Form.Item>
             </Col>
@@ -332,9 +244,9 @@ const UserManagerPage = props => {
         <Table
           bordered={true}
           scroll={{ x: 1400 }}
-          dataSource={testData}
+          dataSource={listUsers}
           columns={columns}
-          rowKey={record => record.id}
+          rowKey={record => record.UserName}
           pagination={false} />
         <RowSpaceBetweenDiv margin={'16px 0'}>
           <PaginationLabel>
