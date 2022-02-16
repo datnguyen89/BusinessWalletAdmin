@@ -198,7 +198,6 @@ const ConfigUserRoleModal = props => {
   }
 
   useEffect(() => {
-    console.log(user)
     if (user) {
       //// Get detail User & Fill form
       // formConfigUserRole.setFieldsValue({

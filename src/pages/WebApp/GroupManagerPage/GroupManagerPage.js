@@ -85,9 +85,10 @@ const testData = [
 ]
 
 const GroupManagerPage = props => {
-  const { commonStore, appSettingStore } = props
+  const { commonStore, appSettingStore, groupManagerStore } = props
   const { device } = commonStore
   const { clientTypes } = appSettingStore
+  const { listGroups } = groupManagerStore
   const [formApproveBusinessGroup] = Form.useForm()
 
   const [editInfoGroup, setEditInfoGroup] = useState(null)
@@ -183,6 +184,7 @@ const GroupManagerPage = props => {
 
   useEffect(() => {
     appSettingStore.getClientType()
+    groupManagerStore.getListGroups()
   }, [])
 
   return (
@@ -275,4 +277,4 @@ const GroupManagerPage = props => {
 
 GroupManagerPage.propTypes = {}
 
-export default inject('commonStore', 'appSettingStore')(observer(GroupManagerPage))
+export default inject('commonStore', 'appSettingStore', 'groupManagerStore')(observer(GroupManagerPage))

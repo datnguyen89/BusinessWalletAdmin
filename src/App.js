@@ -24,6 +24,7 @@ import authenticationStore from './stores/authenticationStore.js'
 import userManagerStore from './stores/userManagerStore.js'
 import testStore from './stores/testStore.js'
 import appSettingStore from './stores/appSettingStore.js'
+import groupManagerStore from './stores/groupManagerStore.js'
 
 //moment
 import moment from 'moment'
@@ -71,16 +72,17 @@ const rootStores = {
   userManagerStore,
   testStore,
   appSettingStore,
+  groupManagerStore
 }
 
 // axios.defaults.timeout = 20000
 axios.interceptors.request.use(
   config => {
     let strData = JSON.stringify({ ...config.data })
-    console.log(config.data)
+    console.log(config.url, config.data)
     let encryptedData = cypherUtil.rsaEncrypt(strData)
     config.data = { Data: encryptedData }
-    console.log(config.data)
+    // console.log(config.data)
     // const decrypted = cypherUtil.rsaDecrypt(encryptedData, PRIVATE_KEY)
     // console.log(decrypted)
     return config

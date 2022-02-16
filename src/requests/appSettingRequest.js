@@ -18,4 +18,16 @@ export const AppSettingRequest = {
       },
     })
   },
+  getListStatusUser: () => {
+    return axios({
+      method: 'get',
+      url: `${apiUrl}/GetStatusUser`,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authenticationStore.accessToken}`,
+      },
+    })
+  },
+
+
 }

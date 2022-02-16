@@ -17,6 +17,19 @@ class AppSettingStore {
         .catch(error => reject(error))
     })
   }
+  @observable listStatusUser = []
+  @action getListStatusUser = () => {
+    return new Promise((resolve, reject) => {
+      AppSettingRequest.getListStatusUser()
+        .then(response => {
+          if (!response.data.Error) {
+            this.listStatusUser = response.data.Data
+          }
+          resolve(response.data)
+        })
+        .catch(error => reject(error))
+    })
+  }
 
 
 }

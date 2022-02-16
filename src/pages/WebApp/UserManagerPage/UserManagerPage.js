@@ -29,11 +29,13 @@ import moment from 'moment'
 const { RangePicker } = DatePicker
 
 const UserManagerPage = props => {
-  const { commonStore, userManagerStore } = props
+  const { commonStore, userManagerStore, appSettingStore } = props
   const { device } = commonStore
+  const { listStatusUser } = appSettingStore
   const {
     listUsers,
     filterObj,
+    totalCountUsers,
   } = userManagerStore
   const [formFilterUser] = Form.useForm()
 
@@ -51,7 +53,7 @@ const UserManagerPage = props => {
       title: 'STT',
       width: 60,
       align: 'center',
-      render: (item, row, index) => index + 1,
+      render: (item, row, index) => (filterObj.PageSize * (filterObj.PageIndex - 1)) + index + 1,
     },
     {
       title: 'Họ và tên',
@@ -71,7 +73,7 @@ const UserManagerPage = props => {
     },
     {
       title: 'Trạng thái',
-      render: (item, row, index) => item.ActiveStatus,
+      render: (item, row, index) => renderStatus(item.ActiveStatus),
     },
     {
       title: 'Người tạo',
@@ -111,6 +113,14 @@ const UserManagerPage = props => {
     },
   ]
 
+  const renderStatus = (stt) => {
+    let desc = ''
+    if (listStatusUser && listStatusUser.length > 0) {
+      desc = listStatusUser.find(e => e.Status === stt).Description
+    }
+    return desc
+  }
+
   const handleShowDetailUserModal = (user) => {
     setEditInfoUser(user)
     setVisibleDetailModal(true)
@@ -129,7 +139,12 @@ const UserManagerPage = props => {
   }
 
   const handleChangePagination = (pageIndex, pageSize) => {
-    console.log(pageIndex, pageSize)
+    filterObj.PageIndex = pageIndex
+    filterObj.PageSize = pageSize
+    userManagerStore.setFilterObj(filterObj)
+    commonStore.setAppLoading(true)
+    userManagerStore.getListUsers()
+      .finally(() => commonStore.setAppLoading(false))
   }
 
   const handleCloseDetailUserModal = () => {
@@ -149,26 +164,26 @@ const UserManagerPage = props => {
     setConfigRoleUser(null)
   }
   const handleFilterUser = (e) => {
-    let payload = {
-      CreatedDateFrom: e.rangerFilterDate ? e.rangerFilterDate[0].valueOf() : 0,
-      CreatedDateTo: e.rangerFilterDate ? e.rangerFilterDate[1].valueOf() : 0,
-      FullName: e.FullName ? e.FullName : '',
-      UserName: e.UserName ? e.UserName : '',
-      ActiveStatuses: e.ActiveStatuses ? e.ActiveStatuses : [],
-      PageIndex: 1,
-      PageSize: 10,
-    }
-    userManagerStore.setFilterObj(payload)
+    filterObj.CreatedDateFrom = e.rangerFilterDate ? e.rangerFilterDate[0].valueOf() : 0
+    filterObj.CreatedDateTo = e.rangerFilterDate ? e.rangerFilterDate[1].valueOf() : 0
+    filterObj.FullName = e.FullName ? e.FullName : ''
+    filterObj.UserName = e.UserName ? e.UserName : ''
+    filterObj.ActiveStatuses = e.ActiveStatuses ? e.ActiveStatuses : []
+    userManagerStore.setFilterObj(filterObj)
+    commonStore.setAppLoading(true)
+    userManagerStore.getListUsers()
+      .finally(() => commonStore.setAppLoading(false))
   }
 
   useEffect(() => {
-    console.log(moment().valueOf())
     commonStore.setAppLoading(true)
-    userManagerStore.getListUsers(filterObj)
+    userManagerStore.getListUsers()
       .finally(() => commonStore.setAppLoading(false))
-  }, [
-    filterObj,
-  ])
+  }, [])
+
+  useEffect(() => {
+    appSettingStore.getListStatusUser()
+  }, [])
 
   return (
     <DefaultLayout>
@@ -212,8 +227,11 @@ const UserManagerPage = props => {
                 label={'Trạng thái'}
                 name={'ActiveStatuses'}>
                 <Select placeholder={'Tất cả'} allowClear mode={'multiple'}>
-                  <Select.Option value={1}>Hoạt động</Select.Option>
-                  <Select.Option value={0}>Ngừng hoạt động</Select.Option>
+                  {
+                    listStatusUser && listStatusUser.map(item =>
+                      <Select.Option key={item.Status} value={item.Status}>{item.Description}</Select.Option>,
+                    )
+                  }
                 </Select>
               </Form.Item>
             </Col>
@@ -252,7 +270,12 @@ const UserManagerPage = props => {
           <PaginationLabel>
             Hiển thị từ 1 đến 10 trên tổng số 200 bản ghi
           </PaginationLabel>
-          <Pagination defaultCurrent={1} total={500} onChange={handleChangePagination} />
+          <Pagination
+            current={filterObj.PageIndex}
+            pageSize={filterObj.PageSize}
+            total={totalCountUsers}
+            showSizeChanger
+            onChange={handleChangePagination} />
         </RowSpaceBetweenDiv>
         <DetailUserModal
           user={editInfoUser}
@@ -277,4 +300,9 @@ const UserManagerPage = props => {
 
 UserManagerPage.propTypes = {}
 
-export default inject('authenticationStore', 'commonStore', 'userManagerStore')(observer(UserManagerPage))
+export default inject(
+  'authenticationStore',
+  'commonStore',
+  'userManagerStore',
+  'appSettingStore',
+)(observer(UserManagerPage))

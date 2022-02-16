@@ -48,7 +48,9 @@ const validator = {
   validateEmail: (rule, value, callback) => {
     // const regex = /^[A-Za-z][A-Za-z0-9-_\.]{1,32}(\+?[0-9]){0,5}@[A-Za-z0-9_-]{2,}(\.[A-Za-z0-9]{2,4}){1,2}$/gm
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (value && !regex.test(value)) {
+    if (!value || value.trim()?.length === 0) {
+      callback('Vui lòng nhập Email')
+    } else if (!regex.test(value)) {
       callback('Email không đúng định dạng')
     } else {
       callback()
@@ -122,7 +124,9 @@ const validator = {
   validatePhoneNumber: (rule, value, callback) => {
     // const regex = /(84|\+84|0[35789])+([0-9]{8,9})\b/g
     const regex = /(0[35789])+([0-9]{8})\b/g
-    if (value && (!regex.test(value) || value.length > 12)) {
+    if (!value || value.trim()?.length === 0) {
+      callback('Vui lòng nhập số điện thoại')
+    } else if (!regex.test(value)) {
       callback('Số điện thoại không đúng định dạng')
     } else {
       callback()

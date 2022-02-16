@@ -10,8 +10,8 @@ export const GroupManagerRequest = {
   },
   getListGroups: () => {
     return axios({
-      method: 'post',
-      url: `${apiUrl}/GetClientType`,
+      method: 'get',
+      url: `${apiUrl}/ListGroup`,
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${authenticationStore.accessToken}`,

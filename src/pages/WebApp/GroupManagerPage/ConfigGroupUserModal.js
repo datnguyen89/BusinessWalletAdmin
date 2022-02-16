@@ -180,7 +180,6 @@ const ConfigGroupUserModal = props => {
   }
 
   useEffect(() => {
-    console.log(group)
     if (group) {
       //// Get list user in group depend group
 

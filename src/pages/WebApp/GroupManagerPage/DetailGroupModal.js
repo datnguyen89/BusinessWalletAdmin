@@ -1,9 +1,12 @@
 import React, { useEffect } from 'react'
+import { inject, observer } from 'mobx-react'
 import PropTypes from 'prop-types'
 import { Button, Col, Form, Input, Modal, Row, Select } from 'antd'
 
 const DetailGroupModal = props => {
-  const { group, visible, onClose } = props
+  const { group, visible, onClose, appSettingStore } = props
+
+  const { clientTypes } = appSettingStore
 
   const [formConfigGroup] = Form.useForm()
 
@@ -40,17 +43,21 @@ const DetailGroupModal = props => {
         form={formConfigGroup}
         onFinish={onFinish}
         colon={false}>
-        <Form.Item label={'Loại hệ thống'} name={'ClientIds'}>
-          <Select mode={'multiple'} placeholder={'Chọn loại hệ thống'}>
-            <Select.Option value={'1'}>Loại 1</Select.Option>
-            <Select.Option value={'2'}>Loại 2</Select.Option>
-            <Select.Option value={'3'}>Loại 3</Select.Option>
+        <Form.Item
+          label={'Loại hệ thống'} name={'ClientType'}
+        >
+          <Select placeholder={'Chọn loại hệ thống'} allowClear>
+            {
+              clientTypes && clientTypes.map(item =>
+                <Select.Option key={item} value={item}>{item}</Select.Option>,
+              )
+            }
           </Select>
         </Form.Item>
-        <Form.Item label={'Tên nhóm'} name={'tenNhom'}>
+        <Form.Item label={'Tên nhóm'} name={'Name'}>
           <Input showCount maxLength={20} placeholder={'Nhập nội dung'} />
         </Form.Item>
-        <Form.Item label={'Mô tả'} name={'Mô tả'}>
+        <Form.Item label={'Mô tả'} name={'Description'}>
           <Input.TextArea rows={3} showCount maxLength={100} placeholder={'Nhập nội dung'} />
         </Form.Item>
 
@@ -75,4 +82,4 @@ DetailGroupModal.propTypes = {
   onClose: PropTypes.func.isRequired,
 }
 
-export default DetailGroupModal
+export default inject('appSettingStore')(observer(DetailGroupModal))

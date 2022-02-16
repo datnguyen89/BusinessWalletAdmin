@@ -30,4 +30,28 @@ export const UserManagerRequest = {
       data: payload,
     })
   },
+  getUserById: (payload) => {
+    return axios({
+      method: 'post',
+      url: `${apiUrl}/GetUserById`,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authenticationStore.accessToken}`,
+      },
+      data: payload,
+    })
+  },
+  updateInfoUser: (payload) => {
+    return axios({
+      method: 'post',
+      url: `${apiUrl}/UpdateUser`,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authenticationStore.accessToken}`,
+      },
+      data: payload,
+    })
+  },
+
+
 }

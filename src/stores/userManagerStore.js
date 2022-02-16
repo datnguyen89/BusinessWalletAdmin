@@ -7,7 +7,7 @@ class UserManagerStore {
     return new Promise((resolve, reject) => {
       UserManagerRequest.registerUser(payload)
         .then(response => {
-          resolve(response)
+          resolve(response.data)
         })
         .catch(error => reject(error))
     })
@@ -22,20 +22,50 @@ class UserManagerStore {
     PageIndex: 1,
     PageSize: 10,
   }
+  @observable resetFilterObj = {
+    CreatedDateFrom: 0,
+    CreatedDateTo: 0,
+    FullName: '',
+    UserName: '',
+    ActiveStatuses: [],
+    PageIndex: 1,
+    PageSize: 10,
+  }
 
   @action setFilterObj = e => {
     this.filterObj = e
   }
 
   @observable listUsers = []
+  @observable totalCountUsers = 0
 
-  @action getListUsers = (payload) => {
+  @action getListUsers = () => {
     return new Promise((resolve, reject) => {
-      UserManagerRequest.getListUsers(payload)
+      UserManagerRequest.getListUsers(this.filterObj)
         .then(response => {
           if (response.data.Data) {
             this.listUsers = response.data.Data.Data
+            this.totalCountUsers = response.data.Data.TotalData
+
           }
+          resolve(response.data)
+        })
+        .catch(error => reject(error))
+    })
+  }
+  @action getUserById = (payload) => {
+    return new Promise((resolve, reject) => {
+      UserManagerRequest.getUserById(payload)
+        .then(response => {
+          resolve(response.data)
+        })
+        .catch(error => reject(error))
+    })
+  }
+  @action updateInfoUser = (payload) => {
+    return new Promise((resolve, reject) => {
+      UserManagerRequest.updateInfoUser(payload)
+        .then(response => {
           resolve(response.data)
         })
         .catch(error => reject(error))
