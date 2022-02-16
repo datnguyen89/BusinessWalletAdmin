@@ -71,6 +71,15 @@ class UserManagerStore {
         .catch(error => reject(error))
     })
   }
+  @action resetPassword = (payload) => {
+    return new Promise((resolve, reject) => {
+      UserManagerRequest.resetPassword(payload)
+        .then(response => {
+          resolve(response.data)
+        })
+        .catch(error => reject(error))
+    })
+  }
 }
 
 export default new UserManagerStore()

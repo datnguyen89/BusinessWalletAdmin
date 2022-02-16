@@ -10,29 +10,16 @@ const SetPasswordUserModal = props => {
 
   const onFinish = (formCollection) => {
     console.log(formCollection)
-    if (user?.id > 0) {
 
-    } else {
-      userManagerStore.registerUser(formCollection)
-    }
   }
   const handleCancel = () => {
     formConfigUser.resetFields()
     onClose()
   }
 
-  useEffect(() => {
-    if (user) {
-      //// Get detail User & Fill form
-      // formConfigUser.setFieldsValue({
-      //
-      // })
-    }
-  }, [user])
-
   return (
     <Modal
-      title={`Đặt lại mật khẩu của người dùng ${user?.hoVaTen}`}
+      title={`Đặt lại mật khẩu của người dùng ${user?.Name}`}
       style={{ top: 50 }}
       visible={visible}
       footer={null}
@@ -44,7 +31,9 @@ const SetPasswordUserModal = props => {
         form={formConfigUser}
         onFinish={onFinish}
         colon={false}>
-        <Form.Item label={'Mật khẩu'} name={'Password'}>
+        <Form.Item
+          label={'Mật khẩu'} name={'Password'}
+          rules={[{ required: true, message: 'Vui lòng nhập mật khẩu' }]}>
           <Input showCount maxLength={20} placeholder={'Nhập nội dung'} />
         </Form.Item>
         <Form.Item

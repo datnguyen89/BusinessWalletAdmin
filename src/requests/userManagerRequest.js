@@ -52,6 +52,17 @@ export const UserManagerRequest = {
       data: payload,
     })
   },
+  resetPassword: (payload) => {
+    return axios({
+      method: 'post',
+      url: `${apiUrl}/ResetPassword`,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authenticationStore.accessToken}`,
+      },
+      data: payload,
+    })
+  },
 
 
 }
