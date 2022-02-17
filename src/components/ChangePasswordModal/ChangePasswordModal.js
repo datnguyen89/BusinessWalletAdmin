@@ -7,123 +7,106 @@ import OtpModal from '../OtpModal'
 import SuccessModal from '../SuccessModal'
 
 const ChangePasswordModal = props => {
-  const { onClose, onSuccess, visible } = props
+  const { onClose, visible, authenticationStore } = props
   const [formChangePassword] = Form.useForm()
+  const { jwtDecode } = authenticationStore
 
-  const [visibleOtp, setVisibleOtp] = useState(false)
-  const [visibleSuccess, setVisibleSuccess] = useState(false)
 
   const handleCancel = () => {
     onClose()
     formChangePassword.resetFields()
   }
   const onFinishChangePassword = (formCollection) => {
-    console.log('Success:', formCollection)
-    // TODO: handle submit new password then close modal change password
-    onClose()
-    // TODO: show modal OTP
-    setVisibleOtp(true)
-  }
-  const onFinishFailedChangePassword = (errorInfo) => {
-    console.log('Failed:', errorInfo)
-  }
-  const handleCallbackOtp = (otp) => {
-    console.log(otp)
-    setVisibleOtp(false)
-    setVisibleSuccess(true)
-  }
+    console.log(formCollection)
+    let payload = {
+      UserId: jwtDecode.sub,
+      OldPassword: formCollection.oldPassword,
+      NewPassword: formCollection.password,
+    }
+    authenticationStore.changePassword(payload)
+      .then(res => {
+        if (!res.Error) {
+          formChangePassword.resetFields()
+          onClose()
+          message.success('Đổi mật khẩu thành công')
+        }
+      })
 
-  const handleSuccessChangePassword = () => {
-    setVisibleSuccess(false)
-    onSuccess()
   }
-
-  useEffect(() => {
-    formChangePassword.resetFields()
-  }, [visible])
 
   return (
-    <>
-      <ChangePasswordModalWrapper
-        width={550}
-        title='Đổi mật khẩu'
-        forceRender={true}
-        maskClosable={false}
-        visible={visible}
-        footer={null}
-        onCancel={handleCancel}>
-        <Form
-          form={formChangePassword}
-          name='basic'
-          labelCol={{ span: 0 }}
-          wrapperCol={{ span: 24 }}
-          onFinish={onFinishChangePassword}
-          onFinishFailed={onFinishFailedChangePassword}
-          autoComplete='off'
-          colon={false}
+
+    <ChangePasswordModalWrapper
+      width={550}
+      title='Đổi mật khẩu'
+      forceRender={true}
+      maskClosable={false}
+      visible={visible}
+      footer={null}
+      onCancel={handleCancel}>
+      <Form
+        form={formChangePassword}
+        name='basic'
+        labelCol={{ span: 0 }}
+        wrapperCol={{ span: 24 }}
+        onFinish={onFinishChangePassword}
+        autoComplete='off'
+        colon={false}
+      >
+        <Form.Item
+          label=''
+          name='oldPassword'
+          rules={[{ required: true, message: 'Vui lòng nhập mật khẩu hiện tại' }]}
         >
-          <Form.Item
-            label=''
-            name='oldPassword'
-            rules={[{ required: true, message: 'Vui lòng nhập mật khẩu hiện tại' }]}
-          >
-            <Input.Password className={'auth-input'} placeholder={'Mật khẩu hiện tại'} />
-          </Form.Item>
-          <Form.Item
-            label=''
-            name='password'
-            rules={[{ required: true, message: 'Vui lòng nhập mật khẩu mới' }]}
-          >
-            <Input.Password className={'auth-input'} placeholder={'Mật khẩu mới'} />
-          </Form.Item>
-          <Form.Item
-            label=''
-            dependencies={['password']}
-            name='confirmPassword'
-            rules={[
-              { required: true, message: 'Vui lòng nhập lại mật khẩu mới' },
-              ({ getFieldValue }) => ({
-                validator(_, value) {
-                  if (!value || getFieldValue('password') === value) {
-                    return Promise.resolve()
-                  }
-                  return Promise.reject(new Error('Mật khẩu xác nhận không trùng khớp'))
-                },
-              }),
-            ]}
-          >
-            <Input.Password className={'auth-input'} placeholder={'Xác nhận mật khẩu mới'} />
-          </Form.Item>
-          <Form.Item>
+          <Input.Password className={'auth-input'} placeholder={'Mật khẩu hiện tại'} />
+        </Form.Item>
+        <Form.Item
+          label=''
+          name='password'
+          rules={[{ required: true, message: 'Vui lòng nhập mật khẩu mới' }]}
+        >
+          <Input.Password className={'auth-input'} placeholder={'Mật khẩu mới'} />
+        </Form.Item>
+        <Form.Item
+          label=''
+          dependencies={['password']}
+          name='confirmPassword'
+          rules={[
+            { required: true, message: 'Vui lòng nhập lại mật khẩu mới' },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || getFieldValue('password') === value) {
+                  return Promise.resolve()
+                }
+                return Promise.reject(new Error('Mật khẩu xác nhận không trùng khớp'))
+              },
+            }),
+          ]}
+        >
+          <Input.Password className={'auth-input'} placeholder={'Xác nhận mật khẩu mới'} />
+        </Form.Item>
+        <Form.Item>
             <span>
               * Vui lòng đặt mật khẩu gồm cả số và chữ, tối thiểu 8 ký tự và chứa ký tự đặc biệt
             </span>
-          </Form.Item>
-          <Row align={'middle'} justify={'center'}>
-            <Col span={11}>
-              <Button type='primary' htmlType='submit' block>
-                Tiếp theo
-              </Button>
-            </Col>
-          </Row>
-        </Form>
-      </ChangePasswordModalWrapper>
-      <OtpModal
-        visible={visibleOtp}
-        callbackOtp={handleCallbackOtp}
-        onCancel={() => setVisibleOtp(false)}
-        phoneNumber={'0379631004'} />
-      <SuccessModal visible={visibleSuccess} description={'Đối mật khẩu thành công'}
-                    callbackSuccess={handleSuccessChangePassword} />
-    </>
+        </Form.Item>
+        <Row align={'middle'} justify={'center'}>
+          <Col span={11}>
+            <Button type='primary' htmlType='submit' block>
+              Tiếp theo
+            </Button>
+          </Col>
+        </Row>
+      </Form>
+    </ChangePasswordModalWrapper>
+
 
   )
 }
 
 ChangePasswordModal.propTypes = {
   visible: PropTypes.bool.isRequired,
-  onSuccess: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
 }
 
-export default ChangePasswordModal
+export default inject('authenticationStore')(observer(ChangePasswordModal))

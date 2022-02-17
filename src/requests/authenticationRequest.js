@@ -18,14 +18,16 @@ export const AuthenticationRequest = {
       data: { UserName: payload.UserName, Password: payload.Password, ClientId: payload.ClientId },
     })
   },
-  userGet: (payload) => {
+
+  changePassword: (payload) => {
     return axios({
-      method: 'get',
-      url: `${apiUrl}/api/auth/login`,
+      method: 'post',
+      url: `${apiUrl}/ChangePassword`,
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authenticationStore.accessToken}`,
       },
-      params: { username: payload.username, password: payload.password },
+      data: payload
     })
   },
 }

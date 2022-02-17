@@ -104,7 +104,7 @@ const DetailUserModal = props => {
               label={'Hệ thống'}>
               {
                 selectingUser && listClients.filter(item => selectingUser.ClientIds.includes(item.ClientId)).map(item =>
-                  <Tag>{item.Name}</Tag>,
+                  <Tag key={item.ClientId}>{item.Name}</Tag>,
                 )
               }
             </Form.Item>

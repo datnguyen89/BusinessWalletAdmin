@@ -18,7 +18,7 @@ import TopSellingTable from '../../../components/TopSellingTable/TopSellingTable
 
 
 const HomePage = props => {
-  const { commonStore } = props
+  const { commonStore, authenticationStore } = props
   const { appTheme } = commonStore
 
   return (
@@ -35,4 +35,4 @@ const HomePage = props => {
 
 HomePage.propTypes = {}
 
-export default inject('commonStore')(observer(HomePage))
+export default inject('commonStore', 'authenticationStore')(observer(HomePage))

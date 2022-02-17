@@ -2,8 +2,14 @@ import { action, autorun, observable } from 'mobx'
 import { AuthenticationRequest } from '../requests/authenticationRequest'
 
 class AuthenticationStore {
+  constructor() {
+    autorun(() => {
+      this.jwtDecode = JSON.parse(atob(this.accessToken?.split('.')[1]))
+    })
+  }
 
-  @observable accessToken = localStorage.getItem('jwt') || undefined  
+  @observable accessToken = localStorage.getItem('jwt') || undefined
+  @observable jwtDecode = null
 
   @action userLogin = (payload) => {
     return new Promise((resolve, reject) => {
@@ -19,6 +25,16 @@ class AuthenticationStore {
         .catch(error => reject(error))
     })
   }
+   @action changePassword = (payload) => {
+    return new Promise((resolve, reject) => {
+      AuthenticationRequest.changePassword(payload)
+        .then(response => {
+          resolve(response.data)
+        })
+        .catch(error => reject(error))
+    })
+  }
+
   @action userLogout = () => {
     return new Promise((resolve, reject) => {
       localStorage.removeItem('jwt')
