@@ -21,7 +21,7 @@ const DetailGroupModal = props => {
       }
       groupManagerStore.addGroup(payload)
         .then(res => {
-          if (!res.Error) {
+          if (!res.error) {
             onClose()
             formConfigGroup.resetFields()
             message.success('Thêm mới nhóm thành công')

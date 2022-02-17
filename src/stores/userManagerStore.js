@@ -50,9 +50,9 @@ class UserManagerStore {
     return new Promise((resolve, reject) => {
       UserManagerRequest.getListUsers(this.filterObj)
         .then(response => {
-          if (response.data.Data) {
-            this.listUsers = response.data.Data.Data
-            this.totalCountUsers = response.data.Data.TotalData
+          if (response.data?.data) {
+            this.listUsers = response.data?.data.data
+            this.totalCountUsers = response.data?.data.totalData
           }
           resolve(response.data)
         })
@@ -65,7 +65,7 @@ class UserManagerStore {
     return new Promise((resolve, reject) => {
       UserManagerRequest.getUserById(payload)
         .then(response => {
-          this.selectingUser = response.data.Data
+          this.selectingUser = response.data?.data
           resolve(response.data)
         })
         .catch(error => reject(error))
@@ -89,13 +89,22 @@ class UserManagerStore {
         .catch(error => reject(error))
     })
   }
+  @action updateRoleUser = (payload) => {
+    return new Promise((resolve, reject) => {
+      UserManagerRequest.updateRoleUser(payload)
+        .then(response => {
+          resolve(response.data)
+        })
+        .catch(error => reject(error))
+    })
+  }
 
   @observable treeRoles = []
   @action getTreeRoles = (payload) => {
     return new Promise((resolve, reject) => {
       UserManagerRequest.getTreeRoles(payload)
         .then(response => {
-          this.treeRoles = response.data?.Data?.TreeRolesModel?.Children
+          this.treeRoles = response.data?.data?.treeRolesModel?.children
           resolve(response.data)
         })
         .catch(error => reject(error))

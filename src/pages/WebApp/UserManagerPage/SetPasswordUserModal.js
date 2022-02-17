@@ -11,13 +11,13 @@ const SetPasswordUserModal = props => {
 
   const onFinish = (formCollection) => {
     let payload = {
-      UserId: user.UserId,
-      NewPassword: formCollection.Password,
+      UserId: user.userId,
+      NewPassword: formCollection.password,
     }
     userManagerStore.resetPassword(payload)
       .then(res => {
-        if (!res.Error) {
-          message.success(`Đặt lại mật khẩu cho người dùng ${user?.Name} thành công`)
+        if (!res.error) {
+          message.success(`Đặt lại mật khẩu cho người dùng ${user?.name || ''} thành công`)
           formConfigUser.resetFields()
           onClose()
         }
@@ -32,7 +32,7 @@ const SetPasswordUserModal = props => {
   return (
     <Modal
       forceRender={true}
-      title={`Đặt lại mật khẩu của người dùng ${user?.Name}`}
+      title={`Đặt lại mật khẩu của người dùng ${user?.name || ''}`}
       style={{ top: 50 }}
       visible={visible}
       footer={null}
@@ -45,7 +45,7 @@ const SetPasswordUserModal = props => {
         onFinish={onFinish}
         colon={false}>
         <Form.Item
-          label={'Mật khẩu'} name={'Password'}
+          label={'Mật khẩu'} name={'password'}
           rules={[
             { required: true, message: 'Vui lòng nhập mật khẩu' },
             { min: 6, message: 'Mật khẩu tối thiểu 6 ký tự' },
@@ -54,12 +54,12 @@ const SetPasswordUserModal = props => {
         </Form.Item>
         <Form.Item
           label={'Xác nhận mật khẩu'}
-          name={'ConfirmPassword'}
+          name={'confirmPassword'}
           rules={[
             { required: true, message: 'Vui lòng nhập lại mật khẩu mới' },
             ({ getFieldValue }) => ({
               validator(_, value) {
-                if (!value || getFieldValue('Password') === value) {
+                if (!value || getFieldValue('password') === value) {
                   return Promise.resolve()
                 }
                 return Promise.reject(new Error('Mật khẩu xác nhận không trùng khớp'))

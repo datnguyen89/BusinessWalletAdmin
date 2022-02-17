@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Button, Col, Divider, Form, Input, Modal, Row, Space, Tag, Tree, TreeSelect } from 'antd'
-import { APP_CLIENT_ID, DEVICE } from '../../../utils/constant'
+import { Button, Col, Divider, Form, Input, message, Modal, Row, Space, Tag, Tree, TreeSelect } from 'antd'
+import { APP_CLIENT_ID, DEVICE, ROLE_TYPES } from '../../../utils/constant'
 import { inject, observer } from 'mobx-react'
 import { toJS } from 'mobx'
 
@@ -11,17 +11,30 @@ const ConfigUserRoleModal = props => {
   const { treeRoles } = userManagerStore
   const [formConfigUserRole] = Form.useForm()
 
+  const [selectedKeys, setSelectedKeys] = useState([])
+  const [checkedKeys, setCheckedKeys] = useState([])
+
   const onFinish = (formCollection) => {
-    console.log(formCollection)
+    let realRoleIds = checkedKeys.filter(item => isNaN(item) && !ROLE_TYPES.includes(item))
+    let payload = {
+      UserId: user?.userId,
+      Roles: realRoleIds,
+    }
+    userManagerStore.updateRoleUser(payload)
+      .then(res => {
+        if (!res.error) {
+          message.success(`Phân quyền người dùng ${user?.name} thành công`)
+          formConfigUserRole.resetFields()
+          setCheckedKeys([])
+          onClose()
+        }
+      })
   }
   const handleCancel = () => {
     formConfigUserRole.resetFields()
     onClose()
   }
 
-
-  const [selectedKeys, setSelectedKeys] = useState(['500', '600'])
-  const [checkedKeys, setCheckedKeys] = useState(['3300', '5'])
 
   const onCheck = (checkedKeysValue) => {
     console.log('onCheck', checkedKeysValue)
@@ -35,11 +48,11 @@ const ConfigUserRoleModal = props => {
     if (!user) return
     let payload = {
       ClientId: APP_CLIENT_ID,
-      UserId: user.UserId,
+      UserId: user.userId,
     }
     userManagerStore.getTreeRoles(payload)
       .then(res => {
-        console.log(res)
+        setCheckedKeys(res?.data?.roleIdsForTree || [])
       })
   }, [user])
 
@@ -47,30 +60,11 @@ const ConfigUserRoleModal = props => {
     console.log(toJS(treeRoles))
   }, [treeRoles])
 
-  const tree = [
-    {
-      "title": "Tạo lập",
-      "value": "Init",
-      "key": "Init",
-      "disabled": false,
-      "children": [
-        {
-          "title": "Liên kết ngân hàng",
-          "value": "1",
-          "key": "1",
-          "disabled": false,
-          "children": []
-        },
-
-      ]
-    },
-
-  ]
 
   return (
     <Modal
       forceRender={true}
-      title={`Phân quyền người dùng ${user?.hoVaTen}`}
+      title={`Phân quyền người dùng ${user?.name || ''}`}
       style={{ top: 50 }}
       visible={visible}
       footer={null}
@@ -90,17 +84,21 @@ const ConfigUserRoleModal = props => {
         colon={false}>
         <Form.Item
           label={'Phân quyền'}>
-          <Tree
-            multiple
-            selectedKeys={selectedKeys}
-            selectable={true}
-            defaultExpandAll={true}
-            checkable
-            onCheck={onCheck}
-            onSelect={onSelect}
-            checkedKeys={checkedKeys}
-            treeData={tree}
-          />
+          {
+            treeRoles && treeRoles.length > 0 &&
+            <Tree
+              multiple
+              selectedKeys={selectedKeys}
+              selectable={true}
+              defaultExpandAll={true}
+              checkable
+              onCheck={onCheck}
+              onSelect={onSelect}
+              checkedKeys={checkedKeys}
+              treeData={treeRoles}
+            />
+          }
+
         </Form.Item>
         <Form.Item label={''}>
           <Row justify={'center'} gutter={32}>

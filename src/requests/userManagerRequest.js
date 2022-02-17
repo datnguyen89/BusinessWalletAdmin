@@ -63,6 +63,18 @@ export const UserManagerRequest = {
       data: payload,
     })
   },
+  updateRoleUser: (payload) => {
+    return axios({
+      method: 'post',
+      url: `${apiUrl}/UpdateRoleUser`,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authenticationStore.accessToken}`,
+      },
+      data: payload,
+    })
+  },
+
   getTreeRoles: (payload) => {
     return axios({
       method: 'post',

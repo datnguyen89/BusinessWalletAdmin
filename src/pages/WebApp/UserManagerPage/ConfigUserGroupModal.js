@@ -15,15 +15,15 @@ const ConfigUserGroupModal = props => {
   const onFinish = (formCollection) => {
     console.log(formCollection)
     let payload = {
-      UserId: user?.UserId,
+      UserId: user?.userId,
       GroupIds: formCollection.Groups
     }
     groupManagerStore.updateGroupForUser(payload)
       .then(res => {
-        if (!res.Error) {
+        if (!res.error) {
           onClose()
           formConfigUserGroup.resetFields()
-          message.success(`Phân nhóm cho người dùng ${user?.Name} thành công`)
+          message.success(`Phân nhóm cho người dùng ${user?.name || ''} thành công`)
         }
       })
 
@@ -35,7 +35,7 @@ const ConfigUserGroupModal = props => {
 
   useEffect(() => {
     if (!user) return
-    groupManagerStore.getGroupByUser({ UserId: user.UserId })
+    groupManagerStore.getGroupByUser({ UserId: user.userId })
   }, [user])
 
   useEffect(() => {
@@ -51,7 +51,7 @@ const ConfigUserGroupModal = props => {
   return (
     <Modal
       forceRender={true}
-      title={`Phân nhóm người dùng ${user?.Name}`}
+      title={`Phân nhóm người dùng ${user?.name || ''}`}
       style={{ top: 50 }}
       visible={visible}
       footer={null}
@@ -68,8 +68,8 @@ const ConfigUserGroupModal = props => {
             <Row>
               {
                 listGroups && listGroups.map(item =>
-                  <Col key={item.GroupId} xxl={12} xl={12} lg={12} md={12} sm={12} xs={12}>
-                    <Checkbox value={item.GroupId}>{item.Name}</Checkbox>
+                  <Col key={item.groupId} xxl={12} xl={12} lg={12} md={12} sm={12} xs={12}>
+                    <Checkbox value={item.groupId}>{item.name}</Checkbox>
                   </Col>,
                 )
               }

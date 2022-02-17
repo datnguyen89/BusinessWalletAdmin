@@ -10,7 +10,7 @@ class AppSettingStore {
       AppSettingRequest.getClientType()
         .then(response => {
           if (!response.data.Error) {
-            this.clientTypes = response.data.Data
+            this.clientTypes = response.data?.data
           }
           resolve(response.data)
         })
@@ -23,7 +23,7 @@ class AppSettingStore {
       AppSettingRequest.getListStatusUser()
         .then(response => {
           if (!response.data.Error) {
-            this.listStatusUser = response.data.Data
+            this.listStatusUser = response.data?.data
           }
           resolve(response.data)
         })
@@ -36,7 +36,7 @@ class AppSettingStore {
       AppSettingRequest.getClients()
         .then(response => {
           if (!response.data.Error) {
-            this.listClients = response.data.Data
+            this.listClients = response.data?.data
           }
           resolve(response.data)
         })

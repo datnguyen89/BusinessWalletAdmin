@@ -5,7 +5,7 @@ class GroupManagerStore {
 
   constructor() {
     autorun(() => {
-      this.listGroupIdByUser = this.listGroupByUser.map(item => item.GroupId)
+      this.listGroupIdByUser = this.listGroupByUser.map(item => item.groupId)
       this.resetFilterObj.PageSize = this.filterObj.PageSize
       this.resetFilterObjUser.PageSize = this.filterObjUser.PageSize
     })
@@ -18,7 +18,7 @@ class GroupManagerStore {
       GroupManagerRequest.getListGroups()
         .then(response => {
           if (!response.data.Error) {
-            this.listGroups = response.data.Data
+            this.listGroups = response.data?.data
           }
           resolve(response.data)
         })
@@ -48,8 +48,8 @@ class GroupManagerStore {
       GroupManagerRequest.getListGroupsPaging(this.filterObj)
         .then(response => {
           if (!response.data.Error) {
-            this.listGroupsPaging = response.data.Data.Data
-            this.totalCountGroupsPaging = response.data.Data.TotalData
+            this.listGroupsPaging = response.data?.data.data
+            this.totalCountGroupsPaging = response.data?.data.totalData
           }
           resolve(response.data)
         })
@@ -73,7 +73,7 @@ class GroupManagerStore {
       GroupManagerRequest.getGroupByUser(payload)
         .then(response => {
           if (!response.data.Error) {
-            this.listGroupByUser = response.data.Data
+            this.listGroupByUser = response.data?.data
           }
           resolve(response.data)
         })
@@ -120,8 +120,8 @@ class GroupManagerStore {
       GroupManagerRequest.getListUsersInGroup(this.filterObjUser)
         .then(response => {
           if (!response.data.Error) {
-            this.listUsersInGroup = response.data.Data.Data
-            this.totalCountUsersInGroup = response.data.Data.TotalData
+            this.listUsersInGroup = response.data?.data.data
+            this.totalCountUsersInGroup = response.data?.data.totalData
           }
           resolve(response.data)
         })
