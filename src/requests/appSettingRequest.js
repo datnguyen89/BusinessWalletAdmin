@@ -28,6 +28,16 @@ export const AppSettingRequest = {
       },
     })
   },
+  getClients: () => {
+    return axios({
+      method: 'post',
+      url: `${apiUrl}/GetClients`,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authenticationStore.accessToken}`,
+      },
+    })
+  },
 
 
 }

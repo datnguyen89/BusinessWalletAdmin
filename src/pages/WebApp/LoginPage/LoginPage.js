@@ -5,7 +5,7 @@ import { Button, Checkbox, Col, Divider, Form, Input, message, Row } from 'antd'
 import { FormLoginWrapper, LoginDescription, LoginPageWrapper, LoginTitle } from './LoginPageStyled'
 import { Link, useHistory } from 'react-router-dom'
 import * as forge from 'node-forge'
-import { CLIENTS, PAGES, PUBLIC_KEY } from '../../../utils/constant'
+import { APP_CLIENT_ID, PAGES, PUBLIC_KEY } from '../../../utils/constant'
 import stringUtils from '../../../utils/stringUtils'
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
 import { ColorLink } from '../../../components/CommonStyled/CommonStyled'
@@ -28,7 +28,7 @@ const LoginPage = props => {
   }
 
   useEffect(() => {
-    formLogin.setFieldsValue({ ClientId: CLIENTS.ADMIN_CMS.ID })
+    formLogin.setFieldsValue({ ClientId: APP_CLIENT_ID })
   }, [])
 
   return (

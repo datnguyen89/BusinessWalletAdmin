@@ -3,6 +3,13 @@ import { UserManagerRequest } from '../requests/userManagerRequest'
 import moment from 'moment'
 
 class UserManagerStore {
+
+  constructor() {
+    autorun(() => {
+      this.resetFilterObj.PageSize = this.filterObj.PageSize
+    })
+  }
+
   @action registerUser = (payload) => {
     return new Promise((resolve, reject) => {
       UserManagerRequest.registerUser(payload)
@@ -53,10 +60,13 @@ class UserManagerStore {
         .catch(error => reject(error))
     })
   }
+
+  @observable selectingUser = null
   @action getUserById = (payload) => {
     return new Promise((resolve, reject) => {
       UserManagerRequest.getUserById(payload)
         .then(response => {
+          this.selectingUser = response.data.Data
           resolve(response.data)
         })
         .catch(error => reject(error))

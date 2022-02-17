@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { inject, observer } from 'mobx-react'
 import PropTypes from 'prop-types'
-import { Button, Col, Form, Input, message, Modal, Row, Select } from 'antd'
+import { Button, Col, Form, Input, message, Modal, Row, Select, Tag } from 'antd'
 import validator from '../../../validator'
-import { CLIENTS } from '../../../utils/constant'
+import { ColorText } from '../../../components/CommonStyled/CommonStyled'
 
 const DetailUserModal = props => {
   const { user, visible, onClose, userManagerStore, commonStore, appSettingStore } = props
 
-  const { listStatusUser } = appSettingStore
-  const { resetFilterObj } = userManagerStore
+  const { listStatusUser, listClients } = appSettingStore
+  const { resetFilterObj, selectingUser } = userManagerStore
 
   const [formConfigUser] = Form.useForm()
 
@@ -47,14 +47,6 @@ const DetailUserModal = props => {
     onClose()
   }
 
-  const renderClientOptions = () => {
-    let val = []
-    for (const [key, value] of Object.entries(CLIENTS)) {
-      val.push(<Select.Option key={key} value={value.ID}>{value.NAME}</Select.Option>)
-    }
-    return val
-  }
-
   useEffect(() => {
     if (user?.UserId) {
       userManagerStore.getUserById({ UserId: user.UserId })
@@ -72,6 +64,9 @@ const DetailUserModal = props => {
         })
     }
   }, [user])
+  useEffect(() => {
+    appSettingStore.getClients()
+  }, [])
 
   return (
     <Modal
@@ -87,23 +82,47 @@ const DetailUserModal = props => {
         form={formConfigUser}
         onFinish={onFinish}
         colon={false}>
-        <Form.Item
-          label={'Hệ thống'} name={'ClientIds'}
-          rules={[{ required: true, message: 'Vui lòng chọn hệ thống' }]}>
-          <Select
-            disabled={user?.UserId}
-            mode={'multiple'}
-            placeholder={'Chọn hệ thống'}>
-            {
-              renderClientOptions()
-            }
-          </Select>
-        </Form.Item>
-        <Form.Item
-          label={'Tên đăng nhập'} name={'UserName'}
-          rules={[{ required: true, message: 'Vui lòng nhập tên đăng nhập' }]}>
-          <Input disabled={user?.UserId} showCount maxLength={20} placeholder={'Nhập nội dung'} />
-        </Form.Item>
+        {
+          !user?.UserId
+            ?
+            <Form.Item
+              label={'Hệ thống'} name={'ClientIds'}
+              rules={[{ required: true, message: 'Vui lòng chọn hệ thống' }]}>
+              <Select
+                disabled={user?.UserId}
+                mode={'multiple'}
+                placeholder={'Chọn hệ thống'}>
+                {
+                  listClients.map(item =>
+                    <Select.Option key={item.ClientId} value={item.ClientId}>{item.Name}</Select.Option>,
+                  )
+                }
+              </Select>
+            </Form.Item>
+            :
+            <Form.Item
+              label={'Hệ thống'}>
+              {
+                selectingUser && listClients.filter(item => selectingUser.ClientIds.includes(item.ClientId)).map(item =>
+                  <Tag>{item.Name}</Tag>,
+                )
+              }
+            </Form.Item>
+        }
+        {
+          !user?.UserId
+            ?
+            <Form.Item
+              label={'Tên đăng nhập'} name={'UserName'}
+              rules={[{ required: true, message: 'Vui lòng nhập tên đăng nhập' }]}>
+              <Input disabled={user?.UserId} showCount maxLength={20} placeholder={'Nhập nội dung'} />
+            </Form.Item>
+            :
+            <Form.Item
+              label={'Tên đăng nhập'}>
+              <ColorText>{selectingUser?.UserName}</ColorText>
+            </Form.Item>
+        }
         {
           !user?.UserId &&
           <>

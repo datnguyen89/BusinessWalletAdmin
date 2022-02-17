@@ -26,20 +26,7 @@ export const PAGES = {
   },
 
 }
-export const CLIENTS = {
-  ADMIN_CMS: {
-    ID: 4,
-    NAME: 'Admin CMS',
-  },
-  CUSTOMER_CMS: {
-    ID: 5,
-    NAME: 'Customer CMS',
-  },
-  WEB_APPLICATION: {
-    ID: 6,
-    NAME: 'Web Application',
-  },
-}
+export const APP_CLIENT_ID = 4
 export const SIDEBAR_WIDTH_EXPAND = 240
 export const SIDEBAR_WIDTH_COLLAPSE = 64
 export const DEVICE = {

@@ -30,7 +30,7 @@ const { RangePicker } = DatePicker
 
 const UserManagerPage = props => {
   const { commonStore, userManagerStore, appSettingStore } = props
-  const { device } = commonStore
+  const { device, appLoading } = commonStore
   const { listStatusUser } = appSettingStore
   const {
     listUsers,
@@ -164,12 +164,14 @@ const UserManagerPage = props => {
     setConfigRoleUser(null)
   }
   const handleFilterUser = (e) => {
-    filterObj.CreatedDateFrom = e.rangerFilterDate ? e.rangerFilterDate[0].valueOf() : 0
-    filterObj.CreatedDateTo = e.rangerFilterDate ? e.rangerFilterDate[1].valueOf() : 0
-    filterObj.FullName = e.FullName ? e.FullName : ''
-    filterObj.UserName = e.UserName ? e.UserName : ''
-    filterObj.ActiveStatuses = e.ActiveStatuses ? e.ActiveStatuses : []
-    userManagerStore.setFilterObj(filterObj)
+    let newFilterObj = { ...filterObj }
+    newFilterObj.CreatedDateFrom = e.rangerFilterDate ? e.rangerFilterDate[0].valueOf() : 0
+    newFilterObj.CreatedDateTo = e.rangerFilterDate ? e.rangerFilterDate[1].valueOf() : 0
+    newFilterObj.FullName = e.FullName ? e.FullName : ''
+    newFilterObj.UserName = e.UserName ? e.UserName : ''
+    newFilterObj.ActiveStatuses = e.ActiveStatuses ? e.ActiveStatuses : []
+    userManagerStore.setFilterObj(newFilterObj)
+
     commonStore.setAppLoading(true)
     userManagerStore.getListUsers()
       .finally(() => commonStore.setAppLoading(false))
@@ -259,16 +261,27 @@ const UserManagerPage = props => {
             <UserAddOutlined /> Thêm mới người dùng
           </Button>
         </RowFlexEndDiv>
-        <Table
-          bordered={true}
-          scroll={{ x: 1400 }}
-          dataSource={listUsers}
-          columns={columns}
-          rowKey={record => record.UserName}
-          pagination={false} />
+        {
+          appLoading === 0 &&
+          <Table
+            bordered={true}
+            scroll={{ x: 1400 }}
+            dataSource={listUsers}
+            columns={columns}
+            rowKey={record => record.UserName}
+            pagination={false} />
+        }
         <RowSpaceBetweenDiv margin={'16px 0'}>
           <PaginationLabel>
-            Hiển thị từ 1 đến 10 trên tổng số 200 bản ghi
+            {
+              appLoading === 0 &&
+              `Hiển thị từ
+               ${filterObj.PageSize * (filterObj.PageIndex - 1) + 1}
+               đến 
+               ${filterObj.PageSize * (filterObj.PageIndex - 1) + listUsers?.length}
+               trên tổng số 
+               ${totalCountUsers} bản ghi`
+            }
           </PaginationLabel>
           <Pagination
             current={filterObj.PageIndex}

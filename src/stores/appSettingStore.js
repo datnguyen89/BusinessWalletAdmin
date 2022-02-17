@@ -30,6 +30,19 @@ class AppSettingStore {
         .catch(error => reject(error))
     })
   }
+  @observable listClients = []
+  @action getClients = () => {
+    return new Promise((resolve, reject) => {
+      AppSettingRequest.getClients()
+        .then(response => {
+          if (!response.data.Error) {
+            this.listClients = response.data.Data
+          }
+          resolve(response.data)
+        })
+        .catch(error => reject(error))
+    })
+  }
 
 
 }
