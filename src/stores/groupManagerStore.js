@@ -7,6 +7,7 @@ class GroupManagerStore {
     autorun(() => {
       this.listGroupIdByUser = this.listGroupByUser.map(item => item.GroupId)
       this.resetFilterObj.PageSize = this.filterObj.PageSize
+      this.resetFilterObjUser.PageSize = this.filterObjUser.PageSize
     })
   }
 
@@ -27,14 +28,14 @@ class GroupManagerStore {
   @observable listGroupsPaging = []
 
   @observable filterObj = {
-    Name : '',
-    ClientType : '',
+    Name: '',
+    ClientType: '',
     PageIndex: 1,
     PageSize: 10,
   }
   @observable resetFilterObj = {
-    Name : '',
-    ClientType : '',
+    Name: '',
+    ClientType: '',
     PageIndex: 1,
     PageSize: 10,
   }
@@ -83,6 +84,45 @@ class GroupManagerStore {
     return new Promise((resolve, reject) => {
       GroupManagerRequest.updateGroupForUser(payload)
         .then(response => {
+          resolve(response.data)
+        })
+        .catch(error => reject(error))
+    })
+  }
+
+
+  @observable listUsersInGroup = []
+
+  @observable filterObjUser = {
+    CreatedDateFrom: 0,
+    CreatedDateTo: 0,
+    FullName: '',
+    UserName: '',
+    ActiveStatuses: [],
+    PageIndex: 1,
+    PageSize: 10,
+  }
+  @observable resetFilterObjUser = {
+    CreatedDateFrom: 0,
+    CreatedDateTo: 0,
+    FullName: '',
+    UserName: '',
+    ActiveStatuses: [],
+    PageIndex: 1,
+    PageSize: 10,
+  }
+  @action setFilterObjUser = e => {
+    this.filterObjUser = e
+  }
+  @observable totalCountUsersInGroup = 0
+  @action getListUsersInGroup = () => {
+    return new Promise((resolve, reject) => {
+      GroupManagerRequest.getListUsersInGroup(this.filterObjUser)
+        .then(response => {
+          if (!response.data.Error) {
+            this.listUsersInGroup = response.data.Data.Data
+            this.totalCountUsersInGroup = response.data.Data.TotalData
+          }
           resolve(response.data)
         })
         .catch(error => reject(error))

@@ -62,5 +62,16 @@ export const GroupManagerRequest = {
       data: payload,
     })
   },
+  getListUsersInGroup: (payload) => {
+    return axios({
+      method: 'post',
+      url: `${apiUrl}/GetUsers`,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authenticationStore.accessToken}`,
+      },
+      data: payload,
+    })
+  },
 
 }
