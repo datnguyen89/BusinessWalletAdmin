@@ -70,6 +70,7 @@ const DetailUserModal = props => {
 
   return (
     <Modal
+      forceRender={true}
       title={user?.UserId ? `Sửa thông tin người dùng ${user?.Name}` : 'Thêm mới người dùng'}
       style={{ top: 50 }}
       visible={visible}

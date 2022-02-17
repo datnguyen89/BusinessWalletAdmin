@@ -63,6 +63,17 @@ export const UserManagerRequest = {
       data: payload,
     })
   },
+  getTreeRoles: (payload) => {
+    return axios({
+      method: 'post',
+      url: `${apiUrl}/GetTreeRoles`,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authenticationStore.accessToken}`,
+      },
+      data: payload,
+    })
+  },
 
 
 }

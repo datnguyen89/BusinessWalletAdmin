@@ -89,6 +89,20 @@ class UserManagerStore {
         .catch(error => reject(error))
     })
   }
+
+  @observable treeRoles = []
+  @action getTreeRoles = (payload) => {
+    return new Promise((resolve, reject) => {
+      UserManagerRequest.getTreeRoles(payload)
+        .then(response => {
+          this.treeRoles = response.data?.Data?.TreeRolesModel?.Children
+          resolve(response.data)
+        })
+        .catch(error => reject(error))
+    })
+  }
+
+
 }
 
 export default new UserManagerStore()

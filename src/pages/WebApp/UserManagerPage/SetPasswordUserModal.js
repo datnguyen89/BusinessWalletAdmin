@@ -31,6 +31,7 @@ const SetPasswordUserModal = props => {
 
   return (
     <Modal
+      forceRender={true}
       title={`Đặt lại mật khẩu của người dùng ${user?.Name}`}
       style={{ top: 50 }}
       visible={visible}

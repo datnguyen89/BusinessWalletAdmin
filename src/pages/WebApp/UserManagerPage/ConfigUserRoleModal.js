@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Button, Col, Divider, Form, Input, Modal, Row, Space, Tag, Tree, TreeSelect } from 'antd'
-import { DEVICE } from '../../../utils/constant'
+import { APP_CLIENT_ID, DEVICE } from '../../../utils/constant'
 import { inject, observer } from 'mobx-react'
+import { toJS } from 'mobx'
 
 const ConfigUserRoleModal = props => {
-  const { user, visible, onClose, commonStore } = props
+  const { user, visible, onClose, commonStore, userManagerStore } = props
   const { device } = commonStore
+  const { treeRoles } = userManagerStore
   const [formConfigUserRole] = Form.useForm()
 
   const onFinish = (formCollection) => {
@@ -17,174 +19,6 @@ const ConfigUserRoleModal = props => {
     onClose()
   }
 
-  const treeData = [
-    {
-      title: 'Tạo lập',
-      value: '1',
-      key: '1',
-      children: [
-        {
-          title: 'Khởi tạo giao dịch',
-          value: '2',
-          key: '2',
-          children: [
-            {
-              title: 'Trạng thái chờ duyệt',
-              value: '3',
-              key: '3',
-            },
-          ],
-        },
-        {
-          title: 'Quản lý giao dịch tạo lập',
-          value: '4',
-          key: '4',
-          children: [
-            {
-              disabled: true,
-              title: 'Sửa',
-              value: '5',
-              key: '5',
-            },
-            {
-              title: 'Xóa',
-              value: '6',
-              key: '6',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      title: 'Phê duyệt',
-      value: '11',
-      key: '11',
-      children: [
-        {
-          title: 'Quản lý giao dịch',
-          value: '22',
-          key: '22',
-          children: [
-            {
-              title: 'Phê duyệt',
-              value: '33',
-              key: '33',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      title: 'Tạo lập',
-      value: '10',
-      key: '10',
-      children: [
-        {
-          title: 'Khởi tạo giao dịch',
-          value: '20',
-          key: '20',
-          children: [
-            {
-              title: 'Trạng thái chờ duyệt',
-              value: '30',
-              key: '30',
-            },
-          ],
-        },
-        {
-          title: 'Quản lý giao dịch tạo lập',
-          value: '40',
-          key: '40',
-          children: [
-            {
-              title: 'Sửa',
-              value: '50',
-              key: '50',
-            },
-            {
-              title: 'Xóa',
-              value: '60',
-              key: '60',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      title: 'Phê duyệt',
-      value: '110',
-      key: '110',
-      children: [
-        {
-          title: 'Quản lý giao dịch',
-          value: '220',
-          key: '220',
-          children: [
-            {
-              title: 'Phê duyệt',
-              value: '330',
-              key: '330',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      title: 'Tạo lập',
-      value: '100',
-      key: '100',
-      children: [
-        {
-          title: 'Khởi tạo giao dịch',
-          value: '200',
-          key: '200',
-          children: [
-            {
-              title: 'Trạng thái chờ duyệt',
-              value: '300',
-              key: '300',
-            },
-          ],
-        },
-        {
-          title: 'Quản lý giao dịch tạo lập',
-          value: '400',
-          key: '400',
-          children: [
-            {
-              title: 'Sửa',
-              value: '500',
-              key: '500',
-            },
-            {
-              title: 'Xóa',
-              value: '600',
-              key: '600',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      title: 'Phê duyệt',
-      value: '1100',
-      key: '1100',
-      children: [
-        {
-          title: 'Quản lý giao dịch',
-          value: '2200',
-          key: '2200',
-          children: [
-            {
-              title: 'Phê duyệt',
-              value: '3300',
-              key: '3300',
-            },
-          ],
-        },
-      ],
-    },
-  ]
 
   const [selectedKeys, setSelectedKeys] = useState(['500', '600'])
   const [checkedKeys, setCheckedKeys] = useState(['3300', '5'])
@@ -198,17 +32,44 @@ const ConfigUserRoleModal = props => {
   }
 
   useEffect(() => {
-    if (user) {
-      //// Get detail User & Fill form
-      // formConfigUserRole.setFieldsValue({
-      //
-      // })
-      formConfigUserRole.setFieldsValue({})
+    if (!user) return
+    let payload = {
+      ClientId: APP_CLIENT_ID,
+      UserId: user.UserId,
     }
+    userManagerStore.getTreeRoles(payload)
+      .then(res => {
+        console.log(res)
+      })
   }, [user])
+
+  useEffect(() => {
+    console.log(toJS(treeRoles))
+  }, [treeRoles])
+
+  const tree = [
+    {
+      "title": "Tạo lập",
+      "value": "Init",
+      "key": "Init",
+      "disabled": false,
+      "children": [
+        {
+          "title": "Liên kết ngân hàng",
+          "value": "1",
+          "key": "1",
+          "disabled": false,
+          "children": []
+        },
+
+      ]
+    },
+
+  ]
 
   return (
     <Modal
+      forceRender={true}
       title={`Phân quyền người dùng ${user?.hoVaTen}`}
       style={{ top: 50 }}
       visible={visible}
@@ -238,7 +99,7 @@ const ConfigUserRoleModal = props => {
             onCheck={onCheck}
             onSelect={onSelect}
             checkedKeys={checkedKeys}
-            treeData={treeData}
+            treeData={tree}
           />
         </Form.Item>
         <Form.Item label={''}>
@@ -262,4 +123,4 @@ ConfigUserRoleModal.propTypes = {
   onClose: PropTypes.func.isRequired,
 }
 
-export default inject('commonStore')(observer(ConfigUserRoleModal))
+export default inject('commonStore', 'userManagerStore')(observer(ConfigUserRoleModal))

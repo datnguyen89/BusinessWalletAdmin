@@ -50,9 +50,9 @@ const ConfigUserGroupModal = props => {
 
   return (
     <Modal
+      forceRender={true}
       title={`Phân nhóm người dùng ${user?.Name}`}
       style={{ top: 50 }}
-      width={'90%'}
       visible={visible}
       footer={null}
       onCancel={handleCancel}>
@@ -68,7 +68,7 @@ const ConfigUserGroupModal = props => {
             <Row>
               {
                 listGroups && listGroups.map(item =>
-                  <Col key={item.GroupId} xxl={6} xl={6} lg={6} md={6} sm={6} xs={6}>
+                  <Col key={item.GroupId} xxl={12} xl={12} lg={12} md={12} sm={12} xs={12}>
                     <Checkbox value={item.GroupId}>{item.Name}</Checkbox>
                   </Col>,
                 )
@@ -79,10 +79,10 @@ const ConfigUserGroupModal = props => {
 
         <Form.Item label={null} labelCol={{ span: 0 }} wrapperCol={{ span: 24 }}>
           <Row justify={'center'} gutter={32}>
-            <Col xxl={3} xl={4} lg={6} md={10} sm={10} xs={12}>
+            <Col xxl={8} xl={8} lg={8} md={10} sm={10} xs={12}>
               <Button onClick={handleCancel} block>Hủy</Button>
             </Col>
-            <Col xxl={3} xl={4} lg={6} md={10} sm={10} xs={12}>
+            <Col xxl={8} xl={8} lg={8} md={10} sm={10} xs={12}>
               <Button block type={'primary'} htmlType={'submit'}>Lưu thông tin</Button>
             </Col>
           </Row>

@@ -38,16 +38,17 @@ const stringUtils = {
     if (byte === null) return ''
     let result
     if (byte < 1000000) {
-      result = Math.round((byte / 1024) * 100) /100
+      result = Math.round((byte / 1024) * 100) / 100
       return `${result} KB`
     } else if (byte < 1000000000) {
-      result = Math.round((byte / 1024 / 1024) * 100) /100
+      result = Math.round((byte / 1024 / 1024) * 100) / 100
       return `${result} MB`
     } else {
-      result = Math.round((byte / 1024 / 1024 / 1024) * 100) /100
+      result = Math.round((byte / 1024 / 1024 / 1024) * 100) / 100
       return `${result} GB`
     }
-  }
+  },
+
 }
 
 export default stringUtils
