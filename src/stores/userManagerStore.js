@@ -53,7 +53,6 @@ class UserManagerStore {
           if (response.data.Data) {
             this.listUsers = response.data.Data.Data
             this.totalCountUsers = response.data.Data.TotalData
-
           }
           resolve(response.data)
         })

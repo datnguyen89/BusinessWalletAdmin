@@ -1,17 +1,32 @@
 import React, { useEffect } from 'react'
 import { inject, observer } from 'mobx-react'
 import PropTypes from 'prop-types'
-import { Button, Col, Form, Input, Modal, Row, Select } from 'antd'
+import { Button, Checkbox, Col, Form, Input, message, Modal, Row, Select } from 'antd'
 import { DEVICE } from '../../../utils/constant'
+import { toJS } from 'mobx'
 
 const ConfigUserGroupModal = props => {
-  const { user, visible, onClose, commonStore } = props
+  const { user, visible, onClose, commonStore, groupManagerStore } = props
   const { device } = commonStore
+  const { listGroupIdByUser, listGroups } = groupManagerStore
 
   const [formConfigUserGroup] = Form.useForm()
 
   const onFinish = (formCollection) => {
     console.log(formCollection)
+    let payload = {
+      UserId: user?.UserId,
+      GroupIds: formCollection.Groups
+    }
+    groupManagerStore.updateGroupForUser(payload)
+      .then(res => {
+        if (!res.Error) {
+          onClose()
+          formConfigUserGroup.resetFields()
+          message.success(`Phân nhóm cho người dùng ${user?.Name} thành công`)
+        }
+      })
+
   }
   const handleCancel = () => {
     formConfigUserGroup.resetFields()
@@ -19,21 +34,25 @@ const ConfigUserGroupModal = props => {
   }
 
   useEffect(() => {
-    if (user) {
-      //// Get detail User & Fill form
-      // formConfigUserGroup.setFieldsValue({
-      //
-      // })
-      formConfigUserGroup.setFieldsValue({
-        Group: [1, 2],
-      })
-    }
+    if (!user) return
+    groupManagerStore.getGroupByUser({ UserId: user.UserId })
   }, [user])
+
+  useEffect(() => {
+    groupManagerStore.getListGroups()
+  }, [])
+
+  useEffect(() => {
+    formConfigUserGroup.setFieldsValue({
+      Groups: listGroupIdByUser,
+    })
+  }, [listGroupIdByUser])
 
   return (
     <Modal
-      title={`Phân nhóm người dùng ${user?.hoVaTen}`}
+      title={`Phân nhóm người dùng ${user?.Name}`}
       style={{ top: 50 }}
+      width={'90%'}
       visible={visible}
       footer={null}
       onCancel={handleCancel}>
@@ -44,24 +63,26 @@ const ConfigUserGroupModal = props => {
         form={formConfigUserGroup}
         onFinish={onFinish}
         colon={false}>
-        <Form.Item label={'Nhóm'} name={'Group'}>
-          <Select
-            mode={'multiple'}
-            showSearch
-            optionFilterProp={'name'}>
-            <Select.Option value={1} name={'Nhóm 1'}>Nhóm 1</Select.Option>
-            <Select.Option value={2} name={'Nhóm 2'}>Nhóm 2</Select.Option>
-            <Select.Option value={3} name={'Nhóm 3'}>Nhóm 3</Select.Option>
-            <Select.Option value={4} name={'Nhóm 4'}>Nhóm 4</Select.Option>
-          </Select>
+        <Form.Item label={'Nhóm'} name={'Groups'}>
+          <Checkbox.Group style={{ width: '100%' }}>
+            <Row>
+              {
+                listGroups && listGroups.map(item =>
+                  <Col key={item.GroupId} xxl={6} xl={6} lg={6} md={6} sm={6} xs={6}>
+                    <Checkbox value={item.GroupId}>{item.Name}</Checkbox>
+                  </Col>,
+                )
+              }
+            </Row>
+          </Checkbox.Group>
         </Form.Item>
 
-        <Form.Item label={(device === DEVICE.MOBILE) ? null : ' '}>
-          <Row justify={'start'} gutter={32}>
-            <Col xxl={10} xl={10} lg={10} md={10} sm={10} xs={12}>
+        <Form.Item label={null} labelCol={{ span: 0 }} wrapperCol={{ span: 24 }}>
+          <Row justify={'center'} gutter={32}>
+            <Col xxl={3} xl={4} lg={6} md={10} sm={10} xs={12}>
               <Button onClick={handleCancel} block>Hủy</Button>
             </Col>
-            <Col xxl={10} xl={10} lg={10} md={10} sm={10} xs={12}>
+            <Col xxl={3} xl={4} lg={6} md={10} sm={10} xs={12}>
               <Button block type={'primary'} htmlType={'submit'}>Lưu thông tin</Button>
             </Col>
           </Row>
@@ -77,4 +98,6 @@ ConfigUserGroupModal.propTypes = {
   onClose: PropTypes.func.isRequired,
 }
 
-export default inject('commonStore')(observer(ConfigUserGroupModal))
+export default inject('commonStore', 'groupManagerStore',
+)
+(observer(ConfigUserGroupModal))

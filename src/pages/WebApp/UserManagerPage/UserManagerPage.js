@@ -261,16 +261,15 @@ const UserManagerPage = props => {
             <UserAddOutlined /> Thêm mới người dùng
           </Button>
         </RowFlexEndDiv>
-        {
-          appLoading === 0 &&
-          <Table
-            bordered={true}
-            scroll={{ x: 1400 }}
-            dataSource={listUsers}
-            columns={columns}
-            rowKey={record => record.UserName}
-            pagination={false} />
-        }
+
+        <Table
+          bordered={true}
+          scroll={{ x: 1400 }}
+          dataSource={appLoading === 0 ? listUsers : []}
+          columns={columns}
+          rowKey={record => record.UserName}
+          pagination={false} />
+
         <RowSpaceBetweenDiv margin={'16px 0'}>
           <PaginationLabel>
             {

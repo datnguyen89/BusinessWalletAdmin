@@ -1,17 +1,39 @@
 import React, { useEffect } from 'react'
 import { inject, observer } from 'mobx-react'
 import PropTypes from 'prop-types'
-import { Button, Col, Form, Input, Modal, Row, Select } from 'antd'
+import { Button, Col, Form, Input, message, Modal, Row, Select } from 'antd'
 
 const DetailGroupModal = props => {
-  const { group, visible, onClose, appSettingStore } = props
+  const { group, visible, onClose, appSettingStore, groupManagerStore, commonStore } = props
 
   const { clientTypes } = appSettingStore
+  const { resetFilterObj } = groupManagerStore
 
   const [formConfigGroup] = Form.useForm()
 
   const onFinish = (formCollection) => {
     console.log(formCollection)
+    if (!group) {
+      let payload = {
+        ClientType: formCollection.ClientType,
+        Name: formCollection.Name,
+        Description: formCollection.Description ? formCollection.Description : '',
+      }
+      groupManagerStore.addGroup(payload)
+        .then(res => {
+          if (!res.Error) {
+            onClose()
+            formConfigGroup.resetFields()
+            message.success('Thêm mới nhóm thành công')
+            groupManagerStore.setFilterObj(resetFilterObj)
+            commonStore.setAppLoading(true)
+            groupManagerStore.getListGroupsPaging()
+              .finally(() => commonStore.setAppLoading(false))
+          }
+        })
+    } else {
+
+    }
   }
   const handleCancel = () => {
     formConfigGroup.resetFields()
@@ -32,7 +54,7 @@ const DetailGroupModal = props => {
   return (
     <Modal
       style={{ top: 50 }}
-      title={group ? `Sửa thông tin nhóm ${group?.tenNhom}` : 'Thêm mới nhóm'}
+      title={group ? `Sửa thông tin nhóm ${group?.Name}` : 'Thêm mới nhóm'}
       visible={visible}
       footer={null}
       onCancel={handleCancel}>
@@ -82,4 +104,4 @@ DetailGroupModal.propTypes = {
   onClose: PropTypes.func.isRequired,
 }
 
-export default inject('appSettingStore')(observer(DetailGroupModal))
+export default inject('appSettingStore', 'groupManagerStore', 'commonStore')(observer(DetailGroupModal))

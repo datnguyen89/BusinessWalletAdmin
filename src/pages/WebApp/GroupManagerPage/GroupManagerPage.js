@@ -17,78 +17,12 @@ import DetailGroupModal from './DetailGroupModal'
 import ConfigGroupUserModal from './ConfigGroupUserModal'
 import ConfigRoleGroupModal from './ConfigRoleGroupModal'
 
-const testData = [
-  {
-    id: 1,
-    tenNhom: 'Nhóm A',
-    loaiHeThong: 'Loại 1',
-    moTa: 'mô tả hệ thống 1',
-    nguoiTao: 'datnt',
-    ngayTao: '02/11/2021',
-  },
-  {
-    id: 2,
-    tenNhom: 'Nhóm B',
-    loaiHeThong: 'Loại 1',
-    moTa: 'mô tả hệ thống 1',
-    nguoiTao: 'datnt',
-    ngayTao: '02/11/2021',
-  },
-  {
-    id: 3,
-    tenNhom: 'Nhóm C',
-    loaiHeThong: 'Loại 1',
-    moTa: 'mô tả hệ thống 1',
-    nguoiTao: 'datnt',
-    ngayTao: '02/11/2021',
-  },
-  {
-    id: 4,
-    tenNhom: 'Nhóm D',
-    loaiHeThong: 'Loại 1',
-    moTa: 'mô tả hệ thống 1',
-    nguoiTao: 'datnt',
-    ngayTao: '02/11/2021',
-  },
-  {
-    id: 5,
-    tenNhom: 'Nhóm A',
-    loaiHeThong: 'Loại 1',
-    moTa: 'mô tả hệ thống 1',
-    nguoiTao: 'datnt',
-    ngayTao: '02/11/2021',
-  },
-  {
-    id: 6,
-    tenNhom: 'Nhóm B',
-    loaiHeThong: 'Loại 1',
-    moTa: 'mô tả hệ thống 1',
-    nguoiTao: 'datnt',
-    ngayTao: '02/11/2021',
-  },
-  {
-    id: 7,
-    tenNhom: 'Nhóm C',
-    loaiHeThong: 'Loại 1',
-    moTa: 'mô tả hệ thống 1',
-    nguoiTao: 'datnt',
-    ngayTao: '02/11/2021',
-  },
-  {
-    id: 8,
-    tenNhom: 'Nhóm D',
-    loaiHeThong: 'Loại 1',
-    moTa: 'mô tả hệ thống 1',
-    nguoiTao: 'datnt',
-    ngayTao: '02/11/2021',
-  },
-]
 
 const GroupManagerPage = props => {
   const { commonStore, appSettingStore, groupManagerStore } = props
-  const { device } = commonStore
+  const { device, appLoading } = commonStore
   const { clientTypes } = appSettingStore
-  const { listGroups } = groupManagerStore
+  const { listGroupsPaging, filterObj, resetFilterObj, totalCountGroupsPaging } = groupManagerStore
   const [formApproveBusinessGroup] = Form.useForm()
 
   const [editInfoGroup, setEditInfoGroup] = useState(null)
@@ -109,23 +43,15 @@ const GroupManagerPage = props => {
     },
     {
       title: 'Tên nhóm',
-      render: (item, row, index) => item.tenNhom,
+      render: (item, row, index) => item.Name,
     },
     {
       title: 'Loại hệ thống',
-      render: (item, row, index) => item.loaiHeThong,
+      render: (item, row, index) => item.ClientType,
     },
     {
       title: 'Mô tả',
-      render: (item, row, index) => item.moTa,
-    },
-    {
-      title: 'Người tạo',
-      render: (item, row, index) => item.nguoiTao,
-    },
-    {
-      title: 'Ngày tạo',
-      render: (item, row, index) => item.ngayTao,
+      render: (item, row, index) => item.Description,
     },
     {
       align: 'center',
@@ -166,7 +92,23 @@ const GroupManagerPage = props => {
   }
 
   const handleChangePagination = (pageIndex, pageSize) => {
-    console.log(pageIndex, pageSize)
+    filterObj.PageIndex = pageIndex
+    filterObj.PageSize = pageSize
+    groupManagerStore.setFilterObj(filterObj)
+    commonStore.setAppLoading(true)
+    groupManagerStore.getListGroupsPaging()
+      .finally(() => commonStore.setAppLoading(false))
+  }
+
+  const handleFilterGroup = (e) => {
+    let newFilterObj = { ...filterObj }
+    newFilterObj.Name = e.Name ? e.Name : ''
+    newFilterObj.ClientType = e.ClientType ? e.ClientType : ''
+    groupManagerStore.setFilterObj(newFilterObj)
+
+    commonStore.setAppLoading(true)
+    groupManagerStore.getListGroupsPaging()
+      .finally(() => commonStore.setAppLoading(false))
   }
 
   const handleCloseDetailGroupModal = () => {
@@ -184,7 +126,12 @@ const GroupManagerPage = props => {
 
   useEffect(() => {
     appSettingStore.getClientType()
-    groupManagerStore.getListGroups()
+  }, [])
+
+  useEffect(() => {
+    commonStore.setAppLoading(true)
+    groupManagerStore.getListGroupsPaging()
+      .finally(() => commonStore.setAppLoading(false))
   }, [])
 
   return (
@@ -195,6 +142,7 @@ const GroupManagerPage = props => {
       <GroupManagerPageWrapper>
         <ColorTitle margin={'0 0 16px 0'}>Quản lý nhóm</ColorTitle>
         <Form
+          onFinish={handleFilterGroup}
           labelAlign={'left'}
           labelCol={{ span: 6 }}
           wrapperCol={{ span: 18 }}
@@ -204,15 +152,15 @@ const GroupManagerPage = props => {
             <Col xxl={6} xl={6} lg={12} md={24} sm={24} xs={24}>
               <Form.Item
                 label={'Tên nhóm'}
-                name={'tenNhom'}>
-                <Input maxLength={100} showCount={true} placeholder={'Nhập nội dung'} />
+                name={'Name'}>
+                <Input maxLength={100} showCount={true} placeholder={'Nhập nội dung'} allowClear />
               </Form.Item>
             </Col>
             <Col xxl={6} xl={6} lg={12} md={24} sm={24} xs={24}>
               <Form.Item
                 label={'Loại hệ thống'}
-                name={'loaiHeThong'}>
-                <Select placeholder={'Chọn loại hệ thống'}>
+                name={'ClientType'}>
+                <Select placeholder={'Chọn loại hệ thống'} allowClear>
                   {
                     clientTypes && clientTypes.map(item =>
                       <Select.Option key={item} value={item}>{item}</Select.Option>,
@@ -225,6 +173,7 @@ const GroupManagerPage = props => {
               <Button
                 style={{ minWidth: 120 }}
                 block={device === DEVICE.MOBILE}
+                htmlType={'submit'}
                 type={'default'}>
                 <SearchOutlined />
                 Tra cứu nhóm
@@ -241,18 +190,31 @@ const GroupManagerPage = props => {
             <UserAddOutlined /> Thêm mới nhóm
           </Button>
         </RowFlexEndDiv>
-        <Table
-          bordered={true}
-          scroll={{ x: 1400 }}
-          dataSource={testData}
-          columns={columns}
-          rowKey={record => record.id}
-          pagination={false} />
+          <Table
+            bordered={true}
+            scroll={{ x: 1400 }}
+            dataSource={appLoading === 0 ? listGroupsPaging : []}
+            columns={columns}
+            rowKey={record => record.GroupId}
+            pagination={false} />
         <RowSpaceBetweenDiv margin={'16px 0'}>
           <PaginationLabel>
-            Hiển thị từ 1 đến 10 trên tổng số 200 bản ghi
+            {
+              appLoading === 0 &&
+              `Hiển thị từ
+               ${filterObj.PageSize * (filterObj.PageIndex - 1) + 1}
+               đến 
+               ${filterObj.PageSize * (filterObj.PageIndex - 1) + listGroupsPaging?.length}
+               trên tổng số 
+               ${totalCountGroupsPaging} bản ghi`
+            }
           </PaginationLabel>
-          <Pagination defaultCurrent={1} total={500} onChange={handleChangePagination} />
+          <Pagination
+            current={filterObj.PageIndex}
+            pageSize={filterObj.PageSize}
+            total={totalCountGroupsPaging}
+            showSizeChanger
+            onChange={handleChangePagination} />
         </RowSpaceBetweenDiv>
 
         <DetailGroupModal
