@@ -1,82 +1,39 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Button, Col, Form, Input, Modal, Row, Tree, TreeSelect } from 'antd'
-import { DEVICE } from '../../../utils/constant'
+import { Button, Col, Form, Input, message, Modal, Row, Tree, TreeSelect } from 'antd'
+import { APP_CLIENT_ID, DEVICE, ROLE_TYPES } from '../../../utils/constant'
 import { inject, observer } from 'mobx-react'
 
+
 const ConfigRoleGroupModal = props => {
-  const { group, visible, onClose, commonStore } = props
+  const { group, visible, onClose, commonStore, groupManagerStore } = props
   const { device } = commonStore
+  const { treeRolesForGroup } = groupManagerStore
   const [formConfigGroupRole] = Form.useForm()
 
   const onFinish = (formCollection) => {
-    console.log(formCollection)
+    let realRoleIds = checkedKeys.filter(item => isNaN(item) && !ROLE_TYPES.includes(item))
+    let payload = {
+      GroupId: group?.groupId,
+      Roles: realRoleIds,
+    }
+    groupManagerStore.updateRoleGroup(payload)
+      .then(res => {
+        if (!res.error) {
+          message.success(`Phân quyền nhóm ${group?.name} thành công`)
+          formConfigGroupRole.resetFields()
+          setCheckedKeys([])
+          onClose()
+        }
+      })
   }
   const handleCancel = () => {
     formConfigGroupRole.resetFields()
     onClose()
   }
 
-  const treeData = [
-    {
-      title: 'Tạo lập',
-      value: '1',
-      key: '1',
-      children: [
-        {
-          title: 'Khởi tạo giao dịch',
-          value: '2',
-          key: '2',
-          children: [
-            {
-              title: 'Trạng thái chờ duyệt',
-              value: '3',
-              key: '3',
-            },
-          ],
-        },
-        {
-          title: 'Quản lý giao dịch tạo lập',
-          value: '4',
-          key: '4',
-          children: [
-            {
-              title: 'Sửa',
-              value: '5',
-              key: '5',
-            },
-            {
-              title: 'Xóa',
-              value: '6',
-              key: '6',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      title: 'Phê duyệt',
-      value: '11',
-      key: '11',
-      children: [
-        {
-          title: 'Quản lý giao dịch',
-          value: '22',
-          key: '22',
-          children: [
-            {
-              title: 'Phê duyệt',
-              value: '33',
-              key: '33',
-            },
-          ],
-        },
-      ],
-    },
-  ]
 
-
-  const [checkedKeys, setCheckedKeys] = useState(['33'])
+  const [checkedKeys, setCheckedKeys] = useState([])
 
   const onCheck = (checkedKeysValue) => {
     console.log('onCheck', checkedKeysValue)
@@ -84,21 +41,20 @@ const ConfigRoleGroupModal = props => {
   }
 
   useEffect(() => {
-    console.log(group)
-
-    if (group) {
-      //// Get detail Group & Fill form
-      // formConfigGroupRole.setFieldsValue({
-      //
-      // })
-      formConfigGroupRole.setFieldsValue({
-        roles: ['5', '6'],
-      })
+    if (!group) return
+    let payload = {
+      ClientId: APP_CLIENT_ID,
+      GroupId: group.groupId,
     }
+    groupManagerStore.getTreeRolesForGroup(payload)
+      .then(res => {
+        setCheckedKeys(res?.data?.roleIdsForTree || [])
+      })
   }, [group])
 
   return (
     <Modal
+      forceRender={true}
       title={`Phân quyền nhóm ${group?.name}`}
       style={{ top: 50 }}
       visible={visible}
@@ -111,15 +67,19 @@ const ConfigRoleGroupModal = props => {
         form={formConfigGroupRole}
         onFinish={onFinish}
         colon={false}>
-        <Form.Item label={'Phân quyền'} name={'roles'}>
-          <Tree
-            selectable={false}
-            defaultExpandAll={true}
-            checkable
-            onCheck={onCheck}
-            checkedKeys={checkedKeys}
-            treeData={treeData}
-          />
+        <Form.Item label={'Phân quyền'}>
+          {
+            treeRolesForGroup && treeRolesForGroup?.length > 0 &&
+            <Tree
+              selectable={false}
+              defaultExpandAll={true}
+              checkable
+              onCheck={onCheck}
+              checkedKeys={checkedKeys}
+              treeData={treeRolesForGroup}
+            />
+          }
+
         </Form.Item>
         <Form.Item label={''}>
           <Row justify={'center'} gutter={32}>
@@ -142,4 +102,4 @@ ConfigRoleGroupModal.propTypes = {
   onClose: PropTypes.func.isRequired,
 }
 
-export default inject('commonStore')(observer(ConfigRoleGroupModal))
+export default inject('commonStore', 'groupManagerStore')(observer(ConfigRoleGroupModal))

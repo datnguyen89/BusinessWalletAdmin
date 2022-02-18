@@ -177,6 +177,26 @@ class GroupManagerStore {
         .catch(error => reject(error))
     })
   }
+  @observable treeRolesForGroup = []
+  @action getTreeRolesForGroup = (payload) => {
+    return new Promise((resolve, reject) => {
+      GroupManagerRequest.getTreeRolesForGroup(payload)
+        .then(response => {
+          this.treeRolesForGroup = response.data?.data?.treeRolesModel?.children
+          resolve(response.data)
+        })
+        .catch(error => reject(error))
+    })
+  }
+  @action updateRoleGroup = (payload) => {
+    return new Promise((resolve, reject) => {
+      GroupManagerRequest.updateRoleGroup(payload)
+        .then(response => {
+          resolve(response.data)
+        })
+        .catch(error => reject(error))
+    })
+  }
 
 }
 

@@ -75,7 +75,7 @@ export const UserManagerRequest = {
     })
   },
 
-  getTreeRoles: (payload) => {
+  getTreeRolesForUser: (payload) => {
     return axios({
       method: 'post',
       url: `${apiUrl}/GetTreeRolesForUser`,

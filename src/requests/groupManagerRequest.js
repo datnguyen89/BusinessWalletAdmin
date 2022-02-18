@@ -128,5 +128,27 @@ export const GroupManagerRequest = {
       data: payload,
     })
   },
+  getTreeRolesForGroup: (payload) => {
+    return axios({
+      method: 'post',
+      url: `${apiUrl}/GetTreeRolesForGroup`,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authenticationStore.accessToken}`,
+      },
+      data: payload,
+    })
+  },
+  updateRoleGroup: (payload) => {
+    return axios({
+      method: 'post',
+      url: `${apiUrl}/UpdateRoleGroup`,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authenticationStore.accessToken}`,
+      },
+      data: payload,
+    })
+  },
 
 }

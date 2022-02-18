@@ -99,12 +99,12 @@ class UserManagerStore {
     })
   }
 
-  @observable treeRoles = []
-  @action getTreeRoles = (payload) => {
+  @observable treeRolesForUser = []
+  @action getTreeRolesForUser = (payload) => {
     return new Promise((resolve, reject) => {
-      UserManagerRequest.getTreeRoles(payload)
+      UserManagerRequest.getTreeRolesForUser(payload)
         .then(response => {
-          this.treeRoles = response.data?.data?.treeRolesModel?.children
+          this.treeRolesForUser = response.data?.data?.treeRolesModel?.children
           resolve(response.data)
         })
         .catch(error => reject(error))

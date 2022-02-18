@@ -9,7 +9,7 @@ import { RetweetOutlined } from '@ant-design/icons'
 const ConfigUserRoleModal = props => {
   const { user, visible, onClose, commonStore, userManagerStore } = props
   const { device } = commonStore
-  const { treeRoles, groupRolesByUser } = userManagerStore
+  const { treeRolesForUser, groupRolesByUser } = userManagerStore
   const [formConfigUserRole] = Form.useForm()
 
   const [selectedKeys, setSelectedKeys] = useState([])
@@ -51,7 +51,7 @@ const ConfigUserRoleModal = props => {
       ClientId: APP_CLIENT_ID,
       UserId: user.userId,
     }
-    userManagerStore.getTreeRoles(payload)
+    userManagerStore.getTreeRolesForUser(payload)
       .then(res => {
         setCheckedKeys(res?.data?.roleIdsForTree || [])
       })
@@ -107,7 +107,7 @@ const ConfigUserRoleModal = props => {
         <Form.Item
           label={'Phân quyền'}>
           {
-            treeRoles && treeRoles.length > 0 &&
+            treeRolesForUser && treeRolesForUser.length > 0 &&
             <Tree
               multiple
               selectedKeys={selectedKeys}
@@ -117,7 +117,7 @@ const ConfigUserRoleModal = props => {
               onCheck={onCheck}
               onSelect={onSelect}
               checkedKeys={checkedKeys}
-              treeData={treeRoles}
+              treeData={treeRolesForUser}
             />
           }
 
