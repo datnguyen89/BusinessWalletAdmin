@@ -43,15 +43,15 @@ const GroupManagerPage = props => {
     },
     {
       title: 'Tên nhóm',
-      render: (item, row, index) => item.Name,
+      render: (item, row, index) => item.name,
     },
     {
       title: 'Loại hệ thống',
-      render: (item, row, index) => item.ClientType,
+      render: (item, row, index) => item.clientType,
     },
     {
       title: 'Mô tả',
-      render: (item, row, index) => item.Description,
+      render: (item, row, index) => item.description,
     },
     {
       align: 'center',
@@ -193,9 +193,9 @@ const GroupManagerPage = props => {
           <Table
             bordered={true}
             scroll={{ x: 1400 }}
-            dataSource={appLoading === 0 ? listGroupsPaging : []}
+            dataSource={listGroupsPaging || []}
             columns={columns}
-            rowKey={record => record.GroupId}
+            rowKey={record => record.groupId}
             pagination={false} />
         <RowSpaceBetweenDiv margin={'16px 0'}>
           <PaginationLabel>

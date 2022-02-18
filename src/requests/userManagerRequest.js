@@ -86,6 +86,16 @@ export const UserManagerRequest = {
       data: payload,
     })
   },
-
+  getRoleGroupByUser: (payload) => {
+    return axios({
+      method: 'post',
+      url: `${apiUrl}/GetRoleGroupByUser`,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authenticationStore.accessToken}`,
+      },
+      data: payload,
+    })
+  },
 
 }

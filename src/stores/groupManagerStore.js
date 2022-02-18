@@ -91,13 +91,12 @@ class GroupManagerStore {
   }
 
 
-  @observable listUsersInGroup = []
-
   @observable filterObjUser = {
     CreatedDateFrom: 0,
     CreatedDateTo: 0,
     FullName: '',
     UserName: '',
+    GroupId: 0,
     ActiveStatuses: [],
     PageIndex: 1,
     PageSize: 10,
@@ -107,6 +106,7 @@ class GroupManagerStore {
     CreatedDateTo: 0,
     FullName: '',
     UserName: '',
+    GroupId: 0,
     ActiveStatuses: [],
     PageIndex: 1,
     PageSize: 10,
@@ -114,6 +114,7 @@ class GroupManagerStore {
   @action setFilterObjUser = e => {
     this.filterObjUser = e
   }
+  @observable listUsersInGroup = []
   @observable totalCountUsersInGroup = 0
   @action getListUsersInGroup = () => {
     return new Promise((resolve, reject) => {
@@ -128,6 +129,55 @@ class GroupManagerStore {
         .catch(error => reject(error))
     })
   }
+  @observable selectingGroup = null
+  @action getGroupById = (payload) => {
+    return new Promise((resolve, reject) => {
+      GroupManagerRequest.getGroupById(payload)
+        .then(response => {
+          this.selectingGroup = response.data?.data
+          resolve(response.data?.data)
+        })
+        .catch(error => reject(error))
+    })
+  }
+  @action updateGroup = (payload) => {
+    return new Promise((resolve, reject) => {
+      GroupManagerRequest.updateGroup(payload)
+        .then(response => {
+          resolve(response.data?.data)
+        })
+        .catch(error => reject(error))
+    })
+  }
+  @action removeUserFromGroup = (payload) => {
+    return new Promise((resolve, reject) => {
+      GroupManagerRequest.removeUserFromGroup(payload)
+        .then(response => {
+          resolve(response.data)
+        })
+        .catch(error => reject(error))
+    })
+  }
+
+  @action searchUserNotInGroupByKeyword = (payload) => {
+    return new Promise((resolve, reject) => {
+      GroupManagerRequest.searchUserNotInGroupByKeyword(payload)
+        .then(response => {
+          resolve(response.data?.data)
+        })
+        .catch(error => reject(error))
+    })
+  }
+  @action updateUserForGroup = (payload) => {
+    return new Promise((resolve, reject) => {
+      GroupManagerRequest.updateUserForGroup(payload)
+        .then(response => {
+          resolve(response.data)
+        })
+        .catch(error => reject(error))
+    })
+  }
+
 }
 
 export default new GroupManagerStore()

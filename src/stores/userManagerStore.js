@@ -110,6 +110,17 @@ class UserManagerStore {
         .catch(error => reject(error))
     })
   }
+  @observable groupRolesByUser = []
+  @action getRoleGroupByUser = (payload) => {
+    return new Promise((resolve, reject) => {
+      UserManagerRequest.getRoleGroupByUser(payload)
+        .then(response => {
+          // this.groupRolesByUser = response.data?.data?.treeRolesModel?.children
+          resolve(response.data)
+        })
+        .catch(error => reject(error))
+    })
+  }
 
 
 }

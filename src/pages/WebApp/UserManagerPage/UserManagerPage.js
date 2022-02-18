@@ -164,13 +164,12 @@ const UserManagerPage = props => {
     setConfigRoleUser(null)
   }
   const handleFilterUser = (e) => {
-    let newFilterObj = { ...filterObj }
-    newFilterObj.CreatedDateFrom = e.rangerFilterDate ? e.rangerFilterDate[0].valueOf() : 0
-    newFilterObj.CreatedDateTo = e.rangerFilterDate ? e.rangerFilterDate[1].valueOf() : 0
-    newFilterObj.FullName = e.FullName ? e.FullName : ''
-    newFilterObj.UserName = e.UserName ? e.UserName : ''
-    newFilterObj.ActiveStatuses = e.ActiveStatuses ? e.ActiveStatuses : []
-    userManagerStore.setFilterObj(newFilterObj)
+    filterObj.CreatedDateFrom = e.rangerFilterDate ? e.rangerFilterDate[0].valueOf() : 0
+    filterObj.CreatedDateTo = e.rangerFilterDate ? e.rangerFilterDate[1].valueOf() : 0
+    filterObj.FullName = e.FullName ? e.FullName : ''
+    filterObj.UserName = e.UserName ? e.UserName : ''
+    filterObj.ActiveStatuses = e.ActiveStatuses ? e.ActiveStatuses : []
+    userManagerStore.setFilterObj(filterObj)
 
     commonStore.setAppLoading(true)
     userManagerStore.getListUsers()
@@ -265,23 +264,29 @@ const UserManagerPage = props => {
         <Table
           bordered={true}
           scroll={{ x: 1400 }}
-          dataSource={appLoading === 0 ? listUsers : []}
+          dataSource={listUsers || []}
           columns={columns}
           rowKey={record => record.userId}
           pagination={false} />
 
         <RowSpaceBetweenDiv margin={'16px 0'}>
-          <PaginationLabel>
-            {
-              appLoading === 0 &&
-              `Hiển thị từ
+          {
+            listUsers?.length ?
+              <PaginationLabel>
+                {
+                  appLoading === 0 &&
+                  `Hiển thị từ
                ${filterObj.PageSize * (filterObj.PageIndex - 1) + 1}
                đến 
                ${filterObj.PageSize * (filterObj.PageIndex - 1) + listUsers?.length}
                trên tổng số 
                ${totalCountUsers} bản ghi`
-            }
-          </PaginationLabel>
+                }
+              </PaginationLabel>
+              :
+              <div></div>
+          }
+
           <Pagination
             current={filterObj.PageIndex}
             pageSize={filterObj.PageSize}

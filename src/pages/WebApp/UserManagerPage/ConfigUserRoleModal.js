@@ -54,6 +54,10 @@ const ConfigUserRoleModal = props => {
       .then(res => {
         setCheckedKeys(res?.data?.roleIdsForTree || [])
       })
+    userManagerStore.getRoleGroupByUser({ UserId: user.userId })
+      .then(res => {
+        console.log(res)
+      })
   }, [user])
 
   useEffect(() => {

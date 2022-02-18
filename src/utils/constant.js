@@ -26,10 +26,12 @@ export const PAGES = {
   },
 
 }
+
 export const ROLE_TYPES = ['Init', 'Review', 'Approve']
 export const APP_CLIENT_ID = 4
 export const SIDEBAR_WIDTH_EXPAND = 240
 export const SIDEBAR_WIDTH_COLLAPSE = 64
+export const DEBOUNCE_DELAY = 500
 export const DEVICE = {
   MOBILE: 'MOBILE',
   TABLET: 'TABLET',
