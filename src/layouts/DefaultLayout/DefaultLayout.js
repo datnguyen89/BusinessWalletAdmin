@@ -15,7 +15,6 @@ const DefaultLayout = props => {
   const location = useLocation()
 
   useEffect(() => {
-    console.log('location.pathname',location.pathname)
     const segment = location.pathname.split(PAGES.HOME.PATH).filter(item => item !== '')
     if (segment.length === 0) {
       commonStore.setPageName('home')

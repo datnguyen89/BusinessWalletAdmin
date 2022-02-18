@@ -60,9 +60,6 @@ const ConfigUserRoleModal = props => {
       })
   }, [user])
 
-  useEffect(() => {
-    console.log(toJS(treeRoles))
-  }, [treeRoles])
 
 
   return (

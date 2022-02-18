@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { deviceDetect } from 'react-device-detect'
-
+import { apiUrl } from './config'
 //antd
 import { message } from 'antd'
 // Encrypt
@@ -38,6 +38,7 @@ import NotFoundPage from './pages/WebApp/NotFoundPage'
 import TestPage from './pages/WebApp/TestPage'
 import UserManagerPage from './pages/WebApp/UserManagerPage'
 import GroupManagerPage from './pages/WebApp/GroupManagerPage'
+import stringUtils from './utils/stringUtils'
 
 
 const history = createBrowserHistory()
@@ -72,19 +73,21 @@ const rootStores = {
   userManagerStore,
   testStore,
   appSettingStore,
-  groupManagerStore
+  groupManagerStore,
 }
 
 // axios.defaults.timeout = 20000
 axios.interceptors.request.use(
   config => {
+    console.log('REQUEST',config.url.replace(apiUrl,''), config.data)
+    let k = stringUtils.randomId(16)
+    let obj = { key: k, iv: k }
+    let strDataKey = JSON.stringify(obj)
     let strData = JSON.stringify({ ...config.data })
-    console.log(config.url, config.data)
-    let encryptedData = cypherUtil.rsaEncrypt(strData)
-    config.data = { Data: encryptedData }
-    // console.log(config.data)
-    // const decrypted = cypherUtil.rsaDecrypt(encryptedData, PRIVATE_KEY)
-    // console.log(decrypted)
+
+    let encryptedDataKey = cypherUtil.rsaEncrypt(strDataKey)
+    let encryptedData = cypherUtil.aesEncrypt(strData, k, k)
+    config.data = { data: encryptedData, objKey: encryptedDataKey }
     return config
   },
   error => {
@@ -94,7 +97,7 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
   response => {
-    console.log(response)
+    console.log('RESPONSE',response.config.url.replace(apiUrl,''), response)
     if (response.data.Error) {
       message.error(response.data.Message)
     }

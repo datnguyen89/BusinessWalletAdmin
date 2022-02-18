@@ -1,5 +1,6 @@
 const forge = require('node-forge')
 const { PUBLIC_KEY, PRIVATE_KEY } = require('./constant')
+let CryptoJS = require('crypto-js')
 
 const cypherUtil = {
   rsaEncrypt: str => {
@@ -22,6 +23,23 @@ const cypherUtil = {
     }
     return decrypted
   },
+  aesEncrypt: (str, inputKey, inputIv) => {
+    let decrypted = ''
+    try {
+      let key = CryptoJS.enc.Utf8.parse(inputKey)
+      let iv = CryptoJS.enc.Utf8.parse(inputIv)
+      decrypted = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(str), key,
+        {
+          keySize: 128 / 8,
+          iv: iv,
+          mode: CryptoJS.mode.CBC,
+          padding: CryptoJS.pad.Pkcs7,
+        }).toString()
+    } catch (e) {
+      console.log(e)
+    }
+    return decrypted
+  }
 }
 
 export default cypherUtil
