@@ -78,7 +78,7 @@ export const UserManagerRequest = {
   getTreeRoles: (payload) => {
     return axios({
       method: 'post',
-      url: `${apiUrl}/GetTreeRoles`,
+      url: `${apiUrl}/GetTreeRolesForUser`,
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${authenticationStore.accessToken}`,

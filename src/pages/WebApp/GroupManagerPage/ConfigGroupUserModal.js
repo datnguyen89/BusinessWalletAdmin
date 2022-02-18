@@ -160,7 +160,7 @@ const ConfigGroupUserModal = props => {
       title: 'STT',
       width: 60,
       align: 'center',
-      render: (item, row, index) => index + 1,
+      render: (item, row, index) => (filterObjUser.PageSize * (filterObjUser.PageIndex - 1)) + index + 1,
     },
     {
       title: 'Họ và tên',

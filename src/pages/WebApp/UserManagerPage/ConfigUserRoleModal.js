@@ -4,11 +4,12 @@ import { Button, Col, Divider, Form, Input, message, Modal, Row, Space, Tag, Tre
 import { APP_CLIENT_ID, DEVICE, ROLE_TYPES } from '../../../utils/constant'
 import { inject, observer } from 'mobx-react'
 import { toJS } from 'mobx'
+import { RetweetOutlined } from '@ant-design/icons'
 
 const ConfigUserRoleModal = props => {
   const { user, visible, onClose, commonStore, userManagerStore } = props
   const { device } = commonStore
-  const { treeRoles } = userManagerStore
+  const { treeRoles, groupRolesByUser } = userManagerStore
   const [formConfigUserRole] = Form.useForm()
 
   const [selectedKeys, setSelectedKeys] = useState([])
@@ -31,13 +32,13 @@ const ConfigUserRoleModal = props => {
       })
   }
   const handleCancel = () => {
+    setSelectedKeys([])
+    setCheckedKeys([])
     formConfigUserRole.resetFields()
     onClose()
   }
 
-
   const onCheck = (checkedKeysValue) => {
-    console.log('onCheck', checkedKeysValue)
     setCheckedKeys(checkedKeysValue)
   }
   const onSelect = (selectedKeys) => {
@@ -61,7 +62,6 @@ const ConfigUserRoleModal = props => {
   }, [user])
 
 
-
   return (
     <Modal
       forceRender={true}
@@ -70,12 +70,33 @@ const ConfigUserRoleModal = props => {
       visible={visible}
       footer={null}
       onCancel={handleCancel}>
-      <Space>
-        <Button onClick={() => setSelectedKeys(['5', '6'])}>Nhóm 1</Button>
-        <Button onClick={() => setSelectedKeys(['50', '60'])}>Nhóm 2</Button>
-        <Button onClick={() => setSelectedKeys(['500', '600'])}>Nhóm 3</Button>
-      </Space>
-      <Divider />
+      {
+        groupRolesByUser && groupRolesByUser?.length > 0 &&
+        <>
+          <Row gutter={[16, 16]}>
+            {
+              groupRolesByUser.map(item =>
+                <Col xxl={8} xl={8} lg={8} md={8} sm={8} xs={12}
+                     key={item.groupId}>
+                  <Button
+                    block
+                    onClick={() => setSelectedKeys(item.roleIds)}>
+                    {item.groupName}
+                  </Button>
+                </Col>,
+              )
+            }
+            <Col xxl={8} xl={8} lg={8} md={8} sm={8} xs={24}>
+              <Button
+                block
+                onClick={() => setSelectedKeys([])}>
+                <RetweetOutlined />
+              </Button>
+            </Col>
+          </Row>
+          <Divider />
+        </>
+      }
       <Form
         labelAlign={'left'}
         labelCol={{ span: 24 }}

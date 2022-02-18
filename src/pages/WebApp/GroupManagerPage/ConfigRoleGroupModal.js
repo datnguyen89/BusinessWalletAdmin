@@ -99,7 +99,7 @@ const ConfigRoleGroupModal = props => {
 
   return (
     <Modal
-      title={`Phân quyền nhóm ${group?.tenNhom}`}
+      title={`Phân quyền nhóm ${group?.name}`}
       style={{ top: 50 }}
       visible={visible}
       footer={null}

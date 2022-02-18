@@ -198,17 +198,21 @@ const GroupManagerPage = props => {
             rowKey={record => record.groupId}
             pagination={false} />
         <RowSpaceBetweenDiv margin={'16px 0'}>
-          <PaginationLabel>
-            {
-              appLoading === 0 &&
-              `Hiển thị từ
+          {
+            listGroupsPaging && listGroupsPaging?.length > 0 &&
+            <PaginationLabel>
+              {
+                appLoading === 0 &&
+                `Hiển thị từ
                ${filterObj.PageSize * (filterObj.PageIndex - 1) + 1}
                đến 
                ${filterObj.PageSize * (filterObj.PageIndex - 1) + listGroupsPaging?.length}
                trên tổng số 
                ${totalCountGroupsPaging} bản ghi`
-            }
-          </PaginationLabel>
+              }
+            </PaginationLabel>
+          }
+
           <Pagination
             current={filterObj.PageIndex}
             pageSize={filterObj.PageSize}
