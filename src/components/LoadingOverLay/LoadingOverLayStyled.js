@@ -10,4 +10,5 @@ export const LoadingOverLayWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #ffffff2e;
 `
