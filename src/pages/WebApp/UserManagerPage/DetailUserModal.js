@@ -22,9 +22,7 @@ const DetailUserModal = props => {
             onClose()
             message.success('Cập nhật người dùng thành công')
             userManagerStore.setFilterObj(resetFilterObj)
-            commonStore.setAppLoading(true)
             userManagerStore.getListUsers()
-              .finally(() => commonStore.setAppLoading(false))
           }
         })
     } else {
@@ -35,9 +33,7 @@ const DetailUserModal = props => {
             onClose()
             message.success('Thêm mới người dùng thành công')
             userManagerStore.setFilterObj(resetFilterObj)
-            commonStore.setAppLoading(true)
             userManagerStore.getListUsers()
-              .finally(() => commonStore.setAppLoading(false))
           }
         })
     }

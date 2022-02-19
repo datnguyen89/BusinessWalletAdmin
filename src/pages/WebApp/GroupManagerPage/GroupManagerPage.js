@@ -22,7 +22,12 @@ const GroupManagerPage = props => {
   const { commonStore, appSettingStore, groupManagerStore } = props
   const { device, appLoading } = commonStore
   const { clientTypes } = appSettingStore
-  const { listGroupsPaging, filterObj, resetFilterObj, totalCountGroupsPaging } = groupManagerStore
+  const {
+    listGroupsPaging,
+    filterObj,
+    resetFilterObj,
+    totalCountGroupsPaging
+  } = groupManagerStore
   const [formApproveBusinessGroup] = Form.useForm()
 
   const [editInfoGroup, setEditInfoGroup] = useState(null)
@@ -95,9 +100,7 @@ const GroupManagerPage = props => {
     filterObj.PageIndex = pageIndex
     filterObj.PageSize = pageSize
     groupManagerStore.setFilterObj(filterObj)
-    commonStore.setAppLoading(true)
     groupManagerStore.getListGroupsPaging()
-      .finally(() => commonStore.setAppLoading(false))
   }
 
   const handleFilterGroup = (e) => {
@@ -106,9 +109,7 @@ const GroupManagerPage = props => {
     newFilterObj.ClientType = e.ClientType ? e.ClientType : ''
     groupManagerStore.setFilterObj(newFilterObj)
 
-    commonStore.setAppLoading(true)
     groupManagerStore.getListGroupsPaging()
-      .finally(() => commonStore.setAppLoading(false))
   }
 
   const handleCloseDetailGroupModal = () => {
@@ -129,9 +130,13 @@ const GroupManagerPage = props => {
   }, [])
 
   useEffect(() => {
-    commonStore.setAppLoading(true)
     groupManagerStore.getListGroupsPaging()
-      .finally(() => commonStore.setAppLoading(false))
+  }, [])
+
+  useEffect(() => {
+    return () => {
+      groupManagerStore.setFilterObj(resetFilterObj)
+    }
   }, [])
 
   return (
@@ -190,27 +195,30 @@ const GroupManagerPage = props => {
             <UserAddOutlined /> Thêm mới nhóm
           </Button>
         </RowFlexEndDiv>
-          <Table
-            bordered={true}
-            scroll={{ x: 1400 }}
-            dataSource={listGroupsPaging || []}
-            columns={columns}
-            rowKey={record => record.groupId}
-            pagination={false} />
+        <Table
+          bordered={true}
+          scroll={{ x: 1400 }}
+          dataSource={listGroupsPaging || []}
+          columns={columns}
+          rowKey={record => record.groupId}
+          pagination={false} />
         <RowSpaceBetweenDiv margin={'16px 0'}>
           {
-            listGroupsPaging && listGroupsPaging?.length > 0 &&
-            <PaginationLabel>
-              {
-                appLoading === 0 &&
-                `Hiển thị từ
+            listGroupsPaging && listGroupsPaging?.length > 0
+              ?
+              <PaginationLabel>
+                {
+                  appLoading === 0 &&
+                  `Hiển thị từ
                ${filterObj.PageSize * (filterObj.PageIndex - 1) + 1}
                đến 
                ${filterObj.PageSize * (filterObj.PageIndex - 1) + listGroupsPaging?.length}
                trên tổng số 
                ${totalCountGroupsPaging} bản ghi`
-              }
-            </PaginationLabel>
+                }
+              </PaginationLabel>
+              :
+              <div />
           }
 
           <Pagination

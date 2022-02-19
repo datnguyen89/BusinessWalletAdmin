@@ -24,126 +24,6 @@ import DebounceSelect from '../../../components/DebounceSelect/DebounceSelect'
 const { RangePicker } = DatePicker
 const { confirm } = Modal
 
-const testData = [
-  {
-    id: 1,
-    hoVaTen: 'Nguyễn Văn A',
-    soDienThoai: '0987654123',
-    email: 'user@gmail.com',
-    UserName: 'username1',
-    ngayTao: '20/01/2022',
-    nguoiTao: 'hant',
-    trangThai: 'Hoạt động',
-  },
-  {
-    id: 2,
-    hoVaTen: 'Nguyễn Văn B',
-    soDienThoai: '0987654123',
-    email: 'user@gmail.com',
-    UserName: 'username1',
-    vaiTro: 'Tạo lập',
-    noiDung: 'Thêm mới',
-    ngayTao: '20/01/2022',
-    nguoiTao: 'hant',
-    trangThai: 'Hoạt động',
-  },
-  {
-    id: 3,
-    hoVaTen: 'Nguyễn Văn C',
-    soDienThoai: '0987654123',
-    email: 'user@gmail.com',
-    UserName: 'username1',
-    vaiTro: 'Tạo lập',
-    noiDung: 'Thêm mới',
-    ngayTao: '20/01/2022',
-    nguoiTao: 'hant',
-    trangThai: 'Hoạt động',
-  },
-  {
-    id: 4,
-    hoVaTen: 'Nguyễn Văn D',
-    soDienThoai: '0987654123',
-    email: 'user@gmail.com',
-    UserName: 'username1',
-    vaiTro: 'Tạo lập',
-    noiDung: 'Thêm mới',
-    ngayTao: '20/01/2022',
-    nguoiTao: 'hant',
-    trangThai: 'Hoạt động',
-  },
-  {
-    id: 5,
-    hoVaTen: 'Nguyễn Văn A',
-    soDienThoai: '0987654123',
-    email: 'user@gmail.com',
-    UserName: 'username1',
-    ngayTao: '20/01/2022',
-    nguoiTao: 'hant',
-    trangThai: 'Hoạt động',
-  },
-  {
-    id: 6,
-    hoVaTen: 'Nguyễn Văn B',
-    soDienThoai: '0987654123',
-    email: 'user@gmail.com',
-    UserName: 'username1',
-    vaiTro: 'Tạo lập',
-    noiDung: 'Thêm mới',
-    ngayTao: '20/01/2022',
-    nguoiTao: 'hant',
-    trangThai: 'Hoạt động',
-  },
-  {
-    id: 7,
-    hoVaTen: 'Nguyễn Văn C',
-    soDienThoai: '0987654123',
-    email: 'user@gmail.com',
-    UserName: 'username1',
-    vaiTro: 'Tạo lập',
-    noiDung: 'Thêm mới',
-    ngayTao: '20/01/2022',
-    nguoiTao: 'hant',
-    trangThai: 'Hoạt động',
-  },
-  {
-    id: 8,
-    hoVaTen: 'Nguyễn Văn D',
-    soDienThoai: '0987654123',
-    email: 'user@gmail.com',
-    UserName: 'username1',
-    vaiTro: 'Tạo lập',
-    noiDung: 'Thêm mới',
-    ngayTao: '20/01/2022',
-    nguoiTao: 'hant',
-    trangThai: 'Hoạt động',
-  },
-  {
-    id: 9,
-    hoVaTen: 'Nguyễn Văn C',
-    soDienThoai: '0987654123',
-    email: 'user@gmail.com',
-    UserName: 'username1',
-    vaiTro: 'Tạo lập',
-    noiDung: 'Thêm mới',
-    ngayTao: '20/01/2022',
-    nguoiTao: 'hant',
-    trangThai: 'Hoạt động',
-  },
-  {
-    id: 10,
-    hoVaTen: 'Nguyễn Văn D',
-    soDienThoai: '0987654123',
-    email: 'user@gmail.com',
-    UserName: 'username1',
-    vaiTro: 'Tạo lập',
-    noiDung: 'Thêm mới',
-    ngayTao: '20/01/2022',
-    nguoiTao: 'hant',
-    trangThai: 'Hoạt động',
-  },
-]
-
-
 const ConfigGroupUserModal = props => {
   const { group, visible, onClose, commonStore, groupManagerStore, appSettingStore } = props
   const { device, appLoading } = commonStore
@@ -206,9 +86,7 @@ const ConfigGroupUserModal = props => {
               formAddUserInGroup.resetFields()
               formFilterUserInGroup.resetFields()
               groupManagerStore.setFilterObjUser(resetFilterObjUser)
-              commonStore.setAppLoading(true)
               groupManagerStore.getListUsersInGroup()
-                .finally(() => commonStore.setAppLoading(false))
             }
           })
       },
@@ -232,9 +110,7 @@ const ConfigGroupUserModal = props => {
     filterObjUser.ActiveStatuses = e.ActiveStatuses ? e.ActiveStatuses : []
     groupManagerStore.setFilterObjUser(filterObjUser)
 
-    commonStore.setAppLoading(true)
     groupManagerStore.getListUsersInGroup()
-      .finally(() => commonStore.setAppLoading(false))
   }
   const handleAddUserIntoGroup = (e) => {
     if (!e.Users || e.Users?.length === 0) return
@@ -250,14 +126,14 @@ const ConfigGroupUserModal = props => {
           formAddUserInGroup.resetFields()
           formFilterUserInGroup.resetFields()
           groupManagerStore.setFilterObjUser(resetFilterObjUser)
-          commonStore.setAppLoading(true)
           groupManagerStore.getListUsersInGroup()
-            .finally(() => commonStore.setAppLoading(false))
         }
       })
   }
   const handleCancel = () => {
     formAddUserInGroup.resetFields()
+    formFilterUserInGroup.resetFields()
+    groupManagerStore.setFilterObjUser(resetFilterObjUser)
     onClose()
   }
 
@@ -265,9 +141,7 @@ const ConfigGroupUserModal = props => {
     filterObjUser.PageIndex = pageIndex
     filterObjUser.PageSize = pageSize
     groupManagerStore.setFilterObjUser(filterObjUser)
-    commonStore.setAppLoading(true)
     groupManagerStore.getListUsersInGroup()
-      .finally(() => commonStore.setAppLoading(false))
   }
 
   const [value, setValue] = React.useState([])
@@ -291,9 +165,7 @@ const ConfigGroupUserModal = props => {
   useEffect(() => {
     if (!group) return
     filterObjUser.GroupId = group.groupId
-    commonStore.setAppLoading(true)
     groupManagerStore.getListUsersInGroup()
-      .finally(() => commonStore.setAppLoading(false))
   }, [group])
 
   useEffect(() => {

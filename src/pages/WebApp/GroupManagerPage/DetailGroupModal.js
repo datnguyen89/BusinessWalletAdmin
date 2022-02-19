@@ -28,9 +28,7 @@ const DetailGroupModal = props => {
             formConfigGroup.resetFields()
             message.success('Thêm mới nhóm thành công')
             groupManagerStore.setFilterObj(resetFilterObj)
-            commonStore.setAppLoading(true)
             groupManagerStore.getListGroupsPaging()
-              .finally(() => commonStore.setAppLoading(false))
           }
         })
     } else {
@@ -47,9 +45,7 @@ const DetailGroupModal = props => {
             formConfigGroup.resetFields()
             message.success('Cập nhật nhóm thành công')
             groupManagerStore.setFilterObj(resetFilterObj)
-            commonStore.setAppLoading(true)
             groupManagerStore.getListGroupsPaging()
-              .finally(() => commonStore.setAppLoading(false))
           }
         })
     }

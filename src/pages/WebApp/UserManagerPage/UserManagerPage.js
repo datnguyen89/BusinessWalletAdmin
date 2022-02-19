@@ -35,6 +35,7 @@ const UserManagerPage = props => {
   const {
     listUsers,
     filterObj,
+    resetFilterObj,
     totalCountUsers,
   } = userManagerStore
   const [formFilterUser] = Form.useForm()
@@ -142,9 +143,7 @@ const UserManagerPage = props => {
     filterObj.PageIndex = pageIndex
     filterObj.PageSize = pageSize
     userManagerStore.setFilterObj(filterObj)
-    commonStore.setAppLoading(true)
     userManagerStore.getListUsers()
-      .finally(() => commonStore.setAppLoading(false))
   }
 
   const handleCloseDetailUserModal = () => {
@@ -171,19 +170,21 @@ const UserManagerPage = props => {
     filterObj.ActiveStatuses = e.ActiveStatuses ? e.ActiveStatuses : []
     userManagerStore.setFilterObj(filterObj)
 
-    commonStore.setAppLoading(true)
     userManagerStore.getListUsers()
-      .finally(() => commonStore.setAppLoading(false))
   }
 
   useEffect(() => {
-    commonStore.setAppLoading(true)
     userManagerStore.getListUsers()
-      .finally(() => commonStore.setAppLoading(false))
   }, [])
 
   useEffect(() => {
     appSettingStore.getListStatusUser()
+  }, [])
+
+  useEffect(() => {
+    return () => {
+      userManagerStore.setFilterObj(resetFilterObj)
+    }
   }, [])
 
   return (
@@ -284,7 +285,7 @@ const UserManagerPage = props => {
                 }
               </PaginationLabel>
               :
-              <div></div>
+              <div />
           }
 
           <Pagination
