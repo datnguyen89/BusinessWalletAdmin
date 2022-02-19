@@ -5,14 +5,17 @@ import { APP_CLIENT_ID, DEVICE, ROLE_TYPES } from '../../../utils/constant'
 import { inject, observer } from 'mobx-react'
 import { toJS } from 'mobx'
 import { RetweetOutlined } from '@ant-design/icons'
+import { ColorText, ColorTitle } from '../../../components/CommonStyled/CommonStyled'
+import { UserRoleModalTitle } from './UserManagerPageStyled'
 
 const ConfigUserRoleModal = props => {
   const { user, visible, onClose, commonStore, userManagerStore } = props
-  const { device } = commonStore
+  const { device, appTheme } = commonStore
   const { treeRolesForUser, groupRolesByUser } = userManagerStore
   const [formConfigUserRole] = Form.useForm()
 
   const [selectedKeys, setSelectedKeys] = useState([])
+  const [selectedGroup, setSelectedGroup] = useState(null)
   const [checkedKeys, setCheckedKeys] = useState([])
 
   const onFinish = (formCollection) => {
@@ -34,6 +37,7 @@ const ConfigUserRoleModal = props => {
   const handleCancel = () => {
     setSelectedKeys([])
     setCheckedKeys([])
+    setSelectedGroup([])
     formConfigUserRole.resetFields()
     onClose()
   }
@@ -43,6 +47,16 @@ const ConfigUserRoleModal = props => {
   }
   const onSelect = (selectedKeys) => {
     console.log(selectedKeys)
+  }
+
+  const handleClickMarkupGroupRole = (group) => {
+    if (selectedKeys === group.roleIds) {
+      setSelectedKeys([])
+      setSelectedGroup(null)
+    } else {
+      setSelectedKeys(group.roleIds)
+      setSelectedGroup(group)
+    }
   }
 
   useEffect(() => {
@@ -73,27 +87,24 @@ const ConfigUserRoleModal = props => {
       {
         groupRolesByUser && groupRolesByUser?.length > 0 &&
         <>
-          <Row gutter={[16, 16]}>
+          <UserRoleModalTitle>
+            Nhóm của người dùng
+          </UserRoleModalTitle>
+          <div>
             {
               groupRolesByUser.map(item =>
-                <Col xxl={8} xl={8} lg={8} md={8} sm={8} xs={12}
-                     key={item.groupId}>
-                  <Button
-                    block
-                    onClick={() => setSelectedKeys(item.roleIds)}>
-                    {item.groupName}
-                  </Button>
-                </Col>,
+
+                <Tag
+                  key={item.groupId}
+                  style={{ cursor: 'pointer', userSelect: 'none' }}
+                  color={selectedGroup?.groupId === item?.groupId ? appTheme.solidColor : ''}
+                  block
+                  onClick={() => handleClickMarkupGroupRole(item)}>
+                  {item.groupName}
+                </Tag>,
               )
             }
-            <Col xxl={8} xl={8} lg={8} md={8} sm={8} xs={24}>
-              <Button
-                block
-                onClick={() => setSelectedKeys([])}>
-                <RetweetOutlined />
-              </Button>
-            </Col>
-          </Row>
+          </div>
           <Divider />
         </>
       }
