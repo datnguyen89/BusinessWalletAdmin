@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 export const LoadingOverLayWrapper = styled.div`
   position: fixed;
-  z-index: 99;
+  z-index: 9999;
   width: 100%;
   height: 100vh;
   top: 0;

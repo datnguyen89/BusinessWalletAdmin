@@ -79,6 +79,11 @@ const rootStores = {
 // axios.defaults.timeout = 20000
 axios.interceptors.request.use(
   config => {
+    if (config.disableSpinner) {
+      commonStore.setAppLoading(false)
+    } else {
+      commonStore.setAppLoading(true)
+    }
     console.log('REQUEST',config.url.replace(apiUrl,''), config.data)
     let k = stringUtils.randomId(16)
     let obj = { key: k, iv: k }
@@ -91,12 +96,14 @@ axios.interceptors.request.use(
     return config
   },
   error => {
+    commonStore.setAppLoading(false)
     return Promise.reject(error)
   },
 )
 
 axios.interceptors.response.use(
   response => {
+    commonStore.setAppLoading(false)
     console.log('RESPONSE',response.config.url.replace(apiUrl,''), response)
     if (response.data.Error) {
       message.error(response.data.Message)
@@ -104,8 +111,9 @@ axios.interceptors.response.use(
     return response
   },
   error => {
-    // if (error?.response?.status === 401) {
-    //   // TODO: clear localstorage, user's State, store => redirect to login
+    commonStore.setAppLoading(false)
+    // if (error?.response?.status === 403) {
+    //   // TODO: do something
     // }
     return Promise.reject(error)
   },
