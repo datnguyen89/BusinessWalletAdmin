@@ -165,8 +165,8 @@ const UserManagerPage = props => {
   const handleFilterUser = (e) => {
     filterObj.CreatedDateFrom = e.rangerFilterDate ? e.rangerFilterDate[0].valueOf() : 0
     filterObj.CreatedDateTo = e.rangerFilterDate ? e.rangerFilterDate[1].valueOf() : 0
-    filterObj.FullName = e.FullName ? e.FullName : ''
-    filterObj.UserName = e.UserName ? e.UserName : ''
+    filterObj.FullName = e.FullNameFilter ? e.FullNameFilter : ''
+    filterObj.UserName = e.UserNameFilter ? e.UserNameFilter : ''
     filterObj.ActiveStatuses = e.ActiveStatuses ? e.ActiveStatuses : []
     userManagerStore.setFilterObj(filterObj)
 
@@ -213,14 +213,14 @@ const UserManagerPage = props => {
             <Col xxl={6} xl={6} lg={12} md={24} sm={24} xs={24}>
               <Form.Item
                 label={'Họ và tên'}
-                name={'FullName'}>
+                name={'FullNameFilter'}>
                 <Input maxLength={100} showCount={true} placeholder={'Nhập nội dung'} />
               </Form.Item>
             </Col>
             <Col xxl={6} xl={6} lg={12} md={24} sm={24} xs={24}>
               <Form.Item
                 label={'Tên đăng nhập'}
-                name={'UserName'}>
+                name={'UserNameFilter'}>
                 <Input maxLength={20} showCount={true} placeholder={'Nhập nội dung'} />
               </Form.Item>
             </Col>

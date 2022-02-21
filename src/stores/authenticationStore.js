@@ -4,7 +4,7 @@ import { AuthenticationRequest } from '../requests/authenticationRequest'
 class AuthenticationStore {
   constructor() {
     autorun(() => {
-      this.jwtDecode = JSON.parse(atob(this.accessToken?.split('.')[1]))
+      this.jwtDecode = this.accessToken ? JSON.parse(atob(this.accessToken?.split('.')[1])) : {}
     })
   }
 

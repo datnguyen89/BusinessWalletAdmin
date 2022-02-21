@@ -29,6 +29,7 @@ const ConfigRoleGroupModal = props => {
   }
   const handleCancel = () => {
     formConfigGroupRole.resetFields()
+    setCheckedKeys([])
     onClose()
   }
 
