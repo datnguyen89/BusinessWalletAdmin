@@ -19,6 +19,10 @@ class AuthenticationStore {
             const tokenData = response.data?.data.token
             localStorage.setItem('jwt', tokenData)
             this.accessToken = tokenData
+          } else {
+            if (response.data.ResponseCode === -52) {
+              console.log('Nhập OTP')
+            }
           }
           resolve(response.data)
         })
