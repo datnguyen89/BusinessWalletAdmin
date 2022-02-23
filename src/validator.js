@@ -113,10 +113,8 @@ const validator = {
     let inputValue = value?.trim()
     if (!inputValue) {
       callback('Vui lòng nhập mật khẩu')
-    } else if (inputValue.length < 8) {
-      callback('Mật khẩu cần có độ dài tối thiểu 8 ký tự')
     } else if (!regex.test(inputValue)) {
-      callback('Mật khẩu phải bao gồm chữ không dấu, số, ký tự đặc biệt')
+      callback('Mật khẩu tối thiểu 8 ký tự gồm số, chữ không dấu, ít nhất 1 ký tự đặc biệt')
     } else {
       callback()
     }
