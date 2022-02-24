@@ -29,6 +29,8 @@ const ChangePasswordModal = props => {
           formChangePassword.resetFields()
           onClose()
           message.success('Đổi mật khẩu thành công')
+        } else {
+          message.error(res?.message)
         }
       })
 

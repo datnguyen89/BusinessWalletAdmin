@@ -22,7 +22,7 @@ export const AuthenticationRequest = {
   changePassword: (payload) => {
     return axios({
       method: 'post',
-      url: `${apiUrl}/ChangePassword`,
+      url: `${apiUrl}/ChangePasswordForAdminCMS`,
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${authenticationStore.accessToken}`,

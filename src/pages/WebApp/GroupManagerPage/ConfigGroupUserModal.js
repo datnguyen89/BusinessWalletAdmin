@@ -134,6 +134,7 @@ const ConfigGroupUserModal = props => {
     formAddUserInGroup.resetFields()
     formFilterUserInGroup.resetFields()
     groupManagerStore.setFilterObjUser(resetFilterObjUser)
+    groupManagerStore.resetUserInGroup()
     onClose()
   }
 
@@ -192,6 +193,7 @@ const ConfigGroupUserModal = props => {
         setInitOption(initUsers)
       })
   }, [group])
+
 
   return (
     <Modal

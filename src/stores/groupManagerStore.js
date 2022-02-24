@@ -116,6 +116,10 @@ class GroupManagerStore {
   }
   @observable listUsersInGroup = []
   @observable totalCountUsersInGroup = 0
+  @action resetUserInGroup = () => {
+    this.listUsersInGroup = []
+    this.totalCountUsersInGroup = 0
+  }
   @action getListUsersInGroup = () => {
     return new Promise((resolve, reject) => {
       GroupManagerRequest.getListUsersInGroup(this.filterObjUser)
