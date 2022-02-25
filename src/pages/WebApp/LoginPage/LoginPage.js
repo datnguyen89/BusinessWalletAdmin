@@ -62,14 +62,16 @@ const LoginPage = props => {
               <Input.Password prefix={<LockOutlined />} placeholder={'Mật khẩu'} />
             </Form.Item>
             <Row>
-              <Col span={12}>
-
-              </Col>
-              <Col span={12}>
-                <Form.Item wrapperCol={{ offset: 0, span: 24 }} style={{ textAlign: 'right' }}>
-                  <ColorLink color={commonStore.appTheme.solidColor} to={'#'}>Quên mật khẩu ?</ColorLink>
+              <Col span={24}>
+                <Form.Item wrapperCol={{ offset: 0, span: 24 }}>
+                  <ColorLink color={commonStore.appTheme.solidColor} to={PAGES.REGISTER.PATH}>Đăng ký tài khoản</ColorLink>
                 </Form.Item>
               </Col>
+              {/*<Col span={12}>*/}
+              {/*  <Form.Item wrapperCol={{ offset: 0, span: 24 }} style={{ textAlign: 'right' }}>*/}
+              {/*    <ColorLink color={commonStore.appTheme.solidColor} to={'#'}>Quên mật khẩu ?</ColorLink>*/}
+              {/*  </Form.Item>*/}
+              {/*</Col>*/}
             </Row>
             <Button block type={'primary'} htmlType={'submit'}>Đăng nhập</Button>
           </Form>
