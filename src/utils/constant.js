@@ -24,7 +24,10 @@ export const PAGES = {
     NAME: 'group-manager',
     PATH: '/group-manager',
   },
-
+  REGISTER: {
+    NAME: 'register',
+    PATH: '/register',
+  },
 }
 
 export const ROLE_TYPES = ['Init', 'Review', 'Approve']
