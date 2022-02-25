@@ -116,7 +116,7 @@ const RegisterPage = props => {
                   <Button onClick={handleCancel} block>Đăng nhập</Button>
                 </Col>
                 <Col xxl={8} xl={8} lg={12} md={12} sm={12} xs={12}>
-                  <Button block type={'primary'} htmlType={'submit'}>Lưu thông tin</Button>
+                  <Button block type={'primary'} htmlType={'submit'}>Tạo tài khoản</Button>
                 </Col>
               </Row>
             </Form.Item>

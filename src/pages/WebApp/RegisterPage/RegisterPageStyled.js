@@ -8,4 +8,5 @@ export const RegisterFormWrapper = styled.div`
   border: 1px solid #ccc;
   padding: 24px;
   width: 600px;
+  border-radius: 4px;
 `
