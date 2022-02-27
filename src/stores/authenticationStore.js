@@ -9,14 +9,14 @@ class AuthenticationStore {
   }
 
   @observable accessToken = localStorage.getItem('jwt') || undefined
-  @observable jwtDecode = null
+  @observable jwtDecode = undefined
 
   @action userLogin = (payload) => {
     return new Promise((resolve, reject) => {
       AuthenticationRequest.userLogin(payload)
         .then(response => {
           if (!response.data.Error) {
-            const tokenData = response.data?.data.token
+            const tokenData = response.data?.param?.token
             localStorage.setItem('jwt', tokenData)
             this.accessToken = tokenData
           } else {
@@ -42,6 +42,8 @@ class AuthenticationStore {
   @action userLogout = () => {
     return new Promise((resolve, reject) => {
       localStorage.removeItem('jwt')
+      this.accessToken = undefined
+      this.jwtDecode = undefined
       resolve()
     })
   }
