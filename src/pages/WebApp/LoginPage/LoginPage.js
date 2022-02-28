@@ -21,7 +21,7 @@ const LoginPage = props => {
     console.log(collectionForm)
     authenticationStore.userLogin(collectionForm)
       .then(res => {
-        if (!res.error) {
+        if (res?.responseCode === 0) {
           history.push(PAGES.HOME.PATH)
         }
       })

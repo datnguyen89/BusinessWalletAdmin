@@ -18,7 +18,7 @@ class GroupManagerStore {
       GroupManagerRequest.getListGroups()
         .then(response => {
           if (!response.data.Error) {
-            this.listGroups = response.data?.data
+            this.listGroups = response.data?.param
           }
           resolve(response.data)
         })
@@ -48,8 +48,8 @@ class GroupManagerStore {
       GroupManagerRequest.getListGroupsPaging(this.filterObj)
         .then(response => {
           if (!response.data.Error) {
-            this.listGroupsPaging = response.data?.data.data
-            this.totalCountGroupsPaging = response.data?.data.totalData
+            this.listGroupsPaging = response.data?.param?.data
+            this.totalCountGroupsPaging = response.data?.param?.totalData
           }
           resolve(response.data)
         })
@@ -73,7 +73,7 @@ class GroupManagerStore {
       GroupManagerRequest.getGroupByUser(payload)
         .then(response => {
           if (!response.data.Error) {
-            this.listGroupByUser = response.data?.data
+            this.listGroupByUser = response.data?.param
           }
           resolve(response.data)
         })
@@ -125,8 +125,8 @@ class GroupManagerStore {
       GroupManagerRequest.getListUsersInGroup(this.filterObjUser)
         .then(response => {
           if (!response.data.Error) {
-            this.listUsersInGroup = response.data?.data.data
-            this.totalCountUsersInGroup = response.data?.data.totalData
+            this.listUsersInGroup = response.data?.param?.data
+            this.totalCountUsersInGroup = response.data?.param?.totalData
           }
           resolve(response.data)
         })
@@ -138,8 +138,8 @@ class GroupManagerStore {
     return new Promise((resolve, reject) => {
       GroupManagerRequest.getGroupById(payload)
         .then(response => {
-          this.selectingGroup = response.data?.data
-          resolve(response.data?.data)
+          this.selectingGroup = response.data?.param
+          resolve(response.data?.param)
         })
         .catch(error => reject(error))
     })
@@ -148,7 +148,7 @@ class GroupManagerStore {
     return new Promise((resolve, reject) => {
       GroupManagerRequest.updateGroup(payload)
         .then(response => {
-          resolve(response.data?.data)
+          resolve(response.data?.param)
         })
         .catch(error => reject(error))
     })
@@ -167,7 +167,7 @@ class GroupManagerStore {
     return new Promise((resolve, reject) => {
       GroupManagerRequest.searchUserNotInGroupByKeyword(payload)
         .then(response => {
-          resolve(response.data?.data)
+          resolve(response.data?.param)
         })
         .catch(error => reject(error))
     })
@@ -186,7 +186,7 @@ class GroupManagerStore {
     return new Promise((resolve, reject) => {
       GroupManagerRequest.getTreeRolesForGroup(payload)
         .then(response => {
-          this.treeRolesForGroup = response.data?.data?.treeRolesModel?.children
+          this.treeRolesForGroup = response.data?.param?.treeRolesModel?.children
           resolve(response.data)
         })
         .catch(error => reject(error))

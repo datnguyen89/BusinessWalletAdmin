@@ -19,7 +19,7 @@ const ConfigRoleGroupModal = props => {
     }
     groupManagerStore.updateRoleGroup(payload)
       .then(res => {
-        if (!res.error) {
+        if (res?.responseCode === 0) {
           message.success(`Phân quyền nhóm ${group?.name} thành công`)
           formConfigGroupRole.resetFields()
           setCheckedKeys([])

@@ -25,7 +25,7 @@ const ChangePasswordModal = props => {
     }
     authenticationStore.changePassword(payload)
       .then(res => {
-        if (!res.error) {
+        if (res?.responseCode === 0) {
           formChangePassword.resetFields()
           onClose()
           message.success('Đổi mật khẩu thành công')

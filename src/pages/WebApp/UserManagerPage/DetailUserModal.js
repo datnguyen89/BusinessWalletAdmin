@@ -17,7 +17,7 @@ const DetailUserModal = props => {
     if (user?.userId) {
       userManagerStore.updateInfoUser({ ...formCollection, UserId: user?.userId })
         .then(res => {
-          if (!res.error) {
+          if (res?.responseCode === 0) {
             formConfigUser.resetFields()
             onClose()
             message.success('Cập nhật người dùng thành công')
@@ -28,7 +28,7 @@ const DetailUserModal = props => {
     } else {
       userManagerStore.registerUser(formCollection)
         .then(res => {
-          if (!res.error) {
+          if (res?.responseCode === 0) {
             formConfigUser.resetFields()
             onClose()
             message.success('Thêm mới người dùng thành công')
@@ -47,7 +47,7 @@ const DetailUserModal = props => {
     if (user?.userId) {
       userManagerStore.getUserById({ UserId: user.userId })
         .then(res => {
-          if (!res.error) {
+          if (res?.responseCode === 0) {
             formConfigUser.setFieldsValue({
               ClientIds: res.data.clientIds,
               UserName: res.data.userName,

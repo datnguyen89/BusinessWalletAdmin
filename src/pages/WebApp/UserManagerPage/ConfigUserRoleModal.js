@@ -26,7 +26,7 @@ const ConfigUserRoleModal = props => {
     }
     userManagerStore.updateRoleUser(payload)
       .then(res => {
-        if (!res.error) {
+        if (res?.responseCode === 0) {
           message.success(`Phân quyền người dùng ${user?.name} thành công`)
           formConfigUserRole.resetFields()
           setCheckedKeys([])

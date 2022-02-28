@@ -16,7 +16,7 @@ const SetPasswordUserModal = props => {
     }
     userManagerStore.resetPassword(payload)
       .then(res => {
-        if (!res.error) {
+        if (res?.responseCode === 0) {
           message.success(`Đặt lại mật khẩu cho người dùng ${user?.name || ''} thành công`)
           formConfigUser.resetFields()
           onClose()

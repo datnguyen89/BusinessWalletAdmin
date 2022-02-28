@@ -50,9 +50,9 @@ class UserManagerStore {
     return new Promise((resolve, reject) => {
       UserManagerRequest.getListUsers(this.filterObj)
         .then(response => {
-          if (response.data?.data) {
-            this.listUsers = response.data?.data.data
-            this.totalCountUsers = response.data?.data.totalData
+          if (response.data?.param) {
+            this.listUsers = response.data?.param.data
+            this.totalCountUsers = response.data?.param.totalData
           }
           resolve(response.data)
         })
@@ -65,7 +65,7 @@ class UserManagerStore {
     return new Promise((resolve, reject) => {
       UserManagerRequest.getUserById(payload)
         .then(response => {
-          this.selectingUser = response.data?.data
+          this.selectingUser = response.data?.param
           resolve(response.data)
         })
         .catch(error => reject(error))
@@ -104,7 +104,7 @@ class UserManagerStore {
     return new Promise((resolve, reject) => {
       UserManagerRequest.getTreeRolesForUser(payload)
         .then(response => {
-          this.treeRolesForUser = response.data?.data?.treeRolesModel?.children
+          this.treeRolesForUser = response.data?.param?.treeRolesModel?.children
           resolve(response.data)
         })
         .catch(error => reject(error))
@@ -115,7 +115,7 @@ class UserManagerStore {
     return new Promise((resolve, reject) => {
       UserManagerRequest.getRoleGroupByUser(payload)
         .then(response => {
-          this.groupRolesByUser = response.data?.data
+          this.groupRolesByUser = response.data?.param
           resolve(response.data)
         })
         .catch(error => reject(error))

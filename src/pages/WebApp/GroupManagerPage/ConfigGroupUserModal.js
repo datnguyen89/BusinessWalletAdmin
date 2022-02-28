@@ -81,7 +81,7 @@ const ConfigGroupUserModal = props => {
         }
         groupManagerStore.removeUserFromGroup(payload)
           .then(res => {
-            if (!res.error) {
+            if (res?.responseCode === 0) {
               message.success(`Xóa người dùng  ${user.userName} khỏi nhóm ${group?.name} thành công`)
               formAddUserInGroup.resetFields()
               formFilterUserInGroup.resetFields()
@@ -121,7 +121,7 @@ const ConfigGroupUserModal = props => {
     }
     groupManagerStore.updateUserForGroup(payload)
       .then(res => {
-        if (!res.error) {
+        if (res?.responseCode === 0) {
           message.success(`Thêm người dùng vào nhóm ${group?.name} thành công`)
           formAddUserInGroup.resetFields()
           formFilterUserInGroup.resetFields()

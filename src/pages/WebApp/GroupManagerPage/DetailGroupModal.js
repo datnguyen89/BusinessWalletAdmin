@@ -23,7 +23,7 @@ const DetailGroupModal = props => {
       }
       groupManagerStore.addGroup(payload)
         .then(res => {
-          if (!res.error) {
+          if (res?.responseCode === 0) {
             onClose()
             formConfigGroup.resetFields()
             message.success('Thêm mới nhóm thành công')
@@ -40,7 +40,7 @@ const DetailGroupModal = props => {
       }
       groupManagerStore.updateGroup(payload)
         .then(res => {
-          if (!res.error) {
+          if (res?.responseCode === 0) {
             onClose()
             formConfigGroup.resetFields()
             message.success('Cập nhật nhóm thành công')

@@ -20,7 +20,7 @@ const ConfigUserGroupModal = props => {
     }
     groupManagerStore.updateGroupForUser(payload)
       .then(res => {
-        if (!res.error) {
+        if (res?.responseCode === 0) {
           onClose()
           formConfigUserGroup.resetFields()
           message.success(`Phân nhóm cho người dùng ${user?.name || ''} thành công`)
