@@ -9,8 +9,8 @@ class AppSettingStore {
     return new Promise((resolve, reject) => {
       AppSettingRequest.getClientType()
         .then(response => {
-          if (!response.data.Error) {
-            this.clientTypes = response.data?.param
+          if (!response.data.error) {
+            this.clientTypes = response.data?.data
           }
           resolve(response.data)
         })
@@ -22,8 +22,8 @@ class AppSettingStore {
     return new Promise((resolve, reject) => {
       AppSettingRequest.getListStatusUser()
         .then(response => {
-          if (!response.data.Error) {
-            this.listStatusUser = response.data?.param
+          if (!response.data.error) {
+            this.listStatusUser = response.data?.data
           }
           resolve(response.data)
         })
@@ -35,8 +35,8 @@ class AppSettingStore {
     return new Promise((resolve, reject) => {
       AppSettingRequest.getClients()
         .then(response => {
-          if (!response.data.Error) {
-            this.listClients = response.data?.param
+          if (!response.data.error) {
+            this.listClients = response.data?.data
           }
           resolve(response.data)
         })

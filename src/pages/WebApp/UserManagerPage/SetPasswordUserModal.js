@@ -11,7 +11,7 @@ const SetPasswordUserModal = props => {
 
   const onFinish = (formCollection) => {
     let payload = {
-      UserId: user.userId,
+      UserId: user.UserId,
       NewPassword: formCollection.password,
     }
     userManagerStore.resetPassword(payload)

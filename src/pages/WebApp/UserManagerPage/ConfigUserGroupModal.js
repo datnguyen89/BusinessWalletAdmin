@@ -35,7 +35,7 @@ const ConfigUserGroupModal = props => {
 
   useEffect(() => {
     if (!user) return
-    groupManagerStore.getGroupByUser({ UserId: user.userId })
+    groupManagerStore.getGroupByUser({ UserId: user.UserId })
   }, [user])
 
   useEffect(() => {

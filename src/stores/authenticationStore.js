@@ -15,7 +15,7 @@ class AuthenticationStore {
     return new Promise((resolve, reject) => {
       AuthenticationRequest.userLogin(payload)
         .then(response => {
-          if (!response.data.Error) {
+          if (!response.data.error) {
             const tokenData = response.data?.param?.token
             localStorage.setItem('jwt', tokenData)
             this.accessToken = tokenData

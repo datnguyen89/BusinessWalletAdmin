@@ -25,6 +25,7 @@ import ConfigUserRoleModal from './ConfigUserRoleModal'
 import SetPasswordUserModal from './SetPasswordUserModal'
 import userManagerStore from '../../../stores/userManagerStore'
 import moment from 'moment'
+import { toJS } from 'mobx'
 
 const { RangePicker } = DatePicker
 
@@ -58,31 +59,31 @@ const UserManagerPage = props => {
     },
     {
       title: 'Họ và tên',
-      render: (item, row, index) => item.name,
+      render: (item, row, index) => item.Name,
     },
     {
       title: 'Số điện thoại',
-      render: (item, row, index) => item.phoneNumber,
+      render: (item, row, index) => item.PhoneNumber,
     },
     {
       title: 'Email',
-      render: (item, row, index) => item.email,
+      render: (item, row, index) => item.Email,
     },
     {
       title: 'Username',
-      render: (item, row, index) => item.userName,
+      render: (item, row, index) => item.UserName,
     },
     {
       title: 'Trạng thái',
-      render: (item, row, index) => renderStatus(item.activeStatus),
+      render: (item, row, index) => renderStatus(item.ActiveStatus),
     },
     {
       title: 'Người tạo',
-      render: (item, row, index) => item.createdBy,
+      render: (item, row, index) => item.CreatedBy,
     },
     {
       title: 'Ngày tạo',
-      render: (item, row, index) => moment(item.createdDate).format('DD/MM/YYYY HH:mm'),
+      render: (item, row, index) => moment(item.CreatedDate).format('DD/MM/YYYY HH:mm'),
     },
     {
       align: 'center',
@@ -115,9 +116,10 @@ const UserManagerPage = props => {
   ]
 
   const renderStatus = (stt) => {
+    if (!listStatusUser) return
     let desc = ''
     if (listStatusUser && listStatusUser.length > 0) {
-      desc = listStatusUser.find(e => e.status === stt).description
+      desc = listStatusUser.find(e => e.status === stt)?.description
     }
     return desc
   }
@@ -267,7 +269,7 @@ const UserManagerPage = props => {
           scroll={{ x: 1400 }}
           dataSource={listUsers || []}
           columns={columns}
-          rowKey={record => record.userId}
+          rowKey={record => record.UserId}
           pagination={false} />
 
         <RowSpaceBetweenDiv margin={'16px 0'}>

@@ -50,9 +50,11 @@ class UserManagerStore {
     return new Promise((resolve, reject) => {
       UserManagerRequest.getListUsers(this.filterObj)
         .then(response => {
-          if (response.data?.param) {
-            this.listUsers = response.data?.param.data
-            this.totalCountUsers = response.data?.param.totalData
+          if (response.data?.responseCode === 0) {
+            let param = JSON.parse(response.data?.param)
+            console.log('param', param)
+            this.listUsers = param?.Data
+            this.totalCountUsers = response.data?.param.TotalData
           }
           resolve(response.data)
         })
@@ -65,7 +67,7 @@ class UserManagerStore {
     return new Promise((resolve, reject) => {
       UserManagerRequest.getUserById(payload)
         .then(response => {
-          this.selectingUser = response.data?.param
+          this.selectingUser = JSON.parse(response.data?.param)
           resolve(response.data)
         })
         .catch(error => reject(error))
@@ -104,7 +106,8 @@ class UserManagerStore {
     return new Promise((resolve, reject) => {
       UserManagerRequest.getTreeRolesForUser(payload)
         .then(response => {
-          this.treeRolesForUser = response.data?.param?.treeRolesModel?.children
+          let param = JSON.parse(response.data?.param)
+          this.treeRolesForUser = param?.treeRolesModel?.children
           resolve(response.data)
         })
         .catch(error => reject(error))
@@ -115,7 +118,7 @@ class UserManagerStore {
     return new Promise((resolve, reject) => {
       UserManagerRequest.getRoleGroupByUser(payload)
         .then(response => {
-          this.groupRolesByUser = response.data?.param
+          this.groupRolesByUser = JSON.parse(response.data?.param)
           resolve(response.data)
         })
         .catch(error => reject(error))

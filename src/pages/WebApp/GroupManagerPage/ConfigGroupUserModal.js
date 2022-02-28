@@ -44,15 +44,15 @@ const ConfigGroupUserModal = props => {
     },
     {
       title: 'Họ và tên',
-      render: (item, row, index) => item.name,
+      render: (item, row, index) => item.Name,
     },
     {
       title: 'Tên đăng nhập',
-      render: (item, row, index) => item.userName,
+      render: (item, row, index) => item.UserName,
     },
     {
       title: 'Trạng thái',
-      render: (item, row, index) => renderStatus(item.activeStatus),
+      render: (item, row, index) => renderStatus(item.ActiveStatus),
     },
     {
       width: 100,
@@ -69,7 +69,7 @@ const ConfigGroupUserModal = props => {
   ]
   const handleClickRemoveFromGroup = (user) => {
     confirm({
-      title: `Xóa ${user.userName} khỏi nhóm ${group?.name}`,
+      title: `Xóa ${user.UserName} khỏi nhóm ${group?.name}`,
       icon: <ExclamationCircleOutlined />,
       content: 'Người dùng bị xóa khỏi nhóm sẽ mất các quyền được phân cho nhóm',
       okText: 'Xóa',
@@ -77,12 +77,12 @@ const ConfigGroupUserModal = props => {
       onOk() {
         let payload = {
           GroupId: group?.groupId,
-          UserId: user?.userId,
+          UserId: user?.UserId,
         }
         groupManagerStore.removeUserFromGroup(payload)
           .then(res => {
             if (res?.responseCode === 0) {
-              message.success(`Xóa người dùng  ${user.userName} khỏi nhóm ${group?.name} thành công`)
+              message.success(`Xóa người dùng  ${user.UserName} khỏi nhóm ${group?.name} thành công`)
               formAddUserInGroup.resetFields()
               formFilterUserInGroup.resetFields()
               groupManagerStore.setFilterObjUser(resetFilterObjUser)
@@ -98,7 +98,7 @@ const ConfigGroupUserModal = props => {
   const renderStatus = (stt) => {
     let desc = ''
     if (listStatusUser && listStatusUser.length > 0) {
-      desc = listStatusUser.find(e => e.status === stt).description
+      desc = listStatusUser.find(e => e.status === stt)?.description
     }
     return desc
   }
@@ -156,9 +156,9 @@ const ConfigGroupUserModal = props => {
     return groupManagerStore.searchUserNotInGroupByKeyword(payload)
       .then((res) =>
         res.map((user) => ({
-          label: `${user.userName} - ${user.name}`,
-          value: user.userId,
-          key: user.userId,
+          label: `${user.UserName} - ${user.Name}`,
+          value: user.UserId,
+          key: user.UserId,
         })),
       )
   }
@@ -166,6 +166,7 @@ const ConfigGroupUserModal = props => {
   useEffect(() => {
     if (!group) return
     filterObjUser.GroupId = group.groupId
+    resetFilterObjUser.GroupId = group.groupId
     groupManagerStore.getListUsersInGroup()
   }, [group])
 
@@ -185,9 +186,9 @@ const ConfigGroupUserModal = props => {
         let initUsers = []
         initUsers = res.map(user => {
           return {
-            label: `${user.userName} - ${user.name}`,
-            value: user.userId,
-            key: user.userId,
+            label: `${user.UserName} - ${user.Name}`,
+            value: user.UserId,
+            key: user.UserId,
           }
         })
         setInitOption(initUsers)
@@ -293,7 +294,7 @@ const ConfigGroupUserModal = props => {
         scroll={{ x: 1400 }}
         dataSource={appLoading === 0 ? listUsersInGroup : []}
         columns={columns}
-        rowKey={record => record.userId}
+        rowKey={record => record.UserId}
         pagination={false} />
       <RowSpaceBetweenDiv margin={'16px 0'}>
         {

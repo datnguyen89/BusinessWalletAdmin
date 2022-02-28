@@ -106,7 +106,7 @@ axios.interceptors.response.use(
   response => {
     commonStore.setAppLoading(false)
     console.log('RESPONSE',response.config.url.replace(apiUrl,''), response)
-    if (response.data?.responseCode !== 0) {
+    if (response.data?.error) {
       message.error(response.data?.description)
     }
     return response
