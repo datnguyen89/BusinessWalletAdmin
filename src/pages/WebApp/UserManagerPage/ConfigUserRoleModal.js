@@ -67,7 +67,8 @@ const ConfigUserRoleModal = props => {
     }
     userManagerStore.getTreeRolesForUser(payload)
       .then(res => {
-        setCheckedKeys(res?.data?.roleIdsForTree || [])
+        let param = JSON.parse(res?.param)
+        setCheckedKeys(param?.roleIdsForTree || [])
       })
     userManagerStore.getRoleGroupByUser({ UserId: user.userId })
       .then(res => {

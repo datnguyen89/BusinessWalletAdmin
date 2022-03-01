@@ -52,9 +52,8 @@ class UserManagerStore {
         .then(response => {
           if (response.data?.responseCode === 0) {
             let param = JSON.parse(response.data?.param)
-            console.log('param', param)
-            this.listUsers = param?.Data
-            this.totalCountUsers = response.data?.param.TotalData
+            this.listUsers = param?.data
+            this.totalCountUsers = response.data?.param.totalData
           }
           resolve(response.data)
         })
@@ -107,6 +106,7 @@ class UserManagerStore {
       UserManagerRequest.getTreeRolesForUser(payload)
         .then(response => {
           let param = JSON.parse(response.data?.param)
+          console.log('param', param)
           this.treeRolesForUser = param?.treeRolesModel?.children
           resolve(response.data)
         })

@@ -59,31 +59,31 @@ const UserManagerPage = props => {
     },
     {
       title: 'Họ và tên',
-      render: (item, row, index) => item.Name,
+      render: (item, row, index) => item.name,
     },
     {
       title: 'Số điện thoại',
-      render: (item, row, index) => item.PhoneNumber,
+      render: (item, row, index) => item.phoneNumber,
     },
     {
       title: 'Email',
-      render: (item, row, index) => item.Email,
+      render: (item, row, index) => item.email,
     },
     {
       title: 'Username',
-      render: (item, row, index) => item.UserName,
+      render: (item, row, index) => item.userName,
     },
     {
       title: 'Trạng thái',
-      render: (item, row, index) => renderStatus(item.ActiveStatus),
+      render: (item, row, index) => renderStatus(item.activeStatus),
     },
     {
       title: 'Người tạo',
-      render: (item, row, index) => item.CreatedBy,
+      render: (item, row, index) => item.createdBy,
     },
     {
       title: 'Ngày tạo',
-      render: (item, row, index) => moment(item.CreatedDate).format('DD/MM/YYYY HH:mm'),
+      render: (item, row, index) => moment(item.createdDate).format('DD/MM/YYYY HH:mm'),
     },
     {
       align: 'center',
@@ -269,7 +269,7 @@ const UserManagerPage = props => {
           scroll={{ x: 1400 }}
           dataSource={listUsers || []}
           columns={columns}
-          rowKey={record => record.UserId}
+          rowKey={record => record.userId}
           pagination={false} />
 
         <RowSpaceBetweenDiv margin={'16px 0'}>
