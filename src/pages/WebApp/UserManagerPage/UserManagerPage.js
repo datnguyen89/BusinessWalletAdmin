@@ -25,6 +25,7 @@ import ConfigUserRoleModal from './ConfigUserRoleModal'
 import SetPasswordUserModal from './SetPasswordUserModal'
 import userManagerStore from '../../../stores/userManagerStore'
 import moment from 'moment'
+import { toJS } from 'mobx'
 
 const { RangePicker } = DatePicker
 
@@ -186,6 +187,10 @@ const UserManagerPage = props => {
       userManagerStore.setFilterObj(resetFilterObj)
     }
   }, [])
+
+  useEffect(() => {
+    console.log('listUsers',toJS(listUsers))
+  }, [listUsers])
 
   return (
     <DefaultLayout>

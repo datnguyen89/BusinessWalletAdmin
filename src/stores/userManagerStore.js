@@ -50,9 +50,10 @@ class UserManagerStore {
     return new Promise((resolve, reject) => {
       UserManagerRequest.getListUsers(this.filterObj)
         .then(response => {
-          if (response.data?.data) {
-            this.listUsers = response.data?.data.data
-            this.totalCountUsers = response.data?.data.totalData
+          if (response.data?.param) {
+            let param = JSON.parse(response.data?.param)
+            this.listUsers = param?.data
+            this.totalCountUsers = param?.data.totalData
           }
           resolve(response.data)
         })
