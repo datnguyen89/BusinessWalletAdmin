@@ -116,9 +116,10 @@ const UserManagerPage = props => {
   ]
 
   const renderStatus = (stt) => {
+    if (!listStatusUser) return
     let desc = ''
     if (listStatusUser && listStatusUser.length > 0) {
-      desc = listStatusUser.find(e => e.status === stt).description
+      desc = listStatusUser.find(e => e.status === stt)?.description
     }
     return desc
   }

@@ -5,7 +5,7 @@ class GroupManagerStore {
 
   constructor() {
     autorun(() => {
-      this.listGroupIdByUser = this.listGroupByUser.map(item => item.groupId)
+      this.listGroupIdByUser = this.listGroupByUser.map(item => item?.groupId)
       this.resetFilterObj.PageSize = this.filterObj.PageSize
       this.resetFilterObjUser.PageSize = this.filterObjUser.PageSize
     })
@@ -17,8 +17,8 @@ class GroupManagerStore {
     return new Promise((resolve, reject) => {
       GroupManagerRequest.getListGroups()
         .then(response => {
-          if (!response.data.Error) {
-            this.listGroups = response.data?.data
+          if (!response.data.error) {
+            this.listGroups = response.data?.param
           }
           resolve(response.data)
         })
@@ -47,9 +47,9 @@ class GroupManagerStore {
     return new Promise((resolve, reject) => {
       GroupManagerRequest.getListGroupsPaging(this.filterObj)
         .then(response => {
-          if (!response.data.Error) {
-            this.listGroupsPaging = response.data?.data.data
-            this.totalCountGroupsPaging = response.data?.data.totalData
+          if (!response.data.error) {
+            this.listGroupsPaging = response.data?.data?.data
+            this.totalCountGroupsPaging = response.data?.data?.totalData
           }
           resolve(response.data)
         })
@@ -72,8 +72,8 @@ class GroupManagerStore {
     return new Promise((resolve, reject) => {
       GroupManagerRequest.getGroupByUser(payload)
         .then(response => {
-          if (!response.data.Error) {
-            this.listGroupByUser = response.data?.data
+          if (!response.data.error) {
+            this.listGroupByUser = JSON.parse(response.data?.param)
           }
           resolve(response.data)
         })
@@ -124,9 +124,10 @@ class GroupManagerStore {
     return new Promise((resolve, reject) => {
       GroupManagerRequest.getListUsersInGroup(this.filterObjUser)
         .then(response => {
-          if (!response.data.Error) {
-            this.listUsersInGroup = response.data?.data.data
-            this.totalCountUsersInGroup = response.data?.data.totalData
+          if (!response.data.error) {
+            let param = JSON.parse(response.data?.param)
+            this.listUsersInGroup = param?.Data
+            this.totalCountUsersInGroup = param?.TotalData
           }
           resolve(response.data)
         })
@@ -148,7 +149,7 @@ class GroupManagerStore {
     return new Promise((resolve, reject) => {
       GroupManagerRequest.updateGroup(payload)
         .then(response => {
-          resolve(response.data?.data)
+          resolve(response.data?.param)
         })
         .catch(error => reject(error))
     })
@@ -167,7 +168,7 @@ class GroupManagerStore {
     return new Promise((resolve, reject) => {
       GroupManagerRequest.searchUserNotInGroupByKeyword(payload)
         .then(response => {
-          resolve(response.data?.data)
+          resolve(JSON.parse(response.data?.param))
         })
         .catch(error => reject(error))
     })

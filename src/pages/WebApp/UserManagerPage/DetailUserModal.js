@@ -14,10 +14,10 @@ const DetailUserModal = props => {
   const [formConfigUser] = Form.useForm()
 
   const onFinish = (formCollection) => {
-    if (user?.userId) {
-      userManagerStore.updateInfoUser({ ...formCollection, UserId: user?.userId })
+    if (user?.UserId) {
+      userManagerStore.updateInfoUser({ ...formCollection, UserId: user?.UserId })
         .then(res => {
-          if (!res.error) {
+          if (res?.responseCode === 0) {
             formConfigUser.resetFields()
             onClose()
             message.success('Cập nhật người dùng thành công')
@@ -28,7 +28,7 @@ const DetailUserModal = props => {
     } else {
       userManagerStore.registerUser(formCollection)
         .then(res => {
-          if (!res.error) {
+          if (res?.responseCode === 0) {
             formConfigUser.resetFields()
             onClose()
             message.success('Thêm mới người dùng thành công')
@@ -44,17 +44,18 @@ const DetailUserModal = props => {
   }
 
   useEffect(() => {
-    if (user?.userId) {
-      userManagerStore.getUserById({ UserId: user.userId })
+    if (user?.UserId) {
+      userManagerStore.getUserById({ UserId: user.UserId })
         .then(res => {
-          if (!res.error) {
+          if (res?.responseCode === 0) {
+            let param = JSON.parse(res?.param)
             formConfigUser.setFieldsValue({
-              ClientIds: res.data.clientIds,
-              UserName: res.data.userName,
-              FullName: res.data.name,
-              PhoneNumber: res.data.phoneNumber,
-              Email: res.data.email,
-              ActiveStatus: res.data.activeStatus,
+              ClientIds: param?.ClientIds,
+              UserName: param.UserName,
+              FullName: param?.Name,
+              PhoneNumber: param?.PhoneNumber,
+              Email: param?.Email,
+              ActiveStatus: param?.ActiveStatus,
             })
           }
         })
@@ -67,7 +68,7 @@ const DetailUserModal = props => {
   return (
     <Modal
       forceRender={true}
-      title={user?.userId ? `Sửa thông tin người dùng ${user?.name || ''}` : 'Thêm mới người dùng'}
+      title={user?.UserId ? `Sửa thông tin người dùng ${user?.name || ''}` : 'Thêm mới người dùng'}
       style={{ top: 50 }}
       visible={visible}
       footer={null}
@@ -80,13 +81,13 @@ const DetailUserModal = props => {
         onFinish={onFinish}
         colon={false}>
         {
-          !user?.userId
+          !user?.UserId
             ?
             <Form.Item
               label={'Hệ thống'} name={'ClientIds'}
               rules={[{ required: true, message: 'Vui lòng chọn hệ thống' }]}>
               <Select
-                disabled={user?.userId}
+                disabled={user?.UserId}
                 mode={'multiple'}
                 placeholder={'Chọn hệ thống'}>
                 {
@@ -100,28 +101,28 @@ const DetailUserModal = props => {
             <Form.Item
               label={'Hệ thống'}>
               {
-                selectingUser && listClients.filter(item => selectingUser.clientIds.includes(item.clientId)).map(item =>
+                selectingUser && listClients.filter(item => selectingUser?.ClientIds.includes(item.clientId)).map(item =>
                   <Tag key={item.clientId}>{item.name}</Tag>,
                 )
               }
             </Form.Item>
         }
         {
-          !user?.userId
+          !user?.UserId
             ?
             <Form.Item
               label={'Tên đăng nhập'} name={'UserName'}
               rules={[{ required: true, message: 'Vui lòng nhập tên đăng nhập' }]}>
-              <Input disabled={user?.userId} showCount maxLength={20} placeholder={'Nhập nội dung'} />
+              <Input disabled={user?.UserId} showCount maxLength={20} placeholder={'Nhập nội dung'} />
             </Form.Item>
             :
             <Form.Item
               label={'Tên đăng nhập'}>
-              <ColorText>{selectingUser?.userName}</ColorText>
+              <ColorText>{selectingUser?.UserName}</ColorText>
             </Form.Item>
         }
         {
-          !user?.userId &&
+          !user?.UserId &&
           <>
             <Form.Item
               label={'Mật khẩu'} name={'Password'}
@@ -161,7 +162,7 @@ const DetailUserModal = props => {
           <Input showCount maxLength={100} placeholder={'Nhập nội dung'} />
         </Form.Item>
         {
-          user?.userId &&
+          user?.UserId &&
           <Form.Item
             label={'Trạng thái'} name={'ActiveStatus'}
             rules={[{ required: true, message: 'Vui lòng chọn trạng thái' }]}>

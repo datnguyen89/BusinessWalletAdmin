@@ -21,7 +21,7 @@ const RegisterPage = props => {
   const onFinish = (formCollection) => {
     userManagerStore.registerUser(formCollection)
       .then(res => {
-        if (!res.error) {
+        if (res?.responseCode === 0) {
           formConfigUser.resetFields()
           message.success('Đăng ký thành công')
           history.push(PAGES.LOGIN.PATH)

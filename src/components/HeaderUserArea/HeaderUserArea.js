@@ -19,6 +19,8 @@ const HeaderUserArea = props => {
 
   const { commonStore, authenticationStore } = props
 
+  const { jwtDecode } = authenticationStore
+
   const history = useHistory()
   const handleClickLogout = () => {
     authenticationStore.userLogout()
@@ -82,7 +84,7 @@ const HeaderUserArea = props => {
                 getPopupContainer={() => document.getElementById('user-menu-wrapper')}>
         <DropdownUserSetting>
           <UserAvatar avatarUrl={null} />
-          <span>Administrator</span>
+          <span>{jwtDecode?.name}</span>
           <img src={ICONS.WHITE_ARROW_DOWN} alt={''} height={8} />
         </DropdownUserSetting>
       </Dropdown>
